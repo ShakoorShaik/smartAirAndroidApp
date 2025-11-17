@@ -32,6 +32,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
 import java.util.Map;
 
+import utils.DatabaseManager;
+
 public class Registration extends AppCompatActivity {
 
     TextInputEditText editTextEmail, editTextPassword;
@@ -97,53 +99,38 @@ public class Registration extends AppCompatActivity {
                 if (TextUtils.isEmpty(email))
                 {
                     Toast.makeText(Registration.this, "Enter email", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
                     return;
                 }
 
                 if(TextUtils.isEmpty(password))
                 {
                     Toast.makeText(Registration.this, "Enter password", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
                     return;
                 }
 
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                progressBar.setVisibility(View.GONE);
-                                if (task.isSuccessful()) {
-                                    String accountType = String.valueOf(spinnerAccountType.getSelectedItem());
+                String accountType = String.valueOf(spinnerAccountType.getSelectedItem());
+                DatabaseManager.AccountType type = DatabaseManager.AccountType.valueOf(accountType);
 
-                                    Map<String, Object> user = new HashMap<>();
-                                    user.put("email", email);
-                                    user.put("accountType", accountType);
+                DatabaseManager.accountRegister(email, password, type, new DatabaseManager.SuccessFailCallback() {
+                    @Override
+                    public void onSuccess() {
+                        Toast.makeText(Registration.this, "Account created!",
+                                Toast.LENGTH_SHORT).show();
 
-                                    db.collection("users")
-                                            .add(user)
-                                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                                @Override
-                                                public void onSuccess(DocumentReference documentReference) {
-                                                    Toast.makeText(Registration.this, "Account created!",
-                                                            Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getApplicationContext(), Login.class);
+                        startActivity(intent);
+                        finish();
+                    }
 
-                                                    Intent intent = new Intent(getApplicationContext(), Login.class);
-                                                    startActivity(intent);
-                                                    finish();
-                                                }
-                                            })
-                                            .addOnFailureListener(new OnFailureListener() {
-                                                @Override
-                                                public void onFailure(@NonNull Exception e) {
-
-                                                }
-                                            });
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Toast.makeText(Registration.this, "Authentication failed.",
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        });
+                    @Override
+                    public void onFailure(Exception e) {
+                        Toast.makeText(Registration.this, "Authentication failed.",
+                                Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
+                    }
+                });
 
             }
         });
