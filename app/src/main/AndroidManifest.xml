@@ -32,6 +32,15 @@
         <activity
             android:name=".Registration"
             android:exported="false"></activity>
+        <!-- Parent Activities -->
+        <activity
+            android:name=".parent.ParentDashboardActivity"
+            android:exported="false" >
+        </activity>
+        <activity
+            android:name=".parent.AddChildActivity"
+            android:exported="false" >
+        </activity>
     </application>
 
 </manifest>
