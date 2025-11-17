@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                     });
+            textView.setText(user.getEmail());
         }
 
         button.setOnClickListener(new View.OnClickListener() {
