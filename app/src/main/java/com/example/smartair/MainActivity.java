@@ -69,13 +69,16 @@ public class MainActivity extends AppCompatActivity {
                                     textView.setText(temp);
                                 } else {
                                     // Document does not exist
+                                    Toast.makeText(MainActivity.this, "buh",
+                                            Toast.LENGTH_SHORT).show();
                                 }
                             } else {
                                 // Task failed
+                                Toast.makeText(MainActivity.this, "buhmore",
+                                        Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
-            textView.setText(user.getEmail());
         }
 
         button.setOnClickListener(new View.OnClickListener() {

@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -46,15 +47,20 @@ public class DatabaseManager {
                         if (task.isSuccessful()) {
                             String accountType = type.name();
 
-                            Map<String, Object> user = new HashMap<>();
-                            user.put("email", email);
-                            user.put("accountType", accountType);
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            if (user == null) {
+                                callback.onFailure(new Exception("User is null after registration"));
+                                return;
+                            }
 
-                            db.collection("users")
-                                    .add(user)
-                                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            Map<String, Object> userMap = new HashMap<>();
+                            userMap.put("email", email);
+                            userMap.put("accountType", accountType);
+
+                            db.collection("users").document(user.getUid()).set(userMap)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
-                                        public void onSuccess(DocumentReference documentReference) {
+                                        public void onSuccess(Void aVoid) {
                                             callback.onSuccess();
                                         }
                                     })
