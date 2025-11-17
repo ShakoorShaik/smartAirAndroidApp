@@ -16,6 +16,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -35,6 +36,11 @@ public class DatabaseManager {
     public interface SuccessFailCallback {
         void onSuccess();
 
+        void onFailure(Exception e);
+    }
+
+    public interface DataSuccessFailCallback {
+        void onSuccess(String data);
         void onFailure(Exception e);
     }
 
@@ -84,6 +90,32 @@ public class DatabaseManager {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             callback.onSuccess();
+                        } else {
+                            callback.onFailure(task.getException());
+                        }
+                    }
+                });
+    }
+
+    public static void getData(String documentName, DataSuccessFailCallback callback)
+    {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if(user == null)
+        {
+            callback.onFailure(new Exception("User is null"));
+            return;
+        }
+        db.collection("users").document(user.getUid()).get()
+                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                callback.onSuccess(document.getString(documentName));
+                            } else {
+                                callback.onFailure(task.getException());
+                            }
                         } else {
                             callback.onFailure(task.getException());
                         }

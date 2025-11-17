@@ -23,6 +23,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import utils.DatabaseManager;
+
 public class MainActivity extends AppCompatActivity {
 
     FirebaseAuth auth;
@@ -55,30 +57,17 @@ public class MainActivity extends AppCompatActivity {
         }
         else
         {
-            db.collection("users").document(user.getUid()).get()
-                    .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                DocumentSnapshot document = task.getResult();
-                                if (document.exists()) {
-                                    // Document data available here
-                                    String temp = "email: " + user.getEmail() + " type: " + document.getString("accountType");
-                                    Toast.makeText(MainActivity.this, document.getString("accountType"),
-                                            Toast.LENGTH_SHORT).show();
-                                    textView.setText(temp);
-                                } else {
-                                    // Document does not exist
-                                    Toast.makeText(MainActivity.this, "buh",
-                                            Toast.LENGTH_SHORT).show();
-                                }
-                            } else {
-                                // Task failed
-                                Toast.makeText(MainActivity.this, "buhmore",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+            DatabaseManager.getData("accountType", new DatabaseManager.DataSuccessFailCallback() {
+                @Override
+                public void onSuccess(String data) {
+                    textView.setText(data);
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    textView.setText("bomboclat");
+                }
+            });
         }
 
         button.setOnClickListener(new View.OnClickListener() {
