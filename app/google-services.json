@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "886322276757",
+    "project_id": "smart-air-9d46b",
+    "storage_bucket": "smart-air-9d46b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:886322276757:android:0e855a5dc297c830456e9c",
+        "android_client_info": {
+          "package_name": "com.example.smartair"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJ9UsHf1OvA10cUzNzkj2U4dDymnGiRgA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
