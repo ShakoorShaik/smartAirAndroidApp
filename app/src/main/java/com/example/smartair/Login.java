@@ -16,7 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 
-import com.example.smartair.parent.ParentDashboardActivity;
+import com.example.smartair.parent.ParentDashboardWithChildrenActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -37,12 +37,33 @@ public class Login extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
+        if (mAuth == null) {
+            mAuth = FirebaseAuth.getInstance();
+        }
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
-            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(intent);
-            finish();
+            DatabaseManager.getData("accountType", new DatabaseManager.DataSuccessFailCallback() {
+                @Override
+                public void onSuccess(String accountType) {
+                    Intent intent;
+                    if ("Parent".equals(accountType)) {
+                        intent = new Intent(getApplicationContext(), ParentDashboardWithChildrenActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                }
+            });
         }
     }
 
@@ -73,8 +94,8 @@ public class Login extends AppCompatActivity {
         buttonLogin.setOnClickListener(v -> {
             progressBar.setVisibility(View.VISIBLE);
             String email, password;
-            email = String.valueOf(editTextEmail.getText());
-            password = String.valueOf(editTextPassword.getText());
+            email = editTextEmail.getText() != null ? editTextEmail.getText().toString().trim() : "";
+            password = editTextPassword.getText() != null ? editTextPassword.getText().toString() : "";
 
             if (TextUtils.isEmpty(email))
             {
@@ -102,7 +123,7 @@ public class Login extends AppCompatActivity {
                                 Intent intent;
                                 if ("Parent".equals(accountType)) {
                                     // Redirect to ParentDashboard
-                                    intent = new Intent(getApplicationContext(), ParentDashboardActivity.class);
+                                    intent = new Intent(getApplicationContext(), ParentDashboardWithChildrenActivity.class);
                                 } else {
                                     // TODO: in the future show other dashboards for other user types
                                     intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -122,10 +143,23 @@ public class Login extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Exception e) {
-                    Toast.makeText(Login.this, "Authentication failed.",
-                            Toast.LENGTH_SHORT).show();
-
                     progressBar.setVisibility(View.GONE);
+                    String errorMessage = "Authentication failed.";
+                    if (e != null && e.getMessage() != null) {
+                        String firebaseError = e.getMessage();
+                        if (firebaseError.contains("INVALID_PASSWORD") || firebaseError.contains("wrong-password")) {
+                            errorMessage = "Incorrect password. Please try again.";
+                        } else if (firebaseError.contains("USER_NOT_FOUND") || firebaseError.contains("user-not-found")) {
+                            errorMessage = "No account found with this email. Please register first.";
+                        } else if (firebaseError.contains("INVALID_EMAIL") || firebaseError.contains("invalid-email")) {
+                            errorMessage = "Invalid email format. Please check your email.";
+                        } else if (firebaseError.contains("too-many-requests")) {
+                            errorMessage = "Too many failed attempts. Please try again later.";
+                        } else {
+                            errorMessage = "Authentication failed: " + firebaseError;
+                        }
+                    }
+                    Toast.makeText(Login.this, errorMessage, Toast.LENGTH_LONG).show();
                 }
             });
 
