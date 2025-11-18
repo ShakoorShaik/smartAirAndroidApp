@@ -8,6 +8,7 @@
     <string name="click_to_login">Click to login</string>
     <string name="click_to_register">Click to Register</string>
     <string name="logout">Logout</string>
+    <string name="forgot_passoword">Forgot Passoword?</string>
     <string-array name="account_type_array">
         <item>Parent</item>
         <item>Child</item>
