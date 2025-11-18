@@ -28,4 +28,10 @@
         android:layout_gravity="start|center_horizontal"
         android:text="Add Child Profile" />
 
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="181dp"
+        android:layout_height="wrap_content"
+        android:text="Link Provider" />
+
 </LinearLayout>
