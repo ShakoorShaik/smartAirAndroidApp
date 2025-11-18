@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -60,7 +61,6 @@ public class DatabaseManager {
                             }
 
                             Map<String, Object> userMap = new HashMap<>();
-                            userMap.put("email", email);
                             userMap.put("accountType", accountType);
 
                             db.collection("users").document(user.getUid()).set(userMap)
@@ -119,6 +119,32 @@ public class DatabaseManager {
                         } else {
                             callback.onFailure(task.getException());
                         }
+                    }
+                });
+    }
+
+    public static void writeData(String documentName, Object data, SuccessFailCallback callback)
+    {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if(user == null)
+        {
+            callback.onFailure(new Exception("User is null"));
+            return;
+        }
+
+        Map<String, Object> userMap = new HashMap<>();
+        userMap.put(documentName, data);
+        db.collection("users").document(user.getUid()).set(userMap, SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        callback.onSuccess();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.onFailure(e);
                     }
                 });
     }
