@@ -1,15 +1,38 @@
 *.iml
 .gradle
 /local.properties
-/.idea/caches
-/.idea/libraries
-/.idea/modules.xml
-/.idea/workspace.xml
-/.idea/navEditor.xml
-/.idea/assetWizardSettings.xml
 .DS_Store
+local.properties
+
+# User specific stuff: https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
+.idea/**/workspace.xml
+.idea/**/tasks.xml
+.idea/**/usage.statistics.xml
+.idea/**/dictionaries
+.idea/**/shelf
+.idea/**/contentModel.xml
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xml
+.idea/**/dbnavigator.xml
+.idea/**/gradle.xml
+.idea/**/libraries
+.idea/deviceManager.xml
+.idea/studiobot.xml
+.idea/caches/
+.idea_modules/
+.idea/caches/build_file_checksums.ser
+*.iws
+out/
+
+# Kotlin build artifacts
+.kotlin/
+
+# Build outputs
 /build
 /captures
 .externalNativeBuild
 .cxx
-local.properties

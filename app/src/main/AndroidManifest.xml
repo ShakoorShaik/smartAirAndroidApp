@@ -31,12 +31,15 @@
         <!-- Registration Activity -->
         <activity
             android:name=".Registration"
-            android:exported="false">
-        </activity>
-        <!-- Forget Password Activity -->
+            android:exported="false"></activity>
+        <!-- Parent Activities -->
         <activity
-            android:name=".ForgetPasswordActivity"
-            android:exported="false">
+            android:name=".parent.ParentDashboardActivity"
+            android:exported="false" >
+        </activity>
+        <activity
+            android:name=".parent.AddChildActivity"
+            android:exported="false" >
         </activity>
     </application>
 
