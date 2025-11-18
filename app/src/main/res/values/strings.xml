@@ -9,6 +9,9 @@
     <string name="click_to_register">Click to Register</string>
     <string name="logout">Logout</string>
     <string name="forgot_passoword">Forgot Passoword?</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="send_recovery_link">Send recovery link</string>
+    <string name="return_">Return</string>
     <string-array name="account_type_array">
         <item>Parent</item>
         <item>Child</item>
