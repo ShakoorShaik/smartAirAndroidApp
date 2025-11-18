@@ -18,6 +18,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.smartair.parent.ParentDashboardActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -119,7 +120,15 @@ public class Registration extends AppCompatActivity {
                         Toast.makeText(Registration.this, "Account created!",
                                 Toast.LENGTH_SHORT).show();
 
-                        Intent intent = new Intent(getApplicationContext(), Login.class);
+                        String selectedAccountType = spinnerAccountType.getSelectedItem().toString();
+                        Intent intent;
+                        if ("Parent".equals(selectedAccountType)) {
+                            // Redirect to ParentDashboard
+                            intent = new Intent(getApplicationContext(), ParentDashboardActivity.class);
+                        } else {
+                            // TODO: in the future show other dashboards for other user types
+                            intent = new Intent(getApplicationContext(), Login.class);
+                        }
                         startActivity(intent);
                         finish();
                     }
