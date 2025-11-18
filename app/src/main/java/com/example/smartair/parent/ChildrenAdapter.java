@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartair.R;
-
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +21,7 @@ public class ChildrenAdapter extends RecyclerView.Adapter<ChildrenAdapter.ChildV
 
     public interface OnChildClickListener {
         void onDeleteClick(int position);
+        void onClick(int position);
     }
 
     public ChildrenAdapter(List<Map<String, Object>> childrenList, OnChildClickListener listener) {
@@ -60,6 +60,12 @@ public class ChildrenAdapter extends RecyclerView.Adapter<ChildrenAdapter.ChildV
                 listener.onDeleteClick(position);
             }
         });
+
+        holder.buttonGoToChild.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onClick(holder.getAdapterPosition());
+            }
+        });
     }
 
     @Override
@@ -68,6 +74,7 @@ public class ChildrenAdapter extends RecyclerView.Adapter<ChildrenAdapter.ChildV
     }
 
     public static class ChildViewHolder extends RecyclerView.ViewHolder {
+        Button buttonGoToChild;
         TextView textViewChildName;
         TextView textViewLinkedDate;
         Button buttonUnlink;
@@ -77,6 +84,10 @@ public class ChildrenAdapter extends RecyclerView.Adapter<ChildrenAdapter.ChildV
             textViewChildName = itemView.findViewById(R.id.textViewChildName);
             textViewLinkedDate = itemView.findViewById(R.id.textViewLinkedDate);
             buttonUnlink = itemView.findViewById(R.id.buttonUnlink);
+            buttonGoToChild = itemView.findViewById(R.id.buttonGoToChild);
+
+
+
         }
     }
 }

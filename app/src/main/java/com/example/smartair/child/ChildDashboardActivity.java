@@ -27,6 +27,7 @@ public class ChildDashboardActivity extends AppCompatActivity {
             public void onClick(View v) {
                 DatabaseManager.accountLogout();
                 startActivity(new Intent(ChildDashboardActivity.this, Login.class));
+                finish();
             }
         });
     }

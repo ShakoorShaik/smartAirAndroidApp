@@ -9,7 +9,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
+import com.example.smartair.child.ChildDashboardActivity;
 import com.example.smartair.Login;
 
 import androidx.appcompat.app.AlertDialog;
@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import utils.ChildAccountManager;
+import utils.DatabaseManager;
 
 public class ParentDashboardWithChildrenActivity extends AppCompatActivity {
 
@@ -40,6 +41,7 @@ public class ParentDashboardWithChildrenActivity extends AppCompatActivity {
 
         Button buttonAddChild = findViewById(R.id.buttonAddChild);
         Button buttonLogout = findViewById(R.id.buttonLogout);
+
         recyclerViewChildren = findViewById(R.id.recyclerViewChildren);
         textViewNoChildren = findViewById(R.id.textViewNoChildren);
         progressBar = findViewById(R.id.progressBar);
@@ -50,7 +52,16 @@ public class ParentDashboardWithChildrenActivity extends AppCompatActivity {
             public void onDeleteClick(int position) {
                 showDeleteConfirmation(position);
             }
+
+            @Override
+            public void onClick(int position) {
+                Intent intent = new Intent(ParentDashboardWithChildrenActivity.this, ChildDashboardActivity.class);
+                startActivity(intent);
+            }
+
+
         });
+
 
         recyclerViewChildren.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewChildren.setAdapter(childrenAdapter);
@@ -63,10 +74,12 @@ public class ParentDashboardWithChildrenActivity extends AppCompatActivity {
             }
         });
 
+
+
         buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
+                DatabaseManager.accountLogout();
                 Intent intent = new Intent(ParentDashboardWithChildrenActivity.this, Login.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
