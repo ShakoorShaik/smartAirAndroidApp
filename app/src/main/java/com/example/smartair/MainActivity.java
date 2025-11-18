@@ -11,7 +11,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.smartair.parent.ParentDashboardActivity;
+import com.example.smartair.parent.ParentDashboardWithChildrenActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -56,16 +56,20 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onSuccess(String data) {
                     if (data.equals("Parent")) {
-                        Intent intent = new Intent(getApplicationContext(), ParentDashboardActivity.class);
+                        Intent intent = new Intent(getApplicationContext(), ParentDashboardWithChildrenActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
-                        textView.setText(data);
+                        textView.setText("Account Type: " + data);
                     }
                 }
 
                 @Override
                 public void onFailure(Exception e) {
+                    FirebaseAuth.getInstance().signOut();
+                    Intent intent = new Intent(getApplicationContext(), Login.class);
+                    startActivity(intent);
+                    finish();
 
                 }
             });

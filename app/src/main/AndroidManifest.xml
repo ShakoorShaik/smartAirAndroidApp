@@ -36,11 +36,11 @@
         </activity>
         <!-- Parent Activities -->
         <activity
-            android:name=".parent.ParentDashboardActivity"
+            android:name=".parent.ParentDashboardWithChildrenActivity"
             android:exported="false" >
         </activity>
         <activity
-            android:name=".parent.AddChildActivity"
+            android:name=".parent.AddChildAccountActivity"
             android:exported="false" >
         </activity>
         <!-- Forget Password Activities -->
