@@ -108,19 +108,18 @@ public class Registration extends AppCompatActivity {
                 public void onSuccess() {
                     Toast.makeText(Registration.this, "Account created!",
                             Toast.LENGTH_SHORT).show();
-
-                        String selectedAccountType = spinnerAccountType.getSelectedItem().toString();
-                        Intent intent;
-                        if ("Parent".equals(selectedAccountType)) {
-                            // Redirect to ParentDashboard
-                            intent = new Intent(getApplicationContext(), ParentDashboardActivity.class);
-                        } else {
-                            // TODO: in the future show other dashboards for other user types
-                            intent = new Intent(getApplicationContext(), Login.class);
-                        }
-                        startActivity(intent);
-                        finish();
+                    String selectedAccountType = spinnerAccountType.getSelectedItem().toString();
+                    Intent intent;
+                    if ("Parent".equals(selectedAccountType)) {
+                        // Redirect to ParentDashboard
+                        intent = new Intent(getApplicationContext(), ParentDashboardActivity.class);
+                    } else {
+                        // TODO: in the future show other dashboards for other user types
+                        intent = new Intent(getApplicationContext(), Login.class);
                     }
+                    startActivity(intent);
+                    finish();
+                }
 
                 @Override
                 public void onFailure(Exception e) {
