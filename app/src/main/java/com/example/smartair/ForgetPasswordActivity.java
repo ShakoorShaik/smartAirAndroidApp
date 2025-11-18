@@ -15,6 +15,8 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     private EditText emailInput;
     private Button buttonSendRecovery;
 
+    private Button buttonReturn;
+
     FirebaseAuth mAuth;
     FirebaseFirestore db;
 
@@ -25,6 +27,7 @@ public class ForgetPasswordActivity extends AppCompatActivity {
 
         emailInput = findViewById(R.id.inputEmail);
         buttonSendRecovery = findViewById(R.id.sendRecoveryButton);
+        buttonReturn = findViewById(R.id.backButton);
         mAuth = FirebaseAuth.getInstance();
         db = FirebaseFirestore.getInstance();
 
@@ -32,6 +35,11 @@ public class ForgetPasswordActivity extends AppCompatActivity {
             String email = emailInput.getText().toString();
             sendLink(email);
         });
+
+        buttonReturn.setOnClickListener(v1 -> {
+            finish();
+        });
+
 
     }
 
