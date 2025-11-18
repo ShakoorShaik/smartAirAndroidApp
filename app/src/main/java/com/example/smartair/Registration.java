@@ -12,7 +12,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -24,14 +23,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import utils.DatabaseManager;
 
@@ -75,13 +69,10 @@ public class Registration extends AppCompatActivity {
         buttonRegister = findViewById(R.id.button_register);
         progressBar = findViewById(R.id.progressBar);
         textView = findViewById(R.id.loginNow);
-        textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), Login.class);
-                startActivity(intent);
-                finish();
-            }
+        textView.setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), Login.class);
+            startActivity(intent);
+            finish();
         });
         spinnerAccountType = findViewById(R.id.spinnerAccountType);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
@@ -89,36 +80,34 @@ public class Registration extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerAccountType.setAdapter(adapter);
 
-        buttonRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                progressBar.setVisibility(View.VISIBLE);
-                String email, password;
-                email = String.valueOf(editTextEmail.getText());
-                password = String.valueOf(editTextPassword.getText());
+        buttonRegister.setOnClickListener(v -> {
+            progressBar.setVisibility(View.VISIBLE);
+            String email, password;
+            email = String.valueOf(editTextEmail.getText());
+            password = String.valueOf(editTextPassword.getText());
 
-                if (TextUtils.isEmpty(email))
-                {
-                    Toast.makeText(Registration.this, "Enter email", Toast.LENGTH_SHORT).show();
-                    progressBar.setVisibility(View.GONE);
-                    return;
-                }
+            if (TextUtils.isEmpty(email))
+            {
+                Toast.makeText(Registration.this, "Enter email", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
+                return;
+            }
 
-                if(TextUtils.isEmpty(password))
-                {
-                    Toast.makeText(Registration.this, "Enter password", Toast.LENGTH_SHORT).show();
-                    progressBar.setVisibility(View.GONE);
-                    return;
-                }
+            if(TextUtils.isEmpty(password))
+            {
+                Toast.makeText(Registration.this, "Enter password", Toast.LENGTH_SHORT).show();
+                progressBar.setVisibility(View.GONE);
+                return;
+            }
 
-                String accountType = String.valueOf(spinnerAccountType.getSelectedItem());
-                DatabaseManager.AccountType type = DatabaseManager.AccountType.valueOf(accountType);
+            String accountType = String.valueOf(spinnerAccountType.getSelectedItem());
+            DatabaseManager.AccountType type = DatabaseManager.AccountType.valueOf(accountType);
 
-                DatabaseManager.accountRegister(email, password, type, new DatabaseManager.SuccessFailCallback() {
-                    @Override
-                    public void onSuccess() {
-                        Toast.makeText(Registration.this, "Account created!",
-                                Toast.LENGTH_SHORT).show();
+            DatabaseManager.accountRegister(email, password, type, new DatabaseManager.SuccessFailCallback() {
+                @Override
+                public void onSuccess() {
+                    Toast.makeText(Registration.this, "Account created!",
+                            Toast.LENGTH_SHORT).show();
 
                         String selectedAccountType = spinnerAccountType.getSelectedItem().toString();
                         Intent intent;
@@ -133,15 +122,14 @@ public class Registration extends AppCompatActivity {
                         finish();
                     }
 
-                    @Override
-                    public void onFailure(Exception e) {
-                        Toast.makeText(Registration.this, "Authentication failed.",
-                                Toast.LENGTH_SHORT).show();
-                        progressBar.setVisibility(View.GONE);
-                    }
-                });
+                @Override
+                public void onFailure(Exception e) {
+                    Toast.makeText(Registration.this, "Authentication failed.",
+                            Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
+                }
+            });
 
-            }
         });
     }
 }
