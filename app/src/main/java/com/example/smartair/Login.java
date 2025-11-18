@@ -15,6 +15,10 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+
+import com.example.smartair.parent.ParentDashboardActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -85,14 +89,34 @@ public class Login extends AppCompatActivity {
             }
 
             DatabaseManager.accountLogin(email, password, new DatabaseManager.SuccessFailCallback() {
+                    @Override
+                    public void onSuccess() {
+                        Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
-                @Override
-                public void onSuccess() {
-                    Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
-                    finish();
-                }
+                        // Is there a better way to get this data?
+                        DatabaseManager.getData("accountType", new DatabaseManager.DataSuccessFailCallback() {
+                            @Override
+                            public void onSuccess(String accountType) {
+                                Intent intent;
+                                if ("Parent".equals(accountType)) {
+                                    // Redirect to ParentDashboard
+                                    intent = new Intent(getApplicationContext(), ParentDashboardActivity.class);
+                                } else {
+                                    // TODO: in the future show other dashboards for other user types
+                                    intent = new Intent(getApplicationContext(), MainActivity.class);
+                                }
+                                startActivity(intent);
+                                finish();
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                progressBar.setVisibility(View.GONE);
+                                Toast.makeText(Login.this, "Failed to retrieve account type.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+
 
                 @Override
                 public void onFailure(Exception e) {

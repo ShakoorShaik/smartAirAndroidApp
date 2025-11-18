@@ -11,6 +11,9 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.smartair.parent.ParentDashboardActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -52,7 +55,13 @@ public class MainActivity extends AppCompatActivity {
             DatabaseManager.getData("accountType", new DatabaseManager.DataSuccessFailCallback() {
                 @Override
                 public void onSuccess(String data) {
-                    textView.setText(data);
+                    if (data.equals("Parent")) {
+                        Intent intent = new Intent(getApplicationContext(), ParentDashboardActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        textView.setText(data);
+                    }
                 }
 
                 @Override
