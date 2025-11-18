@@ -16,17 +16,26 @@ public class DatabaseManager {
         Provider
     }
 
+    // Callback interface for when something success or fails
     public interface SuccessFailCallback {
         void onSuccess();
 
         void onFailure(Exception e);
     }
 
+    // Callback interface for when something success or fails and there is data associated to the success
     public interface DataSuccessFailCallback {
         void onSuccess(String data);
         void onFailure(Exception e);
     }
 
+    /**
+     * A function that handles account registration
+     * @param email The email to sign up with
+     * @param password The password to sign up with
+     * @param type The type of account you're signing up for
+     * @param callback Callback on completion
+     */
     public static void accountRegister(String email, String password, AccountType type, SuccessFailCallback callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -54,6 +63,12 @@ public class DatabaseManager {
                 });
     }
 
+    /**
+     * A function that handles account logins
+     * @param email The email to login with
+     * @param password The password to login with
+     * @param callback Callback on completion
+     */
     public static void accountLogin(String email, String password, SuccessFailCallback callback) {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
@@ -67,6 +82,11 @@ public class DatabaseManager {
                 });
     }
 
+    /**
+     * A function that handles retrieval of data from a document
+     * @param documentName The name of the document to retrieve from
+     * @param callback Callback on completion with retrieved data
+     */
     public static void getData(String documentName, DataSuccessFailCallback callback)
     {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -93,11 +113,17 @@ public class DatabaseManager {
                 });
     }
 
+    /**
+     * A function that handles adding of data from a document
+     * @param documentName The name of the document to create
+     * @param data The data that goes in that document
+     * @param callback Callback on completion with retrieved data
+     */
     public static void writeData(String documentName, Object data, SuccessFailCallback callback)
     {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        
+
         FirebaseUser user = mAuth.getCurrentUser();
         if(user == null)
         {
