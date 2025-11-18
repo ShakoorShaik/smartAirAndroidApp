@@ -1,18 +1,13 @@
 package com.example.smartair;
 
 import androidx.appcompat.app.AppCompatActivity;
-import android.content.Intent;
+
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 public class ForgetPasswordActivity extends AppCompatActivity {
@@ -43,10 +38,10 @@ public class ForgetPasswordActivity extends AppCompatActivity {
     private void sendLink(String email) {
         mAuth.sendPasswordResetEmail(email).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
-                Toast.makeText(this, "If an account exists for this email, a reset link has been sent.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "A reset link has been sent, given an account exists..", Toast.LENGTH_LONG).show();
                 finish();
             } else {
-                Toast.makeText(this, "Failed to send reset email. Please try again.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "Failed to send reset email. Try again please.", Toast.LENGTH_LONG).show();
             }
         });
     }
