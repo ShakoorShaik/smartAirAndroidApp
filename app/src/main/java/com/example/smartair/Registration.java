@@ -17,11 +17,13 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+
 import com.example.smartair.parent.ParentDashboardActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -117,6 +119,7 @@ public class Registration extends AppCompatActivity {
                         // TODO: in the future show other dashboards for other user types
                         intent = new Intent(getApplicationContext(), Login.class);
                     }
+
                     startActivity(intent);
                     finish();
                 }

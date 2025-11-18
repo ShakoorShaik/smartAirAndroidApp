@@ -15,6 +15,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+
 import com.example.smartair.parent.ParentDashboardActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -88,7 +89,6 @@ public class Login extends AppCompatActivity {
             }
 
             DatabaseManager.accountLogin(email, password, new DatabaseManager.SuccessFailCallback() {
-
                     @Override
                     public void onSuccess() {
                         Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
@@ -117,14 +117,16 @@ public class Login extends AppCompatActivity {
                         });
                     }
 
-                    @Override
-                    public void onFailure(Exception e) {
-                        Toast.makeText(Login.this, "Authentication failed.",
-                                Toast.LENGTH_SHORT).show();
+
+                @Override
+                public void onFailure(Exception e) {
+                    Toast.makeText(Login.this, "Authentication failed.",
+                            Toast.LENGTH_SHORT).show();
 
                     progressBar.setVisibility(View.GONE);
                 }
             });
+
         });
     }
 }
