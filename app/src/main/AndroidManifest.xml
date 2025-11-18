@@ -31,7 +31,9 @@
         <!-- Registration Activity -->
         <activity
             android:name=".Registration"
-            android:exported="false"></activity>
+            android:exported="false">
+
+        </activity>
         <!-- Parent Activities -->
         <activity
             android:name=".parent.ParentDashboardActivity"
@@ -41,6 +43,12 @@
             android:name=".parent.AddChildActivity"
             android:exported="false" >
         </activity>
+        <!-- Forget Password Activities -->
+        <activity
+            android:name=".ForgetPasswordActivity"
+            android:exported="false" >
+        </activity>
+
     </application>
 
 </manifest>
