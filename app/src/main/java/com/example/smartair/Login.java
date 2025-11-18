@@ -25,6 +25,7 @@ public class Login extends AppCompatActivity {
 
     TextInputEditText editTextEmail, editTextPassword;
     Button buttonLogin;
+    Button buttonForgetPassword;
     FirebaseAuth mAuth;
     ProgressBar progressBar;
     TextView textView;
@@ -56,6 +57,7 @@ public class Login extends AppCompatActivity {
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
         buttonLogin = findViewById(R.id.button_login);
+        buttonForgetPassword = findViewById(R.id.button_forget_password);
         progressBar = findViewById(R.id.progressBar);
         textView = findViewById(R.id.registerNow);
         textView.setOnClickListener(v -> {
@@ -103,6 +105,11 @@ public class Login extends AppCompatActivity {
                 }
             });
 
+        });
+
+        buttonForgetPassword.setOnClickListener(v1 -> {
+            Intent intent = new Intent(getApplicationContext(), ForgetPasswordActivity.class);
+            startActivity(intent);
         });
     }
 }
