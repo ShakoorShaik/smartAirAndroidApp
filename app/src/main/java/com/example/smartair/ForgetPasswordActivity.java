@@ -33,7 +33,12 @@ public class ForgetPasswordActivity extends AppCompatActivity {
 
         buttonSendRecovery.setOnClickListener(v -> {
             String email = emailInput.getText().toString();
-            sendLink(email);
+            if (email.isEmpty()){
+                Toast.makeText(this, "Enter an Email please.", Toast.LENGTH_LONG).show();
+            }
+            else {
+                sendLink(email);
+            }
         });
 
         buttonReturn.setOnClickListener(v1 -> {
