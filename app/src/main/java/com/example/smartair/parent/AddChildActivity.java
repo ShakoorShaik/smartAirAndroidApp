@@ -9,8 +9,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.smartair.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FieldValue;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AddChildActivity extends AppCompatActivity {
 
@@ -21,10 +26,16 @@ public class AddChildActivity extends AppCompatActivity {
     private EditText editTextNotes;
     private Button buttonSaveChild;
 
+    private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_child);
+
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
         editTextChildName = findViewById(R.id.editTextChildName);
         editTextChildDob = findViewById(R.id.editTextChildDob);
@@ -79,11 +90,24 @@ public class AddChildActivity extends AppCompatActivity {
             return;
         }
 
-        // TODO: integrate with database to save child login data
-        String message = "Child Profile Saved:\nName: " + childName + "\nDOB: " + childDob + "\nUsername: " + username + "\nNotes: " + notes;
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+        String parentUid = mAuth.getCurrentUser().getUid();
 
-
-        finish();
+        Map<String, Object> child = new HashMap<>();
+        child.put("name", childName);
+        child.put("dob", childDob);
+        child.put("username", username);
+        child.put("password", password);
+        child.put("notes", notes);
+        System.out.println(child);
+        System.out.println(parentUid);
+        db.collection("users").document(parentUid)
+                .update("children", FieldValue.arrayUnion(child))
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(AddChildActivity.this, "Child profile saved", Toast.LENGTH_SHORT).show();
+                    finish();
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(AddChildActivity.this, "Error saving child profile", Toast.LENGTH_SHORT).show();
+                });
     }
 }
