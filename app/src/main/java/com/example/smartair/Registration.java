@@ -18,7 +18,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 
-import com.example.smartair.parent.ParentDashboardActivity;
+import com.example.smartair.parent.ParentDashboardWithChildrenActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -85,8 +85,8 @@ public class Registration extends AppCompatActivity {
         buttonRegister.setOnClickListener(v -> {
             progressBar.setVisibility(View.VISIBLE);
             String email, password;
-            email = String.valueOf(editTextEmail.getText());
-            password = String.valueOf(editTextPassword.getText());
+            email = editTextEmail.getText() != null ? editTextEmail.getText().toString().trim() : "";
+            password = editTextPassword.getText() != null ? editTextPassword.getText().toString() : "";
 
             if (TextUtils.isEmpty(email))
             {
@@ -114,7 +114,7 @@ public class Registration extends AppCompatActivity {
                     Intent intent;
                     if ("Parent".equals(selectedAccountType)) {
                         // Redirect to ParentDashboard
-                        intent = new Intent(getApplicationContext(), ParentDashboardActivity.class);
+                        intent = new Intent(getApplicationContext(), ParentDashboardWithChildrenActivity.class);
                     } else {
                         // TODO: in the future show other dashboards for other user types
                         intent = new Intent(getApplicationContext(), Login.class);
@@ -126,9 +126,21 @@ public class Registration extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Exception e) {
-                    Toast.makeText(Registration.this, "Authentication failed.",
-                            Toast.LENGTH_SHORT).show();
                     progressBar.setVisibility(View.GONE);
+                    String errorMessage = "Authentication failed.";
+                    if (e != null && e.getMessage() != null) {
+                        String firebaseError = e.getMessage();
+                        if (firebaseError.contains("EMAIL_EXISTS") || firebaseError.contains("email-already-in-use")) {
+                            errorMessage = "This email is already registered. Please use a different email or try logging in.";
+                        } else if (firebaseError.contains("WEAK_PASSWORD") || firebaseError.contains("weak-password")) {
+                            errorMessage = "Password is too weak. Please use a stronger password (at least 6 characters).";
+                        } else if (firebaseError.contains("INVALID_EMAIL") || firebaseError.contains("invalid-email")) {
+                            errorMessage = "Invalid email format. Please check your email.";
+                        } else {
+                            errorMessage = "Registration failed: " + firebaseError;
+                        }
+                    }
+                    Toast.makeText(Registration.this, errorMessage, Toast.LENGTH_LONG).show();
                 }
             });
 

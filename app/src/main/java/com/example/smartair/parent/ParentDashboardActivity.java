@@ -9,14 +9,12 @@ import com.example.smartair.R;
 
 public class ParentDashboardActivity extends AppCompatActivity {
 
-    private Button buttonAddChild;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parent_dashboard);
 
-        buttonAddChild = findViewById(R.id.buttonAddChild);
+        Button buttonAddChild = findViewById(R.id.buttonAddChild);
 
         buttonAddChild.setOnClickListener(new View.OnClickListener() {
             @Override

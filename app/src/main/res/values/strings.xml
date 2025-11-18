@@ -17,4 +17,19 @@
         <item>Child</item>
         <item>Provider</item>
     </string-array>
+    <string name="parent_dashboard">Parent Dashboard</string>
+    <string name="account_actions">Account Actions</string>
+    <string name="add_child_profile">Add Child Profile</string>
+    <string name="add_child_account">Add Child Account</string>
+    <string name="linked_children">Linked Children</string>
+    <string name="no_children_linked">No children linked yet. Click \'Add Child Account\' to get started.</string>
+    <string name="add_child">Add Child</string>
+    <string name="child_information">Child Information</string>
+    <string name="account_details">Account Details</string>
+    <string name="sign_in_details">Sign In Details</string>
+    <string name="create_child_account">Create Child Account</string>
+    <string name="create_child_profile">Create Child Profile</string>
+    <string name="child_name">Child Name</string>
+    <string name="linked_date">Linked: Date</string>
+    <string name="unlink">Unlink</string>
 </resources>
