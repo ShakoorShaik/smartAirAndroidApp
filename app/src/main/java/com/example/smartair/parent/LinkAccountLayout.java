@@ -1,0 +1,42 @@
+package com.example.smartair.parent;
+
+import android.os.Bundle;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+import com.example.smartair.R;
+import utils.DatabaseManager;
+
+public class LinkAccountLayout extends AppCompatActivity{
+
+    private TextView textViewGeneratedCode;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_generate_code);
+
+        textViewGeneratedCode = findViewById(R.id.textViewGeneratedCode);
+
+        Button buttonGenerate = findViewById(R.id.button);
+        buttonGenerate.setOnClickListener(v -> generateCode());
+
+        Button returnButton = findViewById(R.id.button3);
+        returnButton.setOnClickListener(v -> finish());
+    }
+
+    private void generateCode() {
+        LinkingManager.generateReferralCode(new DatabaseManager.DataSuccessFailCallback() {
+            @Override
+            public void onSuccess(String code) {
+                textViewGeneratedCode.setText(code);
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Toast.makeText(LinkAccountLayout.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+}
