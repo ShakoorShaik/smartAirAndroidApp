@@ -43,6 +43,10 @@
             android:name=".parent.AddChildAccountActivity"
             android:exported="false" >
         </activity>
+        <activity
+            android:name=".parent.LinkAccountLayout"
+            android:exported="false" >
+        </activity>
 
         <!-- Child Activities -->
         <activity
@@ -55,6 +59,7 @@
             android:name=".ForgetPasswordActivity"
             android:exported="false" >
         </activity>
+        <!-- Provider Activity Activities -->
         <activity
             android:name=".provider.ProviderDashboardActivity"
             android:exported="false" />
