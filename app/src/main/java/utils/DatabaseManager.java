@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DatabaseManager {
+    
+
     public enum AccountType {
         Parent,
         Child,
@@ -136,5 +138,9 @@ public class DatabaseManager {
         db.collection("users").document(user.getUid()).set(userMap, SetOptions.merge())
                 .addOnSuccessListener(aVoid -> callback.onSuccess())
                 .addOnFailureListener(callback::onFailure);
+    }
+
+    public static void accountLogout() {
+        FirebaseAuth.getInstance().signOut();
     }
 }

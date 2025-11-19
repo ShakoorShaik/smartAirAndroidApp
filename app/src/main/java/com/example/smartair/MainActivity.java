@@ -11,6 +11,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.smartair.child.ChildDashboardActivity;
 import com.example.smartair.parent.ParentDashboardWithChildrenActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -57,6 +58,10 @@ public class MainActivity extends AppCompatActivity {
                 public void onSuccess(String data) {
                     if (data.equals("Parent")) {
                         Intent intent = new Intent(getApplicationContext(), ParentDashboardWithChildrenActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else if (data.equals("Child")) {
+                        Intent intent = new Intent(getApplicationContext(), ChildDashboardActivity.class);
                         startActivity(intent);
                         finish();
                     } else {

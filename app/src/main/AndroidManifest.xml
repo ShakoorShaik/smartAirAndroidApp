@@ -43,6 +43,13 @@
             android:name=".parent.AddChildAccountActivity"
             android:exported="false" >
         </activity>
+
+        <!-- Child Activities -->
+        <activity
+            android:name=".child.ChildDashboardActivity"
+            android:exported="false" >
+        </activity>
+
         <!-- Forget Password Activities -->
         <activity
             android:name=".ForgetPasswordActivity"

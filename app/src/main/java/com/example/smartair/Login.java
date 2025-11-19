@@ -16,6 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 
+import com.example.smartair.child.ChildDashboardActivity;
 import com.example.smartair.parent.ParentDashboardWithChildrenActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -50,6 +51,10 @@ public class Login extends AppCompatActivity {
                     if ("Parent".equals(accountType)) {
                         intent = new Intent(getApplicationContext(), ParentDashboardWithChildrenActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    } else if ("Child".equals(accountType)) {
+                        intent = new Intent(getApplicationContext(), ChildDashboardActivity.class);
                         startActivity(intent);
                         finish();
                     } else {
