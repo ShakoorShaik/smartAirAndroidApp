@@ -55,7 +55,9 @@
             android:name=".ForgetPasswordActivity"
             android:exported="false" >
         </activity>
-
+        <activity
+            android:name=".provider.ProviderDashboardActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

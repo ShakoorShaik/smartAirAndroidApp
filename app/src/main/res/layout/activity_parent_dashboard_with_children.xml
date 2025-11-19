@@ -43,15 +43,6 @@
         android:text="Add Child Account"
         android:layout_marginBottom="16dp" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Linked Children"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp" />
-
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
@@ -69,10 +60,25 @@
         android:padding="16dp"
         android:visibility="gone" />
 
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="185dp"
+        android:layout_height="wrap_content"
+        android:text="Link Provider" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="Linked Children"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewChildren"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="463dp"
         android:layout_weight="1" />
 
 </LinearLayout>

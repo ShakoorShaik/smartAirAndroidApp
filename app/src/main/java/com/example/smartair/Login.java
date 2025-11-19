@@ -18,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.smartair.child.ChildDashboardActivity;
 import com.example.smartair.parent.ParentDashboardWithChildrenActivity;
+import com.example.smartair.provider.ProviderDashboardActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
@@ -129,8 +130,13 @@ public class Login extends AppCompatActivity {
                                 if ("Parent".equals(accountType)) {
                                     // Redirect to ParentDashboard
                                     intent = new Intent(getApplicationContext(), ParentDashboardWithChildrenActivity.class);
-                                } else {
-                                    // TODO: in the future show other dashboards for other user types
+                                    // redir to provider
+                                } else if ("Provider".equals(accountType)){
+                                    intent = new Intent(getApplicationContext(), ProviderDashboardActivity.class);
+                                }
+
+                                else {
+                                    // TODO: in the future show other dashboards for child user types
                                     intent = new Intent(getApplicationContext(), MainActivity.class);
                                 }
                                 startActivity(intent);
