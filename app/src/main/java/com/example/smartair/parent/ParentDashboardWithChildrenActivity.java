@@ -88,6 +88,17 @@ public class ParentDashboardWithChildrenActivity extends AppCompatActivity {
         });
 
         loadChildren();
+
+        Button buttonLinkProvider = findViewById(R.id.button2);
+
+        buttonLinkProvider.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ParentDashboardWithChildrenActivity.this, LinkAccountLayout.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
