@@ -32,4 +32,5 @@
     <string name="child_name">Child Name</string>
     <string name="linked_date">Linked: Date</string>
     <string name="unlink">Unlink</string>
+    <string name="linked_with">Currently Linked with: parentX</string>
 </resources>
