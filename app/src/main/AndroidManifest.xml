@@ -63,6 +63,11 @@
         <activity
             android:name=".provider.ProviderDashboardActivity"
             android:exported="false" />
+        <!-- Child Dashboard Game Activities -->
+        <activity
+            android:name=".ChildDashboardGameActivity"
+            android:exported="false" >
+        </activity>
     </application>
 
 </manifest>
