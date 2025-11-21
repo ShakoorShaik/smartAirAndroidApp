@@ -1,8 +1,8 @@
-package com.example.smartair;
+package com.example.smartair.child;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -10,6 +10,9 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.smartair.R;
+import com.example.smartair.child.inhalertechnique.InhalerTechnique;
+import com.example.smartair.child.inhalertechnique.InhalerTechniqueFirst;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -49,7 +52,7 @@ public class ChildDashboardGameActivity extends AppCompatActivity {
         childUser = mAuth.getCurrentUser();
 
         buttonTechniqueHelper.setOnClickListener(v -> {
-            finish();
+            startActivity(new Intent(this, InhalerTechniqueFirst.class));
         });
 
         buttonRecordTrigger.setOnClickListener(v -> {   //todo
