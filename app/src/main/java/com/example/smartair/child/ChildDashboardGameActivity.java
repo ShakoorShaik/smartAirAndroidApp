@@ -11,7 +11,6 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartair.R;
-import com.example.smartair.child.inhalertechnique.InhalerTechnique;
 import com.example.smartair.child.inhalertechnique.InhalerTechniqueFirst;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,7 +31,7 @@ public class ChildDashboardGameActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_child_dashboard_game);
+        setContentView(R.layout.activity_child_tasks);
 
         Badge = findViewById(R.id.badge);
         Badge.setImageResource(R.drawable.bronze_badge);      //todo there should be some logic to decide which badge
