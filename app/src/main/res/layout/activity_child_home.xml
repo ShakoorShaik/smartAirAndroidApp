@@ -14,7 +14,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:menu="@menu/parent_nav_bar"
+        app:menu="@menu/child_nav_bar"
         app:labelVisibilityMode="labeled"
         app:itemIconSize="32dp"
         tools:ignore="MissingConstraints"/>
