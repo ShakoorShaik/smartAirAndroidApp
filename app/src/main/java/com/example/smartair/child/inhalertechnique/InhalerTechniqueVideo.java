@@ -45,6 +45,7 @@ public class InhalerTechniqueVideo extends AppCompatActivity {
         });
 
         buttonFinish.setOnClickListener(v -> {
+            //todo log the fact that we have completed a correct inhaler use session
             startActivity(new Intent(this, ChildDashboardGameActivity.class));
         });
 
