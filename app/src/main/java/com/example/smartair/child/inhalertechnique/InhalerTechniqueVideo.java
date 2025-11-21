@@ -9,7 +9,7 @@ import android.widget.VideoView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartair.R;
-import com.example.smartair.child.ChildDashboardGameActivity;
+import com.example.smartair.child.ChildDashboardTasks;
 
 public class InhalerTechniqueVideo extends AppCompatActivity {
 
@@ -46,7 +46,7 @@ public class InhalerTechniqueVideo extends AppCompatActivity {
 
         buttonFinish.setOnClickListener(v -> {
             //todo log the fact that we have completed a correct inhaler use session
-            startActivity(new Intent(this, ChildDashboardGameActivity.class));
+            startActivity(new Intent(this, ChildDashboardTasks.class));
         });
 
     }

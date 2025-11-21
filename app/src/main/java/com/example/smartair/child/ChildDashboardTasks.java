@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class ChildDashboardGameActivity extends AppCompatActivity {
+public class ChildDashboardTasks extends AppCompatActivity {
 
     private ImageView Badge;
     private ImageView Streak;
@@ -33,6 +33,10 @@ public class ChildDashboardGameActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_child_tasks);
 
+        mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        childUser = mAuth.getCurrentUser();
+
         Badge = findViewById(R.id.badge);
         Badge.setImageResource(R.drawable.bronze_badge);      //todo there should be some logic to decide which badge
         Badge.setVisibility(View.VISIBLE);
@@ -45,10 +49,6 @@ public class ChildDashboardGameActivity extends AppCompatActivity {
         buttonRecordTrigger = findViewById(R.id.recordTriggerButton);
         buttonTriggerHistory = findViewById(R.id.historyTriggerButton);
         buttonRecordSymptom= findViewById(R.id.symptomRecordButton);
-
-        mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
-        childUser = mAuth.getCurrentUser();
 
         buttonTechniqueHelper.setOnClickListener(v -> {
             startActivity(new Intent(this, InhalerTechniqueFirst.class));
