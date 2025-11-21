@@ -24,7 +24,8 @@ public class InhalerTechniqueVideo extends AppCompatActivity {
 
         setContentView(R.layout.activity_inhaler_technique_video);
         videoInhalerTechnique = findViewById(R.id.techniqueVideo);
-        Uri uri = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.inhaler_video);
+        String path = "android.resource://" + getPackageName() + "/" + R.raw.inhaler_video;
+        Uri uri = Uri.parse(path);
         videoInhalerTechnique.setVideoURI(uri);
         videoInhalerTechnique.start();
 
