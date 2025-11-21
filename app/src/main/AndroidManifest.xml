@@ -65,7 +65,7 @@
             android:exported="false" />
         <!-- Child Dashboard Game Activities -->
         <activity
-            android:name=".child.ChildDashboardGameActivity"
+            android:name=".child.ChildDashboardTasks"
             android:exported="false" >
         </activity>
         <!-- Inhaler Technique Activities -->
