@@ -13,7 +13,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/leftButton"
+            android:id="@+id/TopLeftButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Link Account" />
@@ -24,7 +24,7 @@
             android:layout_weight="1" />
 
         <Button
-            android:id="@+id/rightButton"
+            android:id="@+id/TopRightButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Logout" />
@@ -75,7 +75,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/leftButton"
+            android:id="@+id/BottomLeftButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Left" />
@@ -95,20 +95,19 @@
             android:text="Switch Info" />
 
         <Button
-            android:id="@+id/rightButton"
+            android:id="@+id/BottomRightButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="right" />
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView11"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:textSize="25dp"
-        android:text="Child X" />
+    <Spinner
+        android:id="@+id/childSpinner"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center"
+        android:spinnerMode="dropdown" />
 
 
 </LinearLayout>
