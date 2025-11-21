@@ -63,6 +63,40 @@
         <activity
             android:name=".provider.ProviderDashboardActivity"
             android:exported="false" />
+        <!-- Child Dashboard Game Activities -->
+        <activity
+            android:name=".child.ChildDashboardGameActivity"
+            android:exported="false" >
+        </activity>
+        <!-- Inhaler Technique Activities -->
+        <activity
+            android:name=".child.inhalertechnique.InhalerTechniqueFirst"
+            android:exported="false" >
+        </activity>
+        <activity
+            android:name=".child.inhalertechnique.InhalerTechniqueSecond"
+            android:exported="false" >
+        </activity>
+        <activity
+            android:name=".child.inhalertechnique.InhalerTechniqueThird"
+            android:exported="false" >
+        </activity>
+        <activity
+            android:name=".child.inhalertechnique.InhalerTechniqueFourth"
+            android:exported="false" >
+        </activity>
+        <activity
+            android:name=".child.inhalertechnique.InhalerTechniqueFifth"
+            android:exported="false" >
+        </activity>
+        <activity
+            android:name=".child.inhalertechnique.InhalerTechniqueSixth"
+            android:exported="false" >
+        </activity>
+        <activity
+            android:name=".child.inhalertechnique.InhalerTechniqueVideo"
+            android:exported="false" >
+        </activity>
     </application>
 
 </manifest>
