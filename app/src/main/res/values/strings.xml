@@ -32,4 +32,6 @@
     <string name="child_name">Child Name</string>
     <string name="linked_date">Linked: Date</string>
     <string name="unlink">Unlink</string>
+    <string name="med_page">Medicine</string>
+    <string name="edit_pb">Edit PB</string>
 </resources>
