@@ -107,6 +107,11 @@
             android:name=".child.inhalertechnique.InhalerTechniqueVideo"
             android:exported="false" >
         </activity>
+        <!-- Emergency Activities -->
+        <activity
+            android:name=".child.emergency.Emergency"
+            android:exported="false" >
+        </activity>
     </application>
 
 </manifest>
