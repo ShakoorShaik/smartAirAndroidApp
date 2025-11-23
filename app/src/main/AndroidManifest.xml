@@ -44,7 +44,7 @@
             android:exported="false" >
         </activity>
         <activity
-            android:name=".parent.LinkAccountLayout"
+            android:name=".parent.ParentLinkGeneration"
             android:exported="false" >
         </activity>
 
@@ -62,6 +62,10 @@
         <!-- Provider Activity Activities -->
         <activity
             android:name=".provider.ProviderDashboardActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".provider.ProviderInfoViewer"
             android:exported="false" />
     </application>
 
