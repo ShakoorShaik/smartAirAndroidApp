@@ -7,8 +7,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.smartair.R;
 import utils.DatabaseManager;
+import utils.ParentProviderLinking;
 
-public class LinkAccountLayout extends AppCompatActivity{
+public class ParentLinkGeneration extends AppCompatActivity{
 
     private TextView textViewGeneratedCode;
 
@@ -27,7 +28,7 @@ public class LinkAccountLayout extends AppCompatActivity{
     }
 
     private void generateCode() {
-        LinkingManager.generateReferralCode(new DatabaseManager.DataSuccessFailCallback() {
+        ParentProviderLinking.generateLinkCode(new DatabaseManager.DataSuccessFailCallback() {
             @Override
             public void onSuccess(String code) {
                 textViewGeneratedCode.setText(code);
@@ -35,7 +36,7 @@ public class LinkAccountLayout extends AppCompatActivity{
 
             @Override
             public void onFailure(Exception e) {
-                Toast.makeText(LinkAccountLayout.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(ParentLinkGeneration.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

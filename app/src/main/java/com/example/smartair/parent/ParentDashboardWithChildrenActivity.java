@@ -95,7 +95,7 @@ public class ParentDashboardWithChildrenActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ParentDashboardWithChildrenActivity.this, LinkAccountLayout.class);
+                Intent intent = new Intent(ParentDashboardWithChildrenActivity.this, ParentLinkGeneration.class);
                 startActivity(intent);
             }
         });

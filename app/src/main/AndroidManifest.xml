@@ -46,7 +46,7 @@
             android:exported="false" >
         </activity>
         <activity
-            android:name=".parent.LinkAccountLayout"
+            android:name=".parent.ParentLinkGeneration"
             android:exported="false" >
         </activity>
         <activity
@@ -107,6 +107,10 @@
             android:name=".child.inhalertechnique.InhalerTechniqueVideo"
             android:exported="false" >
         </activity>
+
+        <activity
+            android:name=".provider.ProviderInfoViewer"
+            android:exported="false" />
     </application>
 
 </manifest>
