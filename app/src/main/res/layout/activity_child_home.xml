@@ -29,4 +29,16 @@
         app:itemIconSize="32dp"
         tools:ignore="MissingConstraints"/>
 
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="320dp"
+        android:layout_height="80dp"
+        android:text="Log Inhaler Use"
+        android:textSize="19sp"
+        app:layout_constraintBottom_toTopOf="@+id/navBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.8" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
