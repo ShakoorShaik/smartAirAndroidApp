@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -34,9 +34,10 @@
         android:id="@+id/linkedText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:gravity="center"
         android:textStyle="italic"
-        android:textSize="17dp"
+        android:textSize="17sp"
         android:text="@string/linked_with" />
 
     <TextView
@@ -47,7 +48,7 @@
         android:gravity="center_horizontal"
         android:text="Welcome"
         android:textColor="@color/black"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:textStyle="italic" />
 
     <TextView
@@ -56,18 +57,16 @@
         android:layout_height="wrap_content"
         android:text="Today's Zone:"
         android:gravity="center_horizontal"
-        android:textSize="40dp"/>
+        android:textSize="30sp"/>
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
-        android:layout_height="380dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:scaleType="centerInside"
+        android:adjustViewBounds="true"
         tools:srcCompat="@tools:sample/avatars" />
-
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:layout_weight="1"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -80,19 +79,19 @@
             android:layout_height="wrap_content"
             android:text="Left" />
 
-        <Space
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
         <TextView
             android:id="@+id/textView13"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:textStyle="italic"
             android:text="Switch Info" />
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
 
         <Button
             android:id="@+id/BottomRightButton"
@@ -109,5 +108,9 @@
         android:layout_gravity="center"
         android:spinnerMode="dropdown" />
 
+    <Space
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1" />
 
 </LinearLayout>
