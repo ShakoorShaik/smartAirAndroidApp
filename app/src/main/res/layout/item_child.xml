@@ -30,6 +30,26 @@
             android:textColor="#666666"
             android:textSize="14sp" />
 
+        <TextView
+            android:id="@+id/textViewPEF"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="PEF: --"
+            android:textColor="#2196F3"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewPB"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="PB: --"
+            android:textColor="#4CAF50"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
         <Button
             android:id="@+id/buttonGoToChild"
             android:layout_width="wrap_content"
