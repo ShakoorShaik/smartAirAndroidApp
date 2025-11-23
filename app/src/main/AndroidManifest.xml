@@ -56,7 +56,11 @@
 
         <!-- Child Activities -->
         <activity
-            android:name=".child.ChildDashboardActivity"
+            android:name=".child.ChildHome"
+            android:exported="false" >
+        </activity>
+        <activity
+            android:name=".child.LogUsageActivity"
             android:exported="false" >
         </activity>
 
