@@ -9,16 +9,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 public class ParentProviderLinking{
 
-    private static final long EXPIRATION_MS = 15 * 60 * 1000; // 15 minutes
-
-    public interface CodeCallback {
-        void onSuccess(String code);
-        void onFailure(Exception e);
-    }
+    private static final long EXPIRATION_MS = 30 * 60 * 1000; // 15 minutes
 
     public interface RedeemCallback {
         void onSuccess(String parentEmail);
@@ -57,11 +51,11 @@ public class ParentProviderLinking{
                         return;
                     }
 
-                    long expiration = System.currentTimeMillis() + (60 * 60 * 1000);
+                    long expiration = System.currentTimeMillis() + EXPIRATION_MS;
 
                     Map<String, Object> body = new HashMap<>();
                     body.put("email", user.getEmail());
-                    body.put("CodeUsed", false);
+                    body.put("referralCodeUsed", false);
                     body.put("referralCode", code);
                     body.put("referralExpires", expiration);
 
@@ -101,9 +95,15 @@ public class ParentProviderLinking{
                     try {
                         long expiresAt = (long) data.get("referralExpires");
                         String parentEmail = (String) data.get("email");
+                        boolean used = (boolean) data.get("referralCodeUsed");
 
                         if (System.currentTimeMillis() > expiresAt) {
                             callback.onFailure(new Exception("Code expired"));
+                            return;
+                        }
+
+                        if (used) {
+                            callback.onFailure(new Exception("Code already used"));
                             return;
                         }
 
@@ -117,9 +117,9 @@ public class ParentProviderLinking{
                                 .set(linkData)
                                 .addOnSuccessListener(a -> {
 
-                                    db.collection("usuers")
+                                    db.collection("users")
                                                     .document(parentUid)
-                                                    .update("CodeUsed", true);
+                                                    .update("referralCodeUsed", true);
                                     callback.onSuccess(parentEmail);
                                 })
                                 .addOnFailureListener(callback::onFailure);
