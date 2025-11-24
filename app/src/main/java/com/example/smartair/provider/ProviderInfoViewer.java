@@ -17,7 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 Provider viewables
 
 - Trends(Zones, Inhaler uses, Rescues)
-- Children Info (Age/Triggers)
+- Children Info (Age/Triggers/PBs)
 - Misc (last Inhaler use/Daily check ins/ Badges/ Streak)
  */
 
