@@ -81,7 +81,7 @@ public class ParentChildrenFragment extends Fragment {
         buttonLinkProvider.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), LinkAccountLayout.class);
+                Intent intent = new Intent(getActivity(), ParentLinkGeneration.class);
                 startActivity(intent);
             }
         });

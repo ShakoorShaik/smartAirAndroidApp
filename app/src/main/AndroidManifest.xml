@@ -44,12 +44,11 @@
             android:exported="false" >
         </activity>
         <activity
-            android:name=".parent.ParentLinkGeneration"
             android:name=".parent.AddChildActivity"
             android:exported="false" >
         </activity>
         <activity
-            android:name=".parent.LinkAccountLayout"
+            android:name=".parent.ParentLinkGeneration"
             android:exported="false" >
         </activity>
 

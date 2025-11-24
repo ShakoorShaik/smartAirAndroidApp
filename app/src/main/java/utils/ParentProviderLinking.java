@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class ParentProviderLinking{
 
-    private static final long EXPIRATION_MS = 30 * 60 * 1000; // 15 minutes
+    private static final long EXPIRATION_MS = 7 * 24 *60 * 60 * 1000;
 
     public interface RedeemCallback {
         void onSuccess(String parentEmail);
