@@ -32,6 +32,7 @@ public class ChildHistoryActivity extends AppCompatActivity {
             return insets;
         });
 
+        /*
         lineChart = findViewById(R.id.lineChart);
         List<Entry> lineEntries = new ArrayList<>();
         lineEntries.add(new Entry(0, 4));
@@ -41,6 +42,7 @@ public class ChildHistoryActivity extends AppCompatActivity {
         LineData lineData = new LineData(lineDataSet);
         lineChart.setData(lineData);
         lineChart.invalidate(); // refresh
+        */
 
     }
 }
