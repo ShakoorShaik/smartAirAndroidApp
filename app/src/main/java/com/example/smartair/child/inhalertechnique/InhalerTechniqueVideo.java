@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.smartair.R;
 import com.example.smartair.child.ChildDashboardTasks;
 
+import utils.ChildAccountManager;
+
 public class InhalerTechniqueVideo extends AppCompatActivity {
 
     protected VideoView videoInhalerTechnique;
@@ -45,7 +47,7 @@ public class InhalerTechniqueVideo extends AppCompatActivity {
         });
 
         buttonFinish.setOnClickListener(v -> {
-            //todo log the fact that we have completed a correct inhaler use session
+            ChildAccountManager.incrementCorrectInhalerUse();
             startActivity(new Intent(this, ChildDashboardTasks.class));
         });
 

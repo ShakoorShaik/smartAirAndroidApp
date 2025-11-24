@@ -1,8 +1,13 @@
 package utils;
 
+import android.util.Log;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
@@ -118,5 +123,41 @@ public class ChildAccountManager {
                     }
                 });
     }
+    public static void incrementCorrectInhalerUse() {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            FirebaseUser user = mAuth.getCurrentUser();
+            if (user == null) {
+                return;
+            }
+            String userId = user.getUid();
+
+            DocumentReference userRef = db.collection("users").document(userId);
+
+            userRef.update("correctInhalerUses", FieldValue.increment(1));
+        }
+
+    public static void logTriage(boolean csfs, boolean cp, boolean lnbg, boolean rra, boolean o) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            return;
+        }
+        String userId = user.getUid();
+
+        CollectionReference triageRef = db.collection("users").document(userId).collection("TriageHistory");
+
+        Map<String, Object> triageData = new HashMap<>();
+        triageData.put("I cannot speak full sentences.", csfs);
+        triageData.put("I am having chest pulls.", cp);
+        triageData.put("My lips/nails are blue/grey.", lnbg);
+        triageData.put("Have you taken rescue medicine in the past 20 minutes?", rra);
+        triageData.put("Other symptoms", o);
+        triageData.put("timestamp", System.currentTimeMillis());
+
+        triageRef.add(triageData);
+    }
+
 }
 

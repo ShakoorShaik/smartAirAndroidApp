@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="32dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <CheckBox
+        android:id="@+id/checkbox_csfs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="I cannot speak full sentences."
+        android:textSize="20dp"
+        android:layout_marginTop="16dp"/>
+
+    <CheckBox
+        android:id="@+id/checkbox_cp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="I am having chest pulls."
+        android:textSize="20dp"
+        android:layout_marginTop="16dp"/>
+
+    <CheckBox
+        android:id="@+id/checkbox_lnbg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My lips/nails are blue/grey."
+        android:textSize="20dp"
+        android:layout_marginTop="16dp"/>
+
+    <CheckBox
+        android:id="@+id/checkbox_rra"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Have you taken rescue medicine in the past 20 minutes?"
+        android:textSize="20dp"
+        android:layout_marginTop="16dp"/>
+
+    <CheckBox
+        android:id="@+id/checkbox_o"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Other symptoms"
+        android:textSize="20dp"
+        android:layout_marginTop="16dp"/>
+
+    <Button
+        android:id="@+id/button_next_steps"
+        android:layout_width="wrap_content"
+        android:layout_height="80dp"
+        android:text="Next Steps"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"/>
+
+    <Button
+        android:id="@+id/button_not_emergency"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="I am fine now"
+        android:layout_marginTop="350dp"
+        android:layout_gravity="center" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="This is guidance, not a diagnosis. If in doubt, call emergency"
+        android:layout_gravity="bottom"/>
+
+</LinearLayout>
