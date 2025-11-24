@@ -32,4 +32,9 @@
     <string name="child_name">Child Name</string>
     <string name="linked_date">Linked: Date</string>
     <string name="unlink">Unlink</string>
+    <string name="symptoms">Symptoms</string>
+    <string name="triggers">Triggers</string>
+    <string name="zone_history">Zone History</string>
+    <string name="rescue_control_usage">Rescue/Control Usage</string>
+    <string name="emergency_history">Emergency History</string>
 </resources>
