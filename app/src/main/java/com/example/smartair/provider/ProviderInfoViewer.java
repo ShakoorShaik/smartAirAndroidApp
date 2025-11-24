@@ -23,11 +23,33 @@ public class ProviderInfoViewer extends AppCompatActivity{
 
         TextView linkedText = findViewById(R.id.linkedText);
         String parentEmail = getIntent().getStringExtra("parentEmail");
+        Button Logout = findViewById(R.id.TopRightButton);
+
+        Button LinkNewAcc = findViewById(R.id.TopLeftButton);
 
         if (parentEmail != null) {
             linkedText.setText("Currently linked with: " + parentEmail);
 
         }
 
+        Logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(ProviderInfoViewer.this, Login.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        LinkNewAcc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProviderInfoViewer.this, ProviderDashboardActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 }

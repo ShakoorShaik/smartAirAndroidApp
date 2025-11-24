@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-public class ParentProviderLinking extends DatabaseManager {
+public class ParentProviderLinking{
 
     private static final long EXPIRATION_MS = 15 * 60 * 1000; // 15 minutes
 
@@ -25,7 +25,7 @@ public class ParentProviderLinking extends DatabaseManager {
         void onFailure(Exception e);
     }
 
-    public static void generateLinkCode(DataSuccessFailCallback callback) {
+    public static void generateLinkCode(DatabaseManager.DataSuccessFailCallback callback) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -60,6 +60,8 @@ public class ParentProviderLinking extends DatabaseManager {
                     long expiration = System.currentTimeMillis() + (60 * 60 * 1000);
 
                     Map<String, Object> body = new HashMap<>();
+                    body.put("email", user.getEmail());
+                    body.put("CodeUsed", false);
                     body.put("referralCode", code);
                     body.put("referralExpires", expiration);
 
@@ -113,40 +115,19 @@ public class ParentProviderLinking extends DatabaseManager {
 
                         db.document(providerPath)
                                 .set(linkData)
-                                .addOnSuccessListener(a -> callback.onSuccess(parentEmail))
+                                .addOnSuccessListener(a -> {
+
+                                    db.collection("usuers")
+                                                    .document(parentUid)
+                                                    .update("CodeUsed", true);
+                                    callback.onSuccess(parentEmail);
+                                })
                                 .addOnFailureListener(callback::onFailure);
 
                     } catch (Exception e) {
                         callback.onFailure(new Exception("Malformed code data"));
                     }
 
-                })
-                .addOnFailureListener(callback::onFailure);
-    }
-
-    private static String generateRandomCode(int length) {
-        final String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        Random rnd = new Random();
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < length; i++)
-            sb.append(chars.charAt(rnd.nextInt(chars.length())));
-        return sb.toString();
-    }
-
-    public interface DataMapCallback {
-        void onSuccess(Map<String, Object> data);
-        void onFailure(Exception e);
-    }
-
-    public static void getDataMap(String documentPath, DataMapCallback callback) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        db.document(documentPath).get()
-                .addOnSuccessListener(doc -> {
-                    if (doc.exists()) {
-                        callback.onSuccess(doc.getData());
-                    } else {
-                        callback.onFailure(new Exception("Document not found"));
-                    }
                 })
                 .addOnFailureListener(callback::onFailure);
     }

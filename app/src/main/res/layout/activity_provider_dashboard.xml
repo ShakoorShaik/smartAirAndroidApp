@@ -12,10 +12,10 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:layout_marginBottom="16dp">
+        android:layout_marginBottom="24dp">
 
         <TextView
-            android:layout_width="221dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:layout_weight="1"
@@ -31,45 +31,41 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="461dp"
+        android:layout_height="0dp"
         android:layout_weight="1"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="20dp">
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Enter Code to Link Account" />
+            android:layout_marginBottom="25dp"
+            android:text="Enter Code to Link Account"
+            android:textSize="18sp"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="300dp"
-            android:layout_height="51dp">
+            android:layout_height="50dp">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/Code1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="10dp"
-                android:gravity="center"
+                android:gravity="center_vertical|center_horizontal"
+
+                android:padding="12dp"
                 android:textSize="21sp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/button4"
-            android:layout_width="251dp"
-            android:layout_height="wrap_content"
+            android:layout_width="250dp"
+            android:layout_height="55dp"
+            android:layout_marginBottom="10dp"
             android:text="Link" />
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="Linked accounts"
-            android:textSize="20sp"
-            android:textStyle="bold" />
 
     </LinearLayout>
 
