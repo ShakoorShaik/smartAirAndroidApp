@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartair.R;
+import com.example.smartair.child.ChildHome;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,8 +56,15 @@ public class ParentDashboardWithChildrenActivity extends AppCompatActivity {
 
             @Override
             public void onClick(int position) {
-                Intent intent = new Intent(ParentDashboardWithChildrenActivity.this, ChildDashboardActivity.class);
+                Map<String, Object> currentChild = childrenList.get(position);
+
+                Intent intent = new Intent(ParentDashboardWithChildrenActivity.this, ChildHome.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                intent.putExtra("uid", (String) currentChild.get("uid"));
+
+
                 startActivity(intent);
+                finish();
             }
 
 

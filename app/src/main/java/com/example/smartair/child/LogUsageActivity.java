@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartair.R;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,7 +76,7 @@ public class LogUsageActivity extends AppCompatActivity {
         inhalerLog.put("postDoseStatus", null);
         inhalerLog.put("breathRating", null);
 
-        DatabaseManager.getInstance().addInhalerLog(inhalerLog, new DatabaseManager.FirestoreCallback() {
+        DatabaseManager.FirestoreCallback callback =  new DatabaseManager.FirestoreCallback() {
             @Override
             public void onSuccess() {
                 Toast.makeText(LogUsageActivity.this, "Inhaler usage logged successfully", Toast.LENGTH_SHORT).show();
@@ -85,6 +87,12 @@ public class LogUsageActivity extends AppCompatActivity {
             public void onError(String errorMessage) {
                 Toast.makeText(LogUsageActivity.this, "Error: " + errorMessage, Toast.LENGTH_SHORT).show();
             }
-        });
+        };
+
+        if (getIntent().hasExtra("uid")) {
+            String childUid = getIntent().getStringExtra("uid");
+            DatabaseManager.getInstance().addInhalerLog(childUid, inhalerLog, callback);
+        }
+        else { DatabaseManager.getInstance().addInhalerLog(inhalerLog, callback); }
     }
 }

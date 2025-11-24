@@ -63,7 +63,7 @@ public class ChildrenAdapter extends RecyclerView.Adapter<ChildrenAdapter.ChildV
 
         holder.buttonGoToChild.setOnClickListener(v -> {
             if (listener != null) {
-                listener.onClick(holder.getAdapterPosition());
+                listener.onClick(holder.getBindingAdapterPosition());
             }
         });
     }

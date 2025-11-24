@@ -1,5 +1,6 @@
 package com.example.smartair.parent;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Build;
 import android.os.Bundle;
@@ -143,6 +144,7 @@ public class ParentMedicineActivity extends AppCompatActivity {
 
                         Medicine med = new Medicine(name, amt, date, currentIconId[0]);
                         DatabaseManager.writeData("Medicine", med, new DatabaseManager.SuccessFailCallback() {
+                            @SuppressLint("NotifyDataSetChanged")
                             @Override
                             public void onSuccess() {
                                 Toast.makeText(ParentMedicineActivity.this,
