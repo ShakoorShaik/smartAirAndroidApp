@@ -13,6 +13,15 @@ import com.example.smartair.Login;
 import com.example.smartair.R;
 import com.google.firebase.auth.FirebaseAuth;
 
+/*
+Provider viewables
+
+- Trends(Zones, Inhaler uses, Rescues)
+- Children Info (Age/Triggers)
+- Misc (last Inhaler use/Daily check ins/ Badges/ Streak)
+ */
+
+
 
 public class ProviderInfoViewer extends AppCompatActivity{
 
