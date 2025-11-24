@@ -22,13 +22,11 @@
             android:name=".Login"
             android:exported="true"
             android:theme="@style/Theme.SmartAir">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <!-- Registration Activity -->
         <activity
@@ -47,10 +45,11 @@
         </activity>
         <activity
             android:name=".parent.ParentLinkGeneration"
+            android:name=".parent.AddChildActivity"
             android:exported="false" >
         </activity>
         <activity
-            android:name=".parent.ParentMedicineActivity"
+            android:name=".parent.LinkAccountLayout"
             android:exported="false" >
         </activity>
 
@@ -111,6 +110,11 @@
         <activity
             android:name=".provider.ProviderInfoViewer"
             android:exported="false" />
+        <!-- Emergency Activities -->
+        <activity
+            android:name=".child.emergency.Emergency"
+            android:exported="false" >
+        </activity>
     </application>
 
 </manifest>

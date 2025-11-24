@@ -11,6 +11,7 @@ import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartair.R;
+import com.example.smartair.child.emergency.Emergency;
 import com.example.smartair.child.inhalertechnique.InhalerTechniqueFirst;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,6 +25,8 @@ public class ChildDashboardTasks extends AppCompatActivity {
     private Button buttonRecordTrigger;
     private Button buttonTriggerHistory;
     private Button buttonRecordSymptom;
+
+    private Button buttonEmergency;
     FirebaseAuth mAuth;
     FirebaseFirestore db;
     FirebaseUser childUser;
@@ -49,6 +52,7 @@ public class ChildDashboardTasks extends AppCompatActivity {
         buttonRecordTrigger = findViewById(R.id.recordTriggerButton);
         buttonTriggerHistory = findViewById(R.id.historyTriggerButton);
         buttonRecordSymptom= findViewById(R.id.symptomRecordButton);
+        buttonEmergency = findViewById(R.id.emergencyButton);
 
         buttonTechniqueHelper.setOnClickListener(v -> {
             startActivity(new Intent(this, InhalerTechniqueFirst.class));
@@ -68,6 +72,10 @@ public class ChildDashboardTasks extends AppCompatActivity {
 
         buttonRecordSymptom.setOnClickListener(v -> {   //todo
             Toast.makeText(this, "TODO NOT FUNCTIONAL", Toast.LENGTH_LONG).show();
+        });
+
+        buttonEmergency.setOnClickListener(v -> {
+            startActivity(new Intent(this, Emergency.class));
         });
 
     }
