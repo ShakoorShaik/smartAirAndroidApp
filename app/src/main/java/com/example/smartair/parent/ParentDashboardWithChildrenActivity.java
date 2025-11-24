@@ -31,6 +31,10 @@ public class ParentDashboardWithChildrenActivity extends AppCompatActivity {
                 selectedFragment = new ParentSettingsFragment();
             }
 
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ParentDashboardWithChildrenActivity.this, ParentLinkGeneration.class);
+                startActivity(intent);
             if (selectedFragment != null) {
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentContainer, selectedFragment)

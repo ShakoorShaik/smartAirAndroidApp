@@ -44,6 +44,7 @@
             android:exported="false" >
         </activity>
         <activity
+            android:name=".parent.ParentLinkGeneration"
             android:name=".parent.AddChildActivity"
             android:exported="false" >
         </activity>
@@ -105,6 +106,10 @@
             android:name=".child.inhalertechnique.InhalerTechniqueVideo"
             android:exported="false" >
         </activity>
+
+        <activity
+            android:name=".provider.ProviderInfoViewer"
+            android:exported="false" />
         <!-- Emergency Activities -->
         <activity
             android:name=".child.emergency.Emergency"
