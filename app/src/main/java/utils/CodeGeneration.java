@@ -1,4 +1,4 @@
-package com.example.smartair.parent;
+package utils;
 
 import java.security.SecureRandom;
 

@@ -40,11 +40,25 @@
             android:name=".parent.AddChildAccountActivity"
             android:exported="false"></activity>
         <activity
-            android:name=".parent.LinkAccountLayout"
-            android:exported="false"></activity> <!-- Child Activities -->
+            android:name=".parent.AddChildActivity"
+            android:exported="false" >
+        </activity>
         <activity
-            android:name=".child.ChildDashboardActivity"
-            android:exported="false"></activity> <!-- Forget Password Activities -->
+            android:name=".parent.ParentLinkGeneration"
+            android:exported="false" >
+        </activity>
+
+        <!-- Child Activities -->
+        <activity
+            android:name=".child.ChildHome"
+            android:exported="false" >
+        </activity>
+        <activity
+            android:name=".child.LogUsageActivity"
+            android:exported="false" >
+        </activity>
+
+        <!-- Forget Password Activities -->
         <activity
             android:name=".ForgetPasswordActivity"
             android:exported="false"></activity> <!-- Provider Activity Activities -->
@@ -74,7 +88,17 @@
             android:exported="false"></activity>
         <activity
             android:name=".child.inhalertechnique.InhalerTechniqueVideo"
-            android:exported="false"></activity>
+            android:exported="false" >
+        </activity>
+
+        <activity
+            android:name=".provider.ProviderInfoViewer"
+            android:exported="false" />
+        <!-- Emergency Activities -->
+        <activity
+            android:name=".child.emergency.Emergency"
+            android:exported="false" >
+        </activity>
     </application>
 
 </manifest>

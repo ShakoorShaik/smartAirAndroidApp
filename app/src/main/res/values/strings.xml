@@ -37,4 +37,7 @@
     <string name="zone_history">Zone History</string>
     <string name="rescue_control_usage">Rescue/Control Usage</string>
     <string name="emergency_history">Emergency History</string>
+    <string name="med_page">Medicine</string>
+    <string name="edit_pb">Edit PB</string>
+    <string name="linked_with">Currently Linked with: parentX</string>
 </resources>

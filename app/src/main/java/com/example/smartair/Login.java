@@ -16,7 +16,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 
-import com.example.smartair.child.ChildDashboardActivity;
+import com.example.smartair.child.ChildHome;
 import com.example.smartair.parent.ParentDashboardWithChildrenActivity;
 import com.example.smartair.provider.ProviderDashboardActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -55,7 +55,8 @@ public class Login extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     } else if ("Child".equals(accountType)) {
-                        intent = new Intent(getApplicationContext(), ChildDashboardActivity.class);
+                        intent = new Intent(getApplicationContext(), ChildHome.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         finish();
                     } else {
@@ -130,15 +131,16 @@ public class Login extends AppCompatActivity {
                                 if ("Parent".equals(accountType)) {
                                     // Redirect to ParentDashboard
                                     intent = new Intent(getApplicationContext(), ParentDashboardWithChildrenActivity.class);
-                                    // redir to provider
                                 } else if ("Provider".equals(accountType)){
                                     intent = new Intent(getApplicationContext(), ProviderDashboardActivity.class);
-                                }
-
-                                else {
+                                } else if ("Child".equals(accountType)) {
+                                    intent = new Intent(getApplicationContext(), ChildHome.class);
+                                } else {
                                     // TODO: in the future show other dashboards for child user types
                                     intent = new Intent(getApplicationContext(), MainActivity.class);
                                 }
+
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 startActivity(intent);
                                 finish();
                             }

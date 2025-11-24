@@ -10,6 +10,39 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DatabaseManager {
+
+    private static DatabaseManager instance;
+    private FirebaseFirestore db;
+    private FirebaseAuth mAuth;
+
+    private DatabaseManager() {
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+    }
+
+    public static synchronized DatabaseManager getInstance() {
+        if (instance == null) {
+            instance = new DatabaseManager();
+        }
+        return instance;
+    }
+
+    public interface FirestoreCallback {
+        void onSuccess();
+        void onError(String errorMessage);
+    }
+
+    public void addInhalerLog(Map<String, Object> inhalerLog, FirestoreCallback callback) {
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user != null) {
+            db.collection("users").document(user.getUid()).collection("inhaler_log")
+                    .add(inhalerLog)
+                    .addOnSuccessListener(documentReference -> callback.onSuccess())
+                    .addOnFailureListener(e -> callback.onError(e.getMessage()));
+        } else {
+            callback.onError("User not logged in");
+        }
+    }
     
 
     public enum AccountType {

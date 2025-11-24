@@ -9,9 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartair.Login;
 import com.example.smartair.R;
-import com.example.smartair.parent.LinkAccountLayout;
-import com.example.smartair.parent.ParentDashboardWithChildrenActivity;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+
+import utils.ParentProviderLinking;
 
 public class ProviderDashboardActivity extends AppCompatActivity {
 
@@ -32,6 +33,33 @@ public class ProviderDashboardActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
+        });
+
+        Link.setOnClickListener(v -> {
+
+            TextInputEditText editCode = findViewById(R.id.Code1);
+            String Code = editCode.getText().toString().trim();
+
+            if (Code.isEmpty()) {
+                editCode.setError("Enter a Code");
+                return;
+            }
+
+            ParentProviderLinking.redeemCode(Code, new ParentProviderLinking.RedeemCallback() {
+                @Override
+                public void onSuccess(String parentEmail) {
+                    Intent intent = new Intent(ProviderDashboardActivity.this, ProviderInfoViewer.class);
+                    intent.putExtra("parentEmail", parentEmail);
+
+                    startActivity(intent);
+                    finish();
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    editCode.setError((e.getMessage()));
+                }
+            });
         });
     }
 }
