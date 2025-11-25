@@ -103,6 +103,12 @@ public class ChildrenAdapter extends RecyclerView.Adapter<ChildrenAdapter.ChildV
                 listener.onDeleteClick(position);
             }
         });
+
+        holder.buttonGoToChild.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onClick(holder.getBindingAdapterPosition());
+            }
+        });
     }
 
     @Override
