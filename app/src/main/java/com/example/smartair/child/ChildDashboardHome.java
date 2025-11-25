@@ -55,10 +55,21 @@ public class ChildDashboardHome extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(ChildDashboardHome.this, LogUsageActivity.class));
+                finish();
             }
         });
         buttonEmergency.setOnClickListener(v -> {
             ChildEmergency.emergencyPrompt(this);
+        });
+
+        Button zoneButton = findViewById(R.id.zoneButton);
+        Button historyButton = findViewById(R.id.historyButton);
+        historyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ChildDashboardHome.this, ChildHistoryActivity.class));
+                finish();
+            }
         });
     }
 }
