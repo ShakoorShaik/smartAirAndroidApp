@@ -35,6 +35,7 @@ import java.util.Map;
 import utils.Medicine;
 import utils.DatabaseManager;
 import utils.PBManager;
+import utils.ParentEmergency;
 import utils.ZoneManager;
 import utils.ChildAccountManager;
 import utils.PEFManager;
@@ -53,6 +54,8 @@ public class ParentMedicineFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_parent_medicine, container, false);
+
+        ParentEmergency.listenEmergency(this);
 
         medicineList = new ArrayList<>();
 

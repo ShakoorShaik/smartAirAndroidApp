@@ -28,6 +28,8 @@ import utils.ZoneManager;
 import com.example.smartair.child.ChildDashboardHome;
 import com.example.smartair.child.ChildHistoryActivity;
 
+import utils.ParentEmergency;
+
 public class ParentHomeFragment extends Fragment {
 
     private static final String TAG = "ParentHomeFragment";
@@ -42,6 +44,8 @@ public class ParentHomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        ParentEmergency.listenEmergency(this);
         View view = inflater.inflate(R.layout.fragment_parent_home, container, false);
 
         Button historyButton = view.findViewById(R.id.historyButton);
