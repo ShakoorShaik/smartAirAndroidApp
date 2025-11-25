@@ -67,7 +67,7 @@ public class Emergency extends AppCompatActivity {
             else{
                 ZoneManager.getTodayZone(mAuth.getUid(), new ZoneManager.ZoneCallback() {
                     @Override
-                    public void onSuccess(ZoneManager.Zone zone, Integer pefValue) {
+                    public void onSuccess(ZoneManager.Zone zone, Integer pefValue, Integer pbValue) {
                         if (zone == ZoneManager.Zone.GREEN){
                             startActivity(new Intent(getApplicationContext(), GreenZoneSteps.class));
                         }
