@@ -18,45 +18,76 @@
         android:layout_marginTop="25dp"
         android:layout_marginBottom="16dp" />
 
-    <Button
-        android:id="@+id/zoneButton"
-        android:layout_width="100dp"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/zone_card"
+        android:layout_width="0dp"
         android:layout_height="100dp"
-        android:text="ZONE"
-        android:textSize="14sp"
         android:layout_marginTop="25dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="6dp"
+        app:cardBackgroundColor="#BDBDBD"
         app:layout_constraintTop_toBottomOf="@id/welcomeText"
-        app:layout_constraintEnd_toStartOf="@id/historyButton"
+        app:layout_constraintEnd_toStartOf="@id/rescueButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintHorizontal_weight="1"/>
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintWidth_percent="0.45">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Today's Zone"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:layout_marginBottom="8dp" />
+
+            <TextView
+                android:id="@+id/zone_percentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="--"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:gravity="center" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
     <Button
         android:id="@+id/rescueButton"
-        android:layout_width="100dp"
+        android:layout_width="0dp"
         android:layout_height="100dp"
         android:text="RESCUE"
         android:textSize="14sp"
         android:layout_marginTop="25dp"
         app:layout_constraintTop_toBottomOf="@id/welcomeText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/zoneButton"
-        app:layout_constraintHorizontal_weight="1"/>
+        app:layout_constraintStart_toEndOf="@id/zone_card"
+        app:layout_constraintWidth_percent="0.45"
+        android:layout_marginStart="16dp" />
 
     <Button
         android:id="@+id/weeklyRescueButton"
-        android:layout_width="100dp"
+        android:layout_width="0dp"
         android:layout_height="100dp"
         android:text="WEEKLY RESCUES"
         android:textSize="14sp"
         android:layout_marginTop="25dp"
-        app:layout_constraintTop_toBottomOf="@id/zoneButton"
+        app:layout_constraintTop_toBottomOf="@id/zone_card"
         app:layout_constraintEnd_toStartOf="@id/historyButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintHorizontal_weight="1"/>
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintWidth_percent="0.45"/>
 
     <Button
         android:id="@+id/historyButton"
-        android:layout_width="100dp"
+        android:layout_width="0dp"
         android:layout_height="100dp"
         android:text="HISTORY"
         android:textSize="14sp"
@@ -64,7 +95,7 @@
         app:layout_constraintTop_toBottomOf="@id/rescueButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/weeklyRescueButton"
-        app:layout_constraintHorizontal_weight="1"/>
+        app:layout_constraintWidth_percent="0.45"
+        android:layout_marginStart="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
