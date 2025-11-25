@@ -25,6 +25,8 @@ public class ChildrenAdapter extends RecyclerView.Adapter<ChildrenAdapter.ChildV
 
     public interface OnChildClickListener {
         void onDeleteClick(int position);
+
+        void onClick(int position);
     }
 
     public ChildrenAdapter(List<Map<String, Object>> childrenList, OnChildClickListener listener) {
@@ -103,6 +105,12 @@ public class ChildrenAdapter extends RecyclerView.Adapter<ChildrenAdapter.ChildV
                 listener.onDeleteClick(position);
             }
         });
+
+        holder.buttonGoToChild.setOnClickListener(v -> {
+            if (listener != null) {
+                listener.onClick(position);
+            }
+        });
     }
 
     @Override
@@ -116,6 +124,7 @@ public class ChildrenAdapter extends RecyclerView.Adapter<ChildrenAdapter.ChildV
         TextView textViewPEF;
         TextView textViewPB;
         Button buttonUnlink;
+        Button buttonGoToChild;
 
         public ChildViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -124,6 +133,7 @@ public class ChildrenAdapter extends RecyclerView.Adapter<ChildrenAdapter.ChildV
             textViewPEF = itemView.findViewById(R.id.textViewPEF);
             textViewPB = itemView.findViewById(R.id.textViewPB);
             buttonUnlink = itemView.findViewById(R.id.buttonUnlink);
+            buttonGoToChild = itemView.findViewById(R.id.buttonGoToChild);
         }
     }
 }

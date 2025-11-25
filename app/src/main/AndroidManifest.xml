@@ -13,11 +13,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartAir">
-        <!-- Main Activity -->
+        <activity
+            android:name=".parent.ParentHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".child.ChildHistoryActivity"
+            android:exported="true" /> <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
-        <!-- Launcher Activity -->
+            android:exported="false" /> <!-- Launcher Activity -->
         <activity
             android:name=".Login"
             android:exported="true"
@@ -27,93 +31,64 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!-- Registration Activity -->
+        </activity> <!-- Registration Activity -->
         <activity
             android:name=".Registration"
-            android:exported="false">
-
-        </activity>
-        <!-- Parent Activities -->
+            android:exported="false" /> <!-- Parent Activities -->
         <activity
             android:name=".parent.ParentDashboardWithChildrenActivity"
-            android:exported="false" >
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".parent.AddChildAccountActivity"
-            android:exported="false" >
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".parent.AddChildActivity"
-            android:exported="false" >
-        </activity>
+            android:exported="false"></activity>
         <activity
             android:name=".parent.ParentLinkGeneration"
-            android:exported="false" >
-        </activity>
-
-        <!-- Child Activities -->
+            android:exported="false"></activity> <!-- Child Activities -->
         <activity
             android:name=".child.ChildDashboardHome"
-            android:exported="false" >
-        </activity>
+            android:exported="false"></activity>
         <activity
             android:name=".child.LogUsageActivity"
-            android:exported="false" >
-        </activity>
+            android:exported="false"></activity>
         <activity
             android:name=".child.ChildDashboardSettings"
-            android:exported="false" >
-        </activity>
-
-        <!-- Forget Password Activities -->
+            android:exported="false"></activity> <!-- Forget Password Activities -->
         <activity
             android:name=".ForgetPasswordActivity"
-            android:exported="false" >
-        </activity>
-        <!-- Provider Activity Activities -->
+            android:exported="false" /> <!-- Provider Activity Activities -->
         <activity
             android:name=".provider.ProviderDashboardActivity"
-            android:exported="false" />
-        <!-- Child Dashboard Game Activities -->
+            android:exported="false" /> <!-- Child Dashboard Game Activities -->
         <activity
             android:name=".child.ChildDashboardTasks"
-            android:exported="false" >
-        </activity>
-        <!-- Inhaler Technique Activities -->
+            android:exported="false" /> <!-- Inhaler Technique Activities -->
         <activity
             android:name=".child.inhalertechnique.InhalerTechniqueFirst"
-            android:exported="false" >
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".child.inhalertechnique.InhalerTechniqueSecond"
-            android:exported="false" >
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".child.inhalertechnique.InhalerTechniqueThird"
-            android:exported="false" >
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".child.inhalertechnique.InhalerTechniqueFourth"
-            android:exported="false" >
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".child.inhalertechnique.InhalerTechniqueFifth"
-            android:exported="false" >
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".child.inhalertechnique.InhalerTechniqueSixth"
-            android:exported="false" >
-        </activity>
+            android:exported="false" />
         <activity
             android:name=".child.inhalertechnique.InhalerTechniqueVideo"
-            android:exported="false" >
-        </activity>
-
+            android:exported="false"></activity>
         <activity
             android:name=".provider.ProviderInfoViewer"
-            android:exported="false" />
-        <!-- Emergency Activities -->
+            android:exported="false" /> <!-- Emergency Activities -->
         <activity
             android:name=".child.emergency.Emergency"
             android:exported="false" >
@@ -133,5 +108,3 @@
     </application>
 
 </manifest>
-
-

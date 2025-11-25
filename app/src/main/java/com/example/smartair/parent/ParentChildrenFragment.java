@@ -18,12 +18,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartair.R;
+import com.example.smartair.child.ChildDashboardHome;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import utils.ChildAccountManager;
+import utils.ChildIdManager;
 import utils.PBManager;
 import utils.PEFManager;
 import utils.ParentEmergency;
@@ -50,6 +52,7 @@ public class ParentChildrenFragment extends Fragment {
         Button buttonAddChild = view.findViewById(R.id.buttonAddChild);
         Button buttonAddChildProfile = view.findViewById(R.id.buttonAddChildProfile);
         Button buttonEditPBs = view.findViewById(R.id.buttonEditPBs);
+        Button buttonGoToChild = view.findViewById(R.id.buttonGoToChild);
         recyclerViewChildren = view.findViewById(R.id.recyclerViewChildren);
         textViewNoChildren = view.findViewById(R.id.textViewNoChildren);
         progressBar = view.findViewById(R.id.progressBar);
@@ -60,6 +63,19 @@ public class ParentChildrenFragment extends Fragment {
             public void onDeleteClick(int position) {
                 showDeleteConfirmation(position);
             }
+            @Override
+            public void onClick(int position) {
+                Map<String, Object> currentChild = childrenList.get(position);
+                ChildIdManager manager = new ChildIdManager(requireContext());
+
+                manager.SaveChildId((String) currentChild.get("uid"));
+
+                Intent intent = new Intent(requireContext(), ChildDashboardHome.class);
+
+
+
+                startActivity(intent);
+                }
         });
 
         recyclerViewChildren.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -95,6 +111,8 @@ public class ParentChildrenFragment extends Fragment {
                 showEditPBsDialog();
             }
         });
+
+
 
         loadChildren();
 
