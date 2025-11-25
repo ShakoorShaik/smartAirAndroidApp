@@ -54,10 +54,10 @@ public class ParentDashboardWithChildrenActivity extends AppCompatActivity {
             return false;
         });
 
-                // Set default fragment to children (the original dashboard)
+                // Set default fragment to home (the original dashboard)
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContainer, new ParentChildrenFragment())
+                    .replace(R.id.fragmentContainer, new ParentHomeFragment())
                     .commit();
             bottomNav.setSelectedItemId(R.id.bottom_children);
         }
