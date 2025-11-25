@@ -43,6 +43,15 @@ public class DatabaseManager {
             callback.onError("User not logged in");
         }
     }
+
+    public void addInhalerLog(String uid, Map<String, Object> inhalerLog,
+                              FirestoreCallback callback) {
+            db.collection("users").document(uid).collection("inhaler_log")
+                    .add(inhalerLog)
+                    .addOnSuccessListener(documentReference -> callback.onSuccess())
+                    .addOnFailureListener(e -> callback.onError(e.getMessage()));
+
+    }
     
 
     public enum AccountType {

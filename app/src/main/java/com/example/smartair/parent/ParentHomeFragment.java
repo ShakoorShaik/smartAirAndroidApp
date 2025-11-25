@@ -1,11 +1,13 @@
 package com.example.smartair.parent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +25,8 @@ import java.util.Map;
 
 import utils.PEFManager;
 import utils.ZoneManager;
+import com.example.smartair.child.ChildDashboardHome;
+import com.example.smartair.child.ChildHistoryActivity;
 
 public class ParentHomeFragment extends Fragment {
 
@@ -38,7 +42,19 @@ public class ParentHomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_parent_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_parent_home, container, false);
+
+        Button historyButton = view.findViewById(R.id.historyButton);
+        historyButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), ParentHistoryActivity.class));
+                getActivity().finish();
+            }
+        });
+
+        return view;
+
     }
 
     @Override
@@ -69,20 +85,20 @@ public class ParentHomeFragment extends Fragment {
                     // Get PB from parent's document
                     Long pbLong = document.getLong("personalBestPEF");
                     Integer parentPB = (pbLong != null) ? pbLong.intValue() : null;
-                    
+
                     Log.d(TAG, "Parent PB: " + parentPB);
 
                     // Get linked children
-                    List<Map<String, Object>> linkedChildren = 
+                    List<Map<String, Object>> linkedChildren =
                         (List<Map<String, Object>>) document.get("linkedChildren");
-                    
+
                     if (linkedChildren != null && !linkedChildren.isEmpty()) {
                         // Get first child's UID
                         Map<String, Object> child = linkedChildren.get(0);
                         String childUid = (String) child.get("uid");
-                        
+
                         Log.d(TAG, "Found child with UID: " + childUid);
-                        
+
                         if (childUid != null && parentPB != null && parentPB > 0) {
                             updateZoneInfoWithChildPEF(childUid, parentPB);
                         } else {
@@ -106,7 +122,7 @@ public class ParentHomeFragment extends Fragment {
 
     private void updateZoneInfoWithChildPEF(String childUid, int parentPB) {
         Log.d(TAG, "Getting most recent PEF for child: " + childUid);
-        
+
         PEFManager.getMostRecentPEF(childUid, new PEFManager.PEFCallback() {
             @Override
             public void onSuccess(Integer pefValue) {
@@ -130,7 +146,7 @@ public class ParentHomeFragment extends Fragment {
 
     private void displayZoneInfo(ZoneManager.Zone zone, int pefValue, int pbValue) {
         Log.d(TAG, "displayZoneInfo: zone=" + zone + ", pefValue=" + pefValue + ", pbValue=" + pbValue);
-        
+
         if (getActivity() == null) {
             Log.w(TAG, "Fragment not attached to activity, cannot update UI.");
             return;
@@ -138,15 +154,15 @@ public class ParentHomeFragment extends Fragment {
 
         // Calculate percentage
         int percentage = (int) (((double) pefValue / pbValue) * 100);
-        
+
         // Format zone name
-        String zoneName = zone.toString().substring(0, 1).toUpperCase() 
+        String zoneName = zone.toString().substring(0, 1).toUpperCase()
                         + zone.toString().substring(1).toLowerCase();
-        
+
         // Set zone text
-        String zoneText = String.format("%s\n%d%%", zoneName, percentage);
+        String zoneText = String.format("%s %d%%", zoneName, percentage);
         zonePercentage.setText(zoneText);
-        
+
         // Set card background color based on zone
         int cardColor;
         switch (zone) {
@@ -164,7 +180,7 @@ public class ParentHomeFragment extends Fragment {
                 break;
         }
         zoneCard.setCardBackgroundColor(cardColor);
-        
+
         Log.d(TAG, "Zone tile updated: " + zoneText);
     }
 
@@ -172,7 +188,7 @@ public class ParentHomeFragment extends Fragment {
         if (getActivity() == null) {
             return;
         }
-        
+
         zonePercentage.setText("--\nNo Data");
         zoneCard.setCardBackgroundColor(0xFFBDBDBD); // Gray
         Log.d(TAG, "Displaying default zone (no data)");
