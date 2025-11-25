@@ -58,7 +58,7 @@ public class LogUsageActivity extends AppCompatActivity {
         });
         builder.setPositiveButton("OK!", null);
         builder.setNegativeButton("Cancel", (dialog, which) -> {
-            Intent intent = new Intent(LogUsageActivity.this, ChildHome.class);
+            Intent intent = new Intent(LogUsageActivity.this, ChildDashboardHome.class);
             startActivity(intent);
             finish();
         });
@@ -84,7 +84,7 @@ public class LogUsageActivity extends AppCompatActivity {
                     builder3.setView(inputText);
                     builder3.setPositiveButton("OK!", null);
                     builder3.setNegativeButton("Cancel", (dialog, which) -> {
-                        Intent intent = new Intent(LogUsageActivity.this, ChildHome.class);
+                        Intent intent = new Intent(LogUsageActivity.this, ChildDashboardHome.class);
                         startActivity(intent);
                         finish();
                     });
@@ -136,7 +136,7 @@ public class LogUsageActivity extends AppCompatActivity {
                 });
                 builder2.setPositiveButton("OK!", null);
                 builder2.setNegativeButton("Cancel", (dialog, which) -> {
-                    Intent intent = new Intent(LogUsageActivity.this, ChildHome.class);
+                    Intent intent = new Intent(LogUsageActivity.this, ChildDashboardHome.class);
                     startActivity(intent);
                     finish();
                 });
@@ -165,7 +165,7 @@ public class LogUsageActivity extends AppCompatActivity {
                             builder3.setView(inputText);
                             builder3.setPositiveButton("OK!", null);
                             builder3.setNegativeButton("Cancel", (dialog, which) -> {
-                                Intent intent = new Intent(LogUsageActivity.this, ChildHome.class);
+                                Intent intent = new Intent(LogUsageActivity.this, ChildDashboardHome.class);
                                 startActivity(intent);
                                 finish();
                             });
