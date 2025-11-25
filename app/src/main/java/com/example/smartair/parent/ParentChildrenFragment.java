@@ -26,6 +26,7 @@ import java.util.Map;
 import utils.ChildAccountManager;
 import utils.PBManager;
 import utils.PEFManager;
+import utils.ParentEmergency;
 import utils.ZoneManager;
 
 public class ParentChildrenFragment extends Fragment {
@@ -43,6 +44,8 @@ public class ParentChildrenFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_parent_children, container, false);
+
+        ParentEmergency.listenEmergency(this);
 
         Button buttonAddChild = view.findViewById(R.id.buttonAddChild);
         Button buttonAddChildProfile = view.findViewById(R.id.buttonAddChildProfile);

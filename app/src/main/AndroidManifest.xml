@@ -118,6 +118,18 @@
             android:name=".child.emergency.Emergency"
             android:exported="false" >
         </activity>
+        <activity
+            android:name=".child.emergency.RedZoneSteps"
+            android:exported="false" >
+        </activity>
+        <activity
+            android:name=".child.emergency.YellowZoneSteps"
+            android:exported="false" >
+        </activity>
+        <activity
+            android:name=".child.emergency.GreenZoneSteps"
+            android:exported="false" >
+        </activity>
     </application>
 
 </manifest>

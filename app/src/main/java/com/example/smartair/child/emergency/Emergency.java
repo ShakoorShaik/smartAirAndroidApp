@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import utils.ChildAccountManager;
+import utils.ZoneManager;
 
 public class Emergency extends AppCompatActivity {
     private CheckBox checkboxCsfs;
@@ -64,8 +65,25 @@ public class Emergency extends AppCompatActivity {
                 escalation();
             }
             else{
-                //todo make sure to forward to correct zone steps based on todays zone
-                startActivity(new Intent(getApplicationContext(), InhalerTechniqueFirst.class));
+                ZoneManager.getTodayZone(mAuth.getUid(), new ZoneManager.ZoneCallback() {
+                    @Override
+                    public void onSuccess(ZoneManager.Zone zone, Integer pefValue) {
+                        if (zone == ZoneManager.Zone.GREEN){
+                            startActivity(new Intent(getApplicationContext(), GreenZoneSteps.class));
+                        }
+                        else if (zone == ZoneManager.Zone.YELLOW){
+                            startActivity(new Intent(getApplicationContext(), YellowZoneSteps.class));
+                        }
+                        else{
+                            startActivity(new Intent(getApplicationContext(), RedZoneSteps.class));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        Toast.makeText(Emergency.this, "FAILED TO GET CURRENT ZONE", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
 
@@ -75,7 +93,7 @@ public class Emergency extends AppCompatActivity {
 
     }
 
-    private void escalation(){      //todo make sure this shit sends an alert to the parents
+    private void escalation(){
         send_parent_alert();
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle("CALL EMERGENCY SERVICES IMMEDIATELY");
@@ -119,6 +137,6 @@ public class Emergency extends AppCompatActivity {
     }
 
     private void send_parent_alert(){
-
+        ChildAccountManager.toggleEmergencyFlag();
     }
 }

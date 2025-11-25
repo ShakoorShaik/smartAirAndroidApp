@@ -13,6 +13,8 @@ import com.example.smartair.Login;
 import com.example.smartair.R;
 import com.google.firebase.auth.FirebaseAuth;
 
+import utils.ParentEmergency;
+
 public class ParentSettingsFragment extends Fragment {
 
     public ParentSettingsFragment() {
@@ -22,6 +24,8 @@ public class ParentSettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_parent_settings, container, false);
+
+        ParentEmergency.listenEmergency(this);
 
         Button buttonLogout = view.findViewById(R.id.buttonLogout);
         buttonLogout.setOnClickListener(new View.OnClickListener() {
