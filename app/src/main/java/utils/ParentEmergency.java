@@ -21,7 +21,7 @@ public class ParentEmergency {
         String userId = user.getUid();
         CollectionReference userRef = db.collection("users");
 
-        userRef.whereEqualTo("accountType", "child").whereEqualTo("parentUid", userId).addSnapshotListener((qS, e) -> {
+        userRef.whereEqualTo("accountType", "Child").whereEqualTo("parentUid", userId).addSnapshotListener((qS, e) -> {
                     if (e != null) return;
                     for (DocumentChange dc : qS.getDocumentChanges()) {
                         if (dc.getType() == DocumentChange.Type.MODIFIED) {

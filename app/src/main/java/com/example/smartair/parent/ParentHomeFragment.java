@@ -42,6 +42,12 @@ public class ParentHomeFragment extends Fragment {
     }
 
     @Override
+    public void onStart(){
+        super.onStart();
+        ParentEmergency.listenEmergency(this);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
