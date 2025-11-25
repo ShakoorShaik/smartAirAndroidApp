@@ -1,5 +1,7 @@
 package utils;
 
+import android.app.Activity;
+
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
@@ -36,10 +38,11 @@ public class ParentEmergency {
     }
 
     public static void emergencyPromptParent(String name, Fragment fragment){
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(fragment.requireContext());
-        alertDialogBuilder.setTitle("Your child " + name + " is having an emergency.");
-        alertDialogBuilder.setPositiveButton("DISMISS", (dialog, which) -> dialog.dismiss());
-        AlertDialog dialog = alertDialogBuilder.create();
-        dialog.show();
+        Activity activity = fragment.getActivity();
+        if (activity != null && !activity.isFinishing()) {
+            AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
+            alertDialog.setTitle("Your child " + name + " is having an emergency");
+            alertDialog.show();
+        }
     }
 }
