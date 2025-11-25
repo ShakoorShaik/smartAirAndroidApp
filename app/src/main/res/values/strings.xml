@@ -34,4 +34,5 @@
     <string name="unlink">Unlink</string>
     <string name="med_page">Medicine</string>
     <string name="edit_pb">Edit PB</string>
+    <string name="linked_with">Currently Linked with: parentX</string>
 </resources>

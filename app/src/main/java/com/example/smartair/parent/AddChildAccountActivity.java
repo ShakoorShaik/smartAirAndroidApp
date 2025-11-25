@@ -53,6 +53,14 @@ public class AddChildAccountActivity extends AppCompatActivity {
         editTextChildPassword = findViewById(R.id.editTextChildPassword);
         buttonSaveChild = findViewById(R.id.buttonSaveChild);
         progressBar = findViewById(R.id.progressBar);
+        Button buttonReturn = findViewById(R.id.buttonReturn);
+
+        buttonReturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
         editTextChildDob.setOnClickListener(new View.OnClickListener() {
             @Override
