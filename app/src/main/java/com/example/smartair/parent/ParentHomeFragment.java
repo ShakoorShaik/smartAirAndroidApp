@@ -51,35 +51,47 @@ public class ParentHomeFragment extends Fragment {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             String parentUid = currentUser.getUid();
+            Log.d(TAG, "Fetching child data for parent: " + parentUid);
             FirebaseFirestore db = FirebaseFirestore.getInstance();
 
             db.collection("users").document(parentUid).get().addOnCompleteListener(task -> {
                 if (task.isSuccessful()) {
+                    Log.d(TAG, "Firestore query successful.");
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
                         List<Map<String, Object>> linkedChildren = (List<Map<String, Object>>) document.get("linkedChildren");
+                        Log.d(TAG, "linkedChildren: " + linkedChildren);
                         if (linkedChildren != null && !linkedChildren.isEmpty()) {
                             // For now, let's take the first child
                             Map<String, Object> child = linkedChildren.get(0);
                             String childUid = (String) child.get("uid");
+                            Log.d(TAG, "Found child with UID: " + childUid);
                             if (childUid != null) {
                                 updateZoneInfo(childUid);
+                            } else {
+                                Log.w(TAG, "Child UID is null.");
                             }
+                        } else {
+                            Log.d(TAG, "linkedChildren list is null or empty.");
                         }
                     } else {
-                        Log.d(TAG, "No such document");
+                        Log.d(TAG, "No such document for parent UID: " + parentUid);
                     }
                 } else {
-                    Log.d(TAG, "get failed with ", task.getException());
+                    Log.e(TAG, "Firestore query failed with ", task.getException());
                 }
             });
+        } else {
+            Log.d(TAG, "Current user is null.");
         }
     }
 
     private void updateZoneInfo(String childUid) {
+        Log.d(TAG, "Updating zone info for child: " + childUid);
         ZoneManager.getTodayZone(childUid, new ZoneManager.ZoneCallback() {
             @Override
             public void onSuccess(ZoneManager.Zone zone, Integer pefValue, Integer pbValue) {
+                Log.d(TAG, "onSuccess: zone=" + zone + ", pefValue=" + pefValue + ", pbValue=" + pbValue);
                 displayZoneInfo(zone, pefValue, pbValue);
             }
 
@@ -92,16 +104,22 @@ public class ParentHomeFragment extends Fragment {
     }
 
     private void displayZoneInfo(ZoneManager.Zone zone, Integer pefValue, Integer pbValue) {
-        if (getActivity() == null) return; // Fragment not attached
+        Log.d(TAG, "displayZoneInfo: zone=" + zone + ", pefValue=" + pefValue + ", pbValue=" + pbValue);
+        if (getActivity() == null) {
+            Log.w(TAG, "Fragment not attached to activity, cannot update UI.");
+            return; // Fragment not attached
+        }
 
         String zoneText;
-        if (zone == ZoneManager.Zone.UNKNOWN) {
+        if (zone == ZoneManager.Zone.UNKNOWN || pefValue == null || pbValue == null || pbValue == 0) {
             zoneText = "Zone: --";
+            Log.d(TAG, "Displaying default zone text because one of the values is null or invalid. Zone: " + zone + " PEF: " + pefValue + " PB: " + pbValue);
         } else {
             int percentage = (int) (((double) pefValue / pbValue) * 100);
             String zoneName = zone.toString().substring(0, 1).toUpperCase() + zone.toString().substring(1).toLowerCase();
             zoneText = String.format("%s Zone (%d%%)", zoneName, percentage);
         }
+        Log.d(TAG, "Setting zone text to: '" + zoneText + "'");
         zonePercentage.setText(zoneText);
     }
 }

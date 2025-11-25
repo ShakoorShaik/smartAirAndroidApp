@@ -11,18 +11,18 @@ import java.util.Locale;
 import java.util.Map;
 
 public class ZoneManager {
-    
+
     public enum Zone {
-        GREEN, YELLOW, RED
+        GREEN, YELLOW, RED, UNKNOWN
     }
 
     public static Zone calculateZone(int pefValue, int personalBest) {
         if (personalBest <= 0) {
             return Zone.GREEN;
         }
-        
+
         double percentage = (double) pefValue / personalBest * 100;
-        
+
         if (percentage >= 80) {
             return Zone.GREEN;
         } else if (percentage >= 50) {
@@ -38,27 +38,27 @@ public class ZoneManager {
             @Override
             public void onSuccess(Integer pbValue) {
                 if (pbValue == null) {
-                    callback.onSuccess(Zone.GREEN, null);
+                    callback.onSuccess(Zone.GREEN, null, null);
                     return;
                 }
 
                 String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                         .format(Calendar.getInstance().getTime());
-                
+
                 PEFManager.getPEFByDate(childUid, today, new PEFManager.PEFCallback() {
                     @Override
                     public void onSuccess(Integer pefValue) {
                         if (pefValue == null) {
-                            callback.onSuccess(Zone.GREEN, null);
+                            callback.onSuccess(Zone.GREEN, null, pbValue);
                         } else {
                             Zone zone = calculateZone(pefValue, pbValue);
-                            callback.onSuccess(zone, pefValue);
+                            callback.onSuccess(zone, pefValue, pbValue);
                         }
                     }
 
                     @Override
                     public void onFailure(Exception e) {
-                        callback.onSuccess(Zone.GREEN, null);
+                        callback.onSuccess(Zone.GREEN, null, pbValue);
                     }
                 });
             }
@@ -73,12 +73,12 @@ public class ZoneManager {
     public static void logZoneChange(String childUid, Zone zone, int pefValue, String date, DatabaseManager.SuccessFailCallback callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        
+
         if (user == null) {
             callback.onFailure(new Exception("User not logged in"));
             return;
         }
-        
+
         Map<String, Object> zoneLog = new HashMap<>();
         zoneLog.put("childUid", childUid);
         zoneLog.put("zone", zone.name());
@@ -93,9 +93,9 @@ public class ZoneManager {
                 .addOnFailureListener(callback::onFailure);
     }
 
-    public static void checkAndAlertRedZone(String childUid, String childName, int pefValue, int personalBest, String date) {
+    public static void checkAndAlertRedZone(String childUid, int pefValue, int personalBest, String date) {
         Zone zone = calculateZone(pefValue, personalBest);
-        
+
         if (zone == Zone.RED) {
             logZoneChange(childUid, zone, pefValue, date, new DatabaseManager.SuccessFailCallback() {
                 @Override
@@ -110,8 +110,10 @@ public class ZoneManager {
     }
 
     public interface ZoneCallback {
-        void onSuccess(Zone zone, Integer pefValue);
+        default void onSuccess(Zone zone, Integer pefValue) {
+            onSuccess(zone, pefValue, null);
+        }
+        void onSuccess(Zone zone, Integer pefValue, Integer pbValue);
         void onFailure(Exception e);
     }
 }
-
