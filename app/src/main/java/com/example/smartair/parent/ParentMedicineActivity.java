@@ -87,10 +87,10 @@ public class ParentMedicineActivity extends AppCompatActivity {
 
         View.OnClickListener iconClickListener = v -> {
             if(v.getId() == R.id.imagePill) { currentIconId[0] = R.drawable.pill_img; }
-            else if(v.getId() == R.id.imageSyrup) { currentIconId[0] = R.drawable.pill_img; }
-            else if(v.getId() == R.id.imageDropper) { currentIconId[0] = R.drawable.pill_img; }
-            else if(v.getId() == R.id.imageInjection) { currentIconId[0] = R.drawable.pill_img; }
-            else if(v.getId() == R.id.imageInhaler) { currentIconId[0] = R.drawable.pill_img; }
+            else if(v.getId() == R.id.imageSyrup) { currentIconId[0] = R.drawable.syrup_img; }
+            else if(v.getId() == R.id.imageDropper) { currentIconId[0] = R.drawable.dropper_img; }
+            else if(v.getId() == R.id.imageInjection) { currentIconId[0] = R.drawable.syringe_img; }
+            else if(v.getId() == R.id.imageInhaler) { currentIconId[0] = R.drawable.inhaler_img; }
         };
 
         icon1.setOnClickListener(iconClickListener);

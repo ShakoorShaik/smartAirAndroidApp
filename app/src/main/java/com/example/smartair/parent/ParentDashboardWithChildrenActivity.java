@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import utils.ChildAccountManager;
+import utils.ChildIdManager;
 import utils.DatabaseManager;
 
 public class ParentDashboardWithChildrenActivity extends AppCompatActivity {
@@ -58,9 +59,11 @@ public class ParentDashboardWithChildrenActivity extends AppCompatActivity {
             public void onClick(int position) {
                 Map<String, Object> currentChild = childrenList.get(position);
 
+                ChildIdManager manager = new ChildIdManager(getApplicationContext());
+                manager.SaveChildId((String) currentChild.get("uid"));
+
                 Intent intent = new Intent(ParentDashboardWithChildrenActivity.this, ChildHome.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                intent.putExtra("uid", (String) currentChild.get("uid"));
+
 
 
                 startActivity(intent);

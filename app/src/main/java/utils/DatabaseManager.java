@@ -46,15 +46,10 @@ public class DatabaseManager {
 
     public void addInhalerLog(String uid, Map<String, Object> inhalerLog,
                               FirestoreCallback callback) {
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user != null) {
             db.collection("users").document(uid).collection("inhaler_log")
                     .add(inhalerLog)
                     .addOnSuccessListener(documentReference -> callback.onSuccess())
                     .addOnFailureListener(e -> callback.onError(e.getMessage()));
-        } else {
-            callback.onError("User not logged in");
-        }
 
     }
     
