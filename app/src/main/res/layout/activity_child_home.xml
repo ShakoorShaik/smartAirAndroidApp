@@ -41,4 +41,28 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.8" />
 
+    <Button
+        android:id="@+id/zoneButton"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:text="ZONE"
+        android:textSize="14sp"
+        android:layout_marginBottom="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/button5"
+        app:layout_constraintEnd_toStartOf="@id/historyButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_weight="1"/>
+
+    <Button
+        android:id="@+id/historyButton"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:text="HISTORY"
+        android:textSize="14sp"
+        android:layout_marginBottom="25dp"
+        app:layout_constraintBottom_toTopOf="@+id/button5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/zoneButton"
+        app:layout_constraintHorizontal_weight="1"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
