@@ -33,7 +33,7 @@
         android:layout_marginBottom="10dp" >
 
         <LinearLayout
-            android:id="@+id/emojiGood"
+            android:id="@+id/emojiSleepy"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -62,7 +62,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/emojiGood"
+            android:id="@+id/emojiOk"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -90,7 +90,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/emojiGood"
+            android:id="@+id/emojiBad"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -119,7 +119,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/textView9"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -163,7 +163,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/emojiGood"
+            android:id="@+id/emojiOk1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -191,7 +191,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/emojiGood"
+            android:id="@+id/emojiMask"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -222,7 +222,7 @@
 
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/textView10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -237,7 +237,7 @@
         android:layout_marginBottom="10dp" >
 
         <LinearLayout
-            android:id="@+id/emojiGood"
+            android:id="@+id/emojiRun"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -266,7 +266,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/emojiGood"
+            android:id="@+id/emojiWalk"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -294,7 +294,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/emojiGood"
+            android:id="@+id/emojiStanding"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -341,35 +341,19 @@
         android:background="@drawable/edittext_background"
         android:layout_marginBottom="20dp" />
 
-    <!-- Buttons -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="400dp"
+        android:layout_height="45dp"
+        android:layout_weight="1"
+        android:text="Submit"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textAllCaps="false"
+        android:background="@color/design_default_color_primary"
+        android:textColor="@android:color/white"
+        android:layout_marginEnd="8dp" />
 
-        <Button
-            android:id="@+id/btnSubmit"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_weight="1"
-            android:text="Submit"
-            android:textAllCaps="false"
-            android:background="@color/design_default_color_primary"
-            android:textColor="@android:color/white"
-            android:layout_marginEnd="8dp" />
 
-        <Button
-            android:id="@+id/btnSkip"
-            android:layout_width="0dp"
-            android:layout_height="45dp"
-            android:layout_weight="1"
-            android:text="Skip"
-            android:textAllCaps="false"
-            android:background="@android:color/transparent"
-            android:textColor="@color/design_default_color_primary"
-            android:layout_marginStart="8dp" />
-
-    </LinearLayout>
 
 </LinearLayout>
