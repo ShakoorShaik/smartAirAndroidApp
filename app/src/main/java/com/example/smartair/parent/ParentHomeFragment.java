@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.example.smartair.R;
@@ -20,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.List;
 import java.util.Map;
 
+import utils.PEFManager;
 import utils.ZoneManager;
 
 public class ParentHomeFragment extends Fragment {
@@ -27,6 +29,7 @@ public class ParentHomeFragment extends Fragment {
     private static final String TAG = "ParentHomeFragment";
 
     private TextView zonePercentage;
+    private CardView zoneCard;
 
     public ParentHomeFragment() {
         // Required empty public constructor
@@ -35,7 +38,6 @@ public class ParentHomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_parent_home, container, false);
     }
 
@@ -44,82 +46,135 @@ public class ParentHomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         zonePercentage = view.findViewById(R.id.zone_percentage);
-        fetchChildData();
+        zoneCard = view.findViewById(R.id.zone_card);
+        fetchChildDataAndZone();
     }
 
-    private void fetchChildData() {
+    private void fetchChildDataAndZone() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            String parentUid = currentUser.getUid();
-            Log.d(TAG, "Fetching child data for parent: " + parentUid);
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
+        if (currentUser == null) {
+            Log.d(TAG, "Current user is null.");
+            displayDefaultZone();
+            return;
+        }
 
-            db.collection("users").document(parentUid).get().addOnCompleteListener(task -> {
-                if (task.isSuccessful()) {
-                    Log.d(TAG, "Firestore query successful.");
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        List<Map<String, Object>> linkedChildren = (List<Map<String, Object>>) document.get("linkedChildren");
-                        Log.d(TAG, "linkedChildren: " + linkedChildren);
-                        if (linkedChildren != null && !linkedChildren.isEmpty()) {
-                            // For now, let's take the first child
-                            Map<String, Object> child = linkedChildren.get(0);
-                            String childUid = (String) child.get("uid");
-                            Log.d(TAG, "Found child with UID: " + childUid);
-                            if (childUid != null) {
-                                updateZoneInfo(childUid);
-                            } else {
-                                Log.w(TAG, "Child UID is null.");
-                            }
+        String parentUid = currentUser.getUid();
+        Log.d(TAG, "Fetching data for parent: " + parentUid);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("users").document(parentUid).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    // Get PB from parent's document
+                    Long pbLong = document.getLong("personalBestPEF");
+                    Integer parentPB = (pbLong != null) ? pbLong.intValue() : null;
+                    
+                    Log.d(TAG, "Parent PB: " + parentPB);
+
+                    // Get linked children
+                    List<Map<String, Object>> linkedChildren = 
+                        (List<Map<String, Object>>) document.get("linkedChildren");
+                    
+                    if (linkedChildren != null && !linkedChildren.isEmpty()) {
+                        // Get first child's UID
+                        Map<String, Object> child = linkedChildren.get(0);
+                        String childUid = (String) child.get("uid");
+                        
+                        Log.d(TAG, "Found child with UID: " + childUid);
+                        
+                        if (childUid != null && parentPB != null && parentPB > 0) {
+                            updateZoneInfoWithChildPEF(childUid, parentPB);
                         } else {
-                            Log.d(TAG, "linkedChildren list is null or empty.");
+                            Log.w(TAG, "Child UID or parent PB is invalid");
+                            displayDefaultZone();
                         }
                     } else {
-                        Log.d(TAG, "No such document for parent UID: " + parentUid);
+                        Log.d(TAG, "No linked children found");
+                        displayDefaultZone();
                     }
                 } else {
-                    Log.e(TAG, "Firestore query failed with ", task.getException());
+                    Log.d(TAG, "Parent document does not exist");
+                    displayDefaultZone();
                 }
-            });
-        } else {
-            Log.d(TAG, "Current user is null.");
-        }
-    }
-
-    private void updateZoneInfo(String childUid) {
-        Log.d(TAG, "Updating zone info for child: " + childUid);
-        ZoneManager.getTodayZone(childUid, new ZoneManager.ZoneCallback() {
-            @Override
-            public void onSuccess(ZoneManager.Zone zone, Integer pefValue, Integer pbValue) {
-                Log.d(TAG, "onSuccess: zone=" + zone + ", pefValue=" + pefValue + ", pbValue=" + pbValue);
-                displayZoneInfo(zone, pefValue, pbValue);
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                Log.e(TAG, "Error getting zone info", e);
-                displayZoneInfo(ZoneManager.Zone.UNKNOWN, null, null);
+            } else {
+                Log.e(TAG, "Firestore query failed", task.getException());
+                displayDefaultZone();
             }
         });
     }
 
-    private void displayZoneInfo(ZoneManager.Zone zone, Integer pefValue, Integer pbValue) {
+    private void updateZoneInfoWithChildPEF(String childUid, int parentPB) {
+        Log.d(TAG, "Getting most recent PEF for child: " + childUid);
+        
+        PEFManager.getMostRecentPEF(childUid, new PEFManager.PEFCallback() {
+            @Override
+            public void onSuccess(Integer pefValue) {
+                if (pefValue == null || pefValue <= 0) {
+                    Log.d(TAG, "No valid PEF reading found for child");
+                    displayDefaultZone();
+                } else {
+                    Log.d(TAG, "PEF value: " + pefValue + ", Parent PB: " + parentPB);
+                    ZoneManager.Zone zone = ZoneManager.calculateZone(pefValue, parentPB);
+                    displayZoneInfo(zone, pefValue, parentPB);
+                }
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Log.e(TAG, "Error getting PEF", e);
+                displayDefaultZone();
+            }
+        });
+    }
+
+    private void displayZoneInfo(ZoneManager.Zone zone, int pefValue, int pbValue) {
         Log.d(TAG, "displayZoneInfo: zone=" + zone + ", pefValue=" + pefValue + ", pbValue=" + pbValue);
+        
         if (getActivity() == null) {
             Log.w(TAG, "Fragment not attached to activity, cannot update UI.");
-            return; // Fragment not attached
+            return;
         }
 
-        String zoneText;
-        if (zone == ZoneManager.Zone.UNKNOWN || pefValue == null || pbValue == null || pbValue == 0) {
-            zoneText = "Zone: --";
-            Log.d(TAG, "Displaying default zone text because one of the values is null or invalid. Zone: " + zone + " PEF: " + pefValue + " PB: " + pbValue);
-        } else {
-            int percentage = (int) (((double) pefValue / pbValue) * 100);
-            String zoneName = zone.toString().substring(0, 1).toUpperCase() + zone.toString().substring(1).toLowerCase();
-            zoneText = String.format("%s Zone (%d%%)", zoneName, percentage);
-        }
-        Log.d(TAG, "Setting zone text to: '" + zoneText + "'");
+        // Calculate percentage
+        int percentage = (int) (((double) pefValue / pbValue) * 100);
+        
+        // Format zone name
+        String zoneName = zone.toString().substring(0, 1).toUpperCase() 
+                        + zone.toString().substring(1).toLowerCase();
+        
+        // Set zone text
+        String zoneText = String.format("%s\n%d%%", zoneName, percentage);
         zonePercentage.setText(zoneText);
+        
+        // Set card background color based on zone
+        int cardColor;
+        switch (zone) {
+            case GREEN:
+                cardColor = 0xFF4CAF50; // Green
+                break;
+            case YELLOW:
+                cardColor = 0xFFFFC107; // Yellow/Amber
+                break;
+            case RED:
+                cardColor = 0xFFF44336; // Red
+                break;
+            default:
+                cardColor = 0xFFBDBDBD; // Gray for unknown
+                break;
+        }
+        zoneCard.setCardBackgroundColor(cardColor);
+        
+        Log.d(TAG, "Zone tile updated: " + zoneText);
+    }
+
+    private void displayDefaultZone() {
+        if (getActivity() == null) {
+            return;
+        }
+        
+        zonePercentage.setText("--\nNo Data");
+        zoneCard.setCardBackgroundColor(0xFFBDBDBD); // Gray
+        Log.d(TAG, "Displaying default zone (no data)");
     }
 }
