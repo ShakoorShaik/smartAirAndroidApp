@@ -17,6 +17,7 @@ import com.example.smartair.Login;
 import com.example.smartair.R;
 
 import utils.ChildEmergency;
+import utils.ChildIdManager;
 import utils.DatabaseManager;
 
 public class ChildDashboardSettings extends AppCompatActivity {
@@ -52,6 +53,8 @@ public class ChildDashboardSettings extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 DatabaseManager.accountLogout();
+                ChildIdManager manager = new ChildIdManager(ChildDashboardSettings.this);
+                manager.clearChildId();
                 startActivity(new Intent(ChildDashboardSettings.this, Login.class));
                 finish();
             }
