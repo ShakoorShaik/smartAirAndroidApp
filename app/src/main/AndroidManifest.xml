@@ -48,6 +48,9 @@
             android:name=".parent.ParentLinkGeneration"
             android:exported="false"></activity> <!-- Child Activities -->
         <activity
+            android:name=".child.ChildDashboardMainActivity"
+            android:exported="false"></activity>
+        <activity
             android:name=".child.ChildDashboardHome"
             android:exported="false"></activity>
         <activity

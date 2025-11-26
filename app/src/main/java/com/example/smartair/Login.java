@@ -17,6 +17,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 
 import com.example.smartair.child.ChildDashboardHome;
+import com.example.smartair.child.ChildDashboardMainActivity;
 import com.example.smartair.parent.ParentDashboardWithChildrenActivity;
 import com.example.smartair.provider.ProviderDashboardActivity;
 import com.google.android.material.textfield.TextInputEditText;
@@ -40,7 +41,6 @@ public class Login extends AppCompatActivity {
         if (mAuth == null) {
             mAuth = FirebaseAuth.getInstance();
         }
-        // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
             DatabaseManager.getData("accountType", new DatabaseManager.DataSuccessFailCallback() {
@@ -53,7 +53,7 @@ public class Login extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     } else if ("Child".equals(accountType)) {
-                        intent = new Intent(getApplicationContext(), ChildDashboardHome.class);
+                        intent = new Intent(getApplicationContext(), ChildDashboardMainActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);
                         finish();
@@ -121,20 +121,17 @@ public class Login extends AppCompatActivity {
                     public void onSuccess() {
                         Toast.makeText(Login.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
-                        // Is there a better way to get this data?
                         DatabaseManager.getData("accountType", new DatabaseManager.DataSuccessFailCallback() {
                             @Override
                             public void onSuccess(String accountType) {
                                 Intent intent;
                                 if ("Parent".equals(accountType)) {
-                                    // Redirect to ParentDashboard
                                     intent = new Intent(getApplicationContext(), ParentDashboardWithChildrenActivity.class);
                                 } else if ("Provider".equals(accountType)){
                                     intent = new Intent(getApplicationContext(), ProviderDashboardActivity.class);
                                 } else if ("Child".equals(accountType)) {
-                                    intent = new Intent(getApplicationContext(), ChildDashboardHome.class);
+                                    intent = new Intent(getApplicationContext(), ChildDashboardMainActivity.class);
                                 } else {
-                                    // TODO: in the future show other dashboards for child user types
                                     intent = new Intent(getApplicationContext(), MainActivity.class);
                                 }
 
