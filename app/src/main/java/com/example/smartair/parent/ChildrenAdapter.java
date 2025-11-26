@@ -61,7 +61,6 @@ public class ChildrenAdapter extends RecyclerView.Adapter<ChildrenAdapter.ChildV
             holder.textViewLinkedDate.setText("Linked: Unknown");
         }
 
-        // Load and display most recent PEF
         if (childUid != null) {
             PEFManager.getMostRecentPEF(childUid, new PEFManager.PEFCallback() {
                 @Override
@@ -79,7 +78,6 @@ public class ChildrenAdapter extends RecyclerView.Adapter<ChildrenAdapter.ChildV
                 }
             });
 
-            // Load and display PB
             PBManager.getPB(childUid, new PBManager.PBCallback() {
                 @Override
                 public void onSuccess(Integer pbValue) {

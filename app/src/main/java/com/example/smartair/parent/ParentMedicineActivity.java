@@ -1,6 +1,5 @@
 package com.example.smartair.parent;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.os.Build;
 import android.os.Bundle;
@@ -87,10 +86,10 @@ public class ParentMedicineActivity extends AppCompatActivity {
 
         View.OnClickListener iconClickListener = v -> {
             if(v.getId() == R.id.imagePill) { currentIconId[0] = R.drawable.pill_img; }
-            else if(v.getId() == R.id.imageSyrup) { currentIconId[0] = R.drawable.syrup_img; }
-            else if(v.getId() == R.id.imageDropper) { currentIconId[0] = R.drawable.dropper_img; }
-            else if(v.getId() == R.id.imageInjection) { currentIconId[0] = R.drawable.syringe_img; }
-            else if(v.getId() == R.id.imageInhaler) { currentIconId[0] = R.drawable.inhaler_img; }
+            else if(v.getId() == R.id.imageSyrup) { currentIconId[0] = R.drawable.pill_img; }
+            else if(v.getId() == R.id.imageDropper) { currentIconId[0] = R.drawable.pill_img; }
+            else if(v.getId() == R.id.imageInjection) { currentIconId[0] = R.drawable.pill_img; }
+            else if(v.getId() == R.id.imageInhaler) { currentIconId[0] = R.drawable.pill_img; }
         };
 
         icon1.setOnClickListener(iconClickListener);
@@ -144,7 +143,6 @@ public class ParentMedicineActivity extends AppCompatActivity {
 
                         Medicine med = new Medicine(name, amt, date, currentIconId[0]);
                         DatabaseManager.writeData("Medicine", med, new DatabaseManager.SuccessFailCallback() {
-                            @SuppressLint("NotifyDataSetChanged")
                             @Override
                             public void onSuccess() {
                                 Toast.makeText(ParentMedicineActivity.this,
