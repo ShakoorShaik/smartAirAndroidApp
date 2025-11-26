@@ -41,21 +41,36 @@ public class ChildIdManager {
     private static final String NAME = "SmartAirPref";
     private static final String CHILD_ID = "curr_child_id";
 
+    /**
+     * Constructor for ChildIdManager.
+     * @param context - the current context/activity
+     */
     public ChildIdManager(Context context) {
         sharedPreferences = context.getSharedPreferences(NAME, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
     }
 
+    /**
+     * Saves the child ID
+     * @param childId - the child ID you want to save.
+     */
     public void SaveChildId(String childId) {
         editor.putString(CHILD_ID, childId);
         editor.apply();
     }
 
+    /**
+     * clears the saved child ID.
+     */
     public void clearChildId() {
         editor.remove(CHILD_ID);
         editor.apply();
     }
 
+    /**
+     * Returns the saved child ID
+     * @return the saved child ID if it exists, NA otherwise.
+     */
     public String getChildId() {
         return sharedPreferences.getString(CHILD_ID, "NA");
     }
