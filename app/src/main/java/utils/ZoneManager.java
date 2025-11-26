@@ -1,5 +1,7 @@
 package utils;
 
+import android.content.Context;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -70,7 +72,7 @@ public class ZoneManager {
         });
     }
 
-    public static void logZoneChange(String childUid, Zone zone, int pefValue, String date, DatabaseManager.SuccessFailCallback callback) {
+    public static void logZoneChange(Context context, String childUid, Zone zone, int pefValue, String date, DatabaseManager.SuccessFailCallback callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -86,18 +88,31 @@ public class ZoneManager {
         zoneLog.put("date", date);
         zoneLog.put("timestamp", System.currentTimeMillis());
 
-        db.collection("users").document(user.getUid())
+        String targetUid;
+        if (context != null) {
+            ChildIdManager manager = new ChildIdManager(context);
+            String curr_child_id = manager.getChildId();
+            if (!curr_child_id.equals("NA")) {
+                targetUid = curr_child_id;
+            } else {
+                targetUid = user.getUid();
+            }
+        } else {
+            targetUid = user.getUid();
+        }
+
+        db.collection("users").document(targetUid)
                 .collection("zoneHistory")
                 .add(zoneLog)
                 .addOnSuccessListener(documentReference -> callback.onSuccess())
                 .addOnFailureListener(callback::onFailure);
     }
 
-    public static void checkAndAlertRedZone(String childUid, int pefValue, int personalBest, String date) {
+    public static void checkAndAlertRedZone(Context context, String childUid, int pefValue, int personalBest, String date) {
         Zone zone = calculateZone(pefValue, personalBest);
 
         if (zone == Zone.RED) {
-            logZoneChange(childUid, zone, pefValue, date, new DatabaseManager.SuccessFailCallback() {
+            logZoneChange(context, childUid, zone, pefValue, date, new DatabaseManager.SuccessFailCallback() {
                 @Override
                 public void onSuccess() {
                 }

@@ -60,14 +60,12 @@ public class DatabaseManager {
         Provider
     }
 
-    // Callback interface for when something success or fails
     public interface SuccessFailCallback {
         void onSuccess();
 
         void onFailure(Exception e);
     }
 
-    // Callback interface for when something success or fails and there is data associated to the success
     public interface DataSuccessFailCallback {
         void onSuccess(String data);
         void onFailure(Exception e);

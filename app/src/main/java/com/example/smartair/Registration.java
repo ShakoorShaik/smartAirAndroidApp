@@ -44,7 +44,6 @@ public class Registration extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -113,10 +112,8 @@ public class Registration extends AppCompatActivity {
                     String selectedAccountType = spinnerAccountType.getSelectedItem().toString();
                     Intent intent;
                     if ("Parent".equals(selectedAccountType)) {
-                        // Redirect to ParentDashboard
                         intent = new Intent(getApplicationContext(), ParentDashboardWithChildrenActivity.class);
                     } else {
-                        // TODO: in the future show other dashboards for other user types
                         intent = new Intent(getApplicationContext(), Login.class);
                     }
 

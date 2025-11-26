@@ -54,12 +54,24 @@ public class ParentDashboardWithChildrenActivity extends AppCompatActivity {
             return false;
         });
 
-                // Set default fragment to home (the original dashboard)
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragmentContainer, new ParentHomeFragment())
                     .commit();
-            bottomNav.setSelectedItemId(R.id.bottom_children);
+            bottomNav.setSelectedItemId(R.id.bottom_home);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 || requestCode == 2) {
+            if (resultCode == RESULT_OK) {
+                Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+                if (fragment instanceof ParentChildrenFragment) {
+                    ((ParentChildrenFragment) fragment).loadChildren();
+                }
+            }
         }
     }
 }

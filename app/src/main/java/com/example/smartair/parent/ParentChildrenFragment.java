@@ -252,7 +252,7 @@ public class ParentChildrenFragment extends Fragment {
                     recyclerViewPBs.postDelayed(() -> {
                         if (errorCount[0] == 0) {
                             Toast.makeText(getContext(), "PB values saved successfully", Toast.LENGTH_SHORT).show();
-                            loadChildren(); // Refresh the list
+                            loadChildren();
                         } else {
                             Toast.makeText(getContext(), "Some PB values could not be saved", Toast.LENGTH_SHORT).show();
                             loadChildren();

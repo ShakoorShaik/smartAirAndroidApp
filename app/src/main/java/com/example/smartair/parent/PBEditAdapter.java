@@ -41,7 +41,6 @@ public class PBEditAdapter extends RecyclerView.Adapter<PBEditAdapter.PBEditView
 
         holder.textViewChildName.setText(childName != null ? childName : "Unknown");
 
-        // Load current PB
         if (childUid != null) {
             PBManager.getPB(childUid, new PBManager.PBCallback() {
                 @Override

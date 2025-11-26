@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+<androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/textView7"
@@ -12,7 +17,7 @@
         android:layout_height="55dp"
         android:layout_marginTop="32dp"
         android:fontFamily="sans-serif"
-        android:text="Medicine"
+        android:text="Inventory"
         android:textAlignment="center"
         android:textSize="34sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,9 +30,7 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:importantForAccessibility="no"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerMeds"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.578"
         app:layout_constraintStart_toEndOf="@+id/textView7"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.645"
@@ -48,15 +51,45 @@
 
     <Button
         android:id="@+id/buttonEditPEF"
-        android:layout_width="258dp"
+        android:layout_width="0dp"
         android:layout_height="73dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="8dp"
         android:text="EDIT PEF"
         android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintEnd_toStartOf="@+id/buttonEditPB"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerMeds" />
+        app:layout_constraintTop_toBottomOf="@+id/recyclerMeds"
+        app:layout_constraintWidth_percent="0.48" />
+
+    <Button
+        android:id="@+id/buttonEditPB"
+        android:layout_width="0dp"
+        android:layout_height="73dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="EDIT PB"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/buttonEditPEF"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerMeds"
+        app:layout_constraintWidth_percent="0.48" />
+
+    <include
+        android:id="@+id/medicineCalendarView"
+        layout="@layout/calendar_month_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonEditPEF" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
 
