@@ -89,7 +89,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:menu="@menu/child_nav_bar"
-        app:labelVisibilityMode="labeled"
+        app:labelVisibilityMode="unlabeled"
         app:itemIconSize="32dp"
+        app:itemIconTint="@color/child_nav_icon_color"
         tools:ignore="MissingConstraints"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
