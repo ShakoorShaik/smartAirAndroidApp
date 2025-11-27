@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.smartair.Login;
 import com.example.smartair.R;
+import com.example.smartair.child.checkin.ChildDailyCheckIn;
 import com.example.smartair.child.emergency.Emergency;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -105,6 +106,15 @@ public class ChildDashboardHome extends AppCompatActivity {
         });
 
         loadZoneInfo();
+
+        Button dailyCheckIn = findViewById(R.id.button7);
+
+        dailyCheckIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ChildDashboardHome.this, ChildDailyCheckIn.class));
+            }
+        });
 
     }
 
@@ -272,11 +282,4 @@ public class ChildDashboardHome extends AppCompatActivity {
             Log.d(TAG, "Displaying default zone (no data)");
         });
     }
-
-
-
-
-
-
-
 }
