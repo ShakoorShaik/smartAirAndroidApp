@@ -992,13 +992,8 @@ public class ParentMedicineFragment extends Fragment {
                 Toast.makeText(getContext(),
                         "PEF reading saved for " + childName, Toast.LENGTH_SHORT).show();
 
-                if (getActivity() != null) {
-                    androidx.fragment.app.FragmentManager fm = getActivity().getSupportFragmentManager();
-                    Fragment childrenFragment = fm.findFragmentById(R.id.fragmentContainer);
-                    if (childrenFragment instanceof ParentChildrenFragment) {
-                        ((ParentChildrenFragment) childrenFragment).loadChildren();
-                    }
-                }
+                // Refresh other fragments that display PEF/zone data
+                refreshRelatedFragments();
             }
 
             @Override
@@ -1007,6 +1002,32 @@ public class ParentMedicineFragment extends Fragment {
                         "Error saving PEF: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void refreshRelatedFragments() {
+        if (getActivity() == null) return;
+        
+        androidx.fragment.app.FragmentManager fm = getActivity().getSupportFragmentManager();
+        
+        // Check the currently displayed fragment and refresh it
+        Fragment currentFragment = fm.findFragmentById(R.id.fragmentContainer);
+        if (currentFragment instanceof ParentChildrenFragment) {
+            ((ParentChildrenFragment) currentFragment).loadChildren();
+        } else if (currentFragment instanceof ParentHomeFragment) {
+            ((ParentHomeFragment) currentFragment).refreshZoneInfo();
+        }
+        
+        // Also check all fragments in case they're still in memory
+        List<Fragment> fragments = fm.getFragments();
+        for (Fragment fragment : fragments) {
+            if (fragment != null && fragment != currentFragment) {
+                if (fragment instanceof ParentChildrenFragment) {
+                    ((ParentChildrenFragment) fragment).loadChildren();
+                } else if (fragment instanceof ParentHomeFragment) {
+                    ((ParentHomeFragment) fragment).refreshZoneInfo();
+                }
+            }
+        }
     }
 
     private void showEditPBsDialog() {
@@ -1061,6 +1082,8 @@ public class ParentMedicineFragment extends Fragment {
                                 } else {
                                     Toast.makeText(getContext(), "Some PB values could not be saved", Toast.LENGTH_SHORT).show();
                                 }
+                                // Refresh related fragments after PB values are updated
+                                refreshRelatedFragments();
                             }, 500);
                         })
                         .setNegativeButton("Cancel", null)
