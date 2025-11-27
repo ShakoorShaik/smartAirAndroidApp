@@ -1,5 +1,6 @@
 package com.example.smartair.parent;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.SharedPreferences;
@@ -41,6 +42,7 @@ import java.util.Objects;
 import utils.Medicine;
 import utils.DatabaseManager;
 import utils.PBManager;
+import utils.ParentEmergency;
 import utils.ZoneManager;
 import utils.ChildAccountManager;
 import utils.PEFManager;
@@ -60,6 +62,12 @@ public class ParentMedicineFragment extends Fragment {
     TextView monthYearText;
 
     public ParentMedicineFragment() {
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        ParentEmergency.listenEmergency(this);
     }
 
     @Override

@@ -183,6 +183,10 @@ public class LogUsageActivity extends AppCompatActivity {
 
                                         postbreathRating = Integer.parseInt(input);
                                         saveInhalerLog();
+                                        Intent intent = new Intent(
+                                                LogUsageActivity.this,
+                                                ChildDashboardHome.class);
+                                        startActivity(intent);
 
                                     }
 
