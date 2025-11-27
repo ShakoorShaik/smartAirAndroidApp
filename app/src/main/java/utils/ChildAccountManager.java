@@ -1,5 +1,7 @@
 package utils;
 
+import static java.lang.Thread.sleep;
+
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -158,6 +160,20 @@ public class ChildAccountManager {
 
         triageRef.add(triageData);
     }
+    public static void toggleEmergencyFlag(){
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            return;
+        }
+        String userId = user.getUid();
+        DocumentReference docRef = db.collection("users").document(userId);
+        docRef.get().addOnSuccessListener(dS -> {
+            docRef.update("emergencyFlag", false).addOnSuccessListener(v -> {
+                docRef.update("emergencyFlag", true);
+            });
+        });
+    }
 
 }
-

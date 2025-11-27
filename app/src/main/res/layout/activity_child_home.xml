@@ -42,27 +42,59 @@
         app:layout_constraintVertical_bias="0.8" />
 
     <Button
-        android:id="@+id/zoneButton"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:text="ZONE"
-        android:textSize="14sp"
-        android:layout_marginBottom="25dp"
-        app:layout_constraintBottom_toTopOf="@+id/button5"
-        app:layout_constraintEnd_toStartOf="@id/historyButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintHorizontal_weight="1"/>
-
-    <Button
         android:id="@+id/historyButton"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_marginEnd="36dp"
+        android:layout_marginBottom="32dp"
         android:text="HISTORY"
         android:textSize="14sp"
-        android:layout_marginBottom="25dp"
         app:layout_constraintBottom_toTopOf="@+id/button5"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/zoneButton"
-        app:layout_constraintHorizontal_weight="1"/>
+        app:layout_constraintHorizontal_weight="1" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/zone_card"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        app:cardBackgroundColor="#BDBDBD"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="6dp"
+        app:layout_constraintBottom_toTopOf="@+id/button5"
+        app:layout_constraintEnd_toStartOf="@+id/historyButton"
+        app:layout_constraintHorizontal_bias="0.272"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.937"
+        app:layout_constraintWidth_percent="0.45">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Today's Zone"
+                android:textColor="@android:color/white"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/zone_percentage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="--"
+                android:textColor="@android:color/white"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

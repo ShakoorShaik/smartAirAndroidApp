@@ -29,6 +29,7 @@ import utils.ChildAccountManager;
 import utils.ChildIdManager;
 import utils.PBManager;
 import utils.PEFManager;
+import utils.ParentEmergency;
 import utils.ZoneManager;
 
 public class ParentChildrenFragment extends Fragment {
@@ -40,6 +41,12 @@ public class ParentChildrenFragment extends Fragment {
     private List<Map<String, Object>> childrenList;
 
     public ParentChildrenFragment() {
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        ParentEmergency.listenEmergency(this);
     }
 
     @Override
