@@ -24,11 +24,9 @@ import utils.DatabaseManager;
 
 public class LogUsageActivity extends AppCompatActivity {
 
-    private RadioGroup medicationTypeRadioGroup;
     private RadioButton rescueRadioButton;
     private RadioButton controllerRadioButton;
     private EditText doseCountEditText;
-    private Button saveButton;
     private int prebreathRating;
     private int postbreathRating;
     private String predose;
@@ -42,11 +40,11 @@ public class LogUsageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_usage);
 
-        medicationTypeRadioGroup = findViewById(R.id.medicationTypeRadioGroup);
+        RadioGroup medicationTypeRadioGroup = findViewById(R.id.medicationTypeRadioGroup);
         rescueRadioButton = findViewById(R.id.rescueRadioButton);
         controllerRadioButton = findViewById(R.id.controllerRadioButton);
         doseCountEditText = findViewById(R.id.doseCountEditText);
-        saveButton = findViewById(R.id.saveButton);
+        Button saveButton = findViewById(R.id.saveButton);
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(LogUsageActivity.this);
@@ -58,7 +56,7 @@ public class LogUsageActivity extends AppCompatActivity {
         });
         builder.setPositiveButton("OK!", null);
         builder.setNegativeButton("Cancel", (dialog, which) -> {
-            Intent intent = new Intent(LogUsageActivity.this, ChildDashboardHome.class);
+            Intent intent = new Intent(LogUsageActivity.this, ChildDashboardMainActivity.class);
             startActivity(intent);
             finish();
         });
@@ -83,6 +81,11 @@ public class LogUsageActivity extends AppCompatActivity {
                     builder3.setMessage("Enter a rating of your breathing.");
                     builder3.setView(inputText);
                     builder3.setPositiveButton("OK!", null);
+                    builder3.setNegativeButton("Cancel", (dialog, which) -> {
+                        Intent intent = new Intent(LogUsageActivity.this, ChildDashboardMainActivity.class);
+                        startActivity(intent);
+                        finish();
+                    });
                     builder3.setCancelable(false);
                     AlertDialog alert3 = builder3.create();
                     alert3.show();
@@ -130,6 +133,11 @@ public class LogUsageActivity extends AppCompatActivity {
                     feelingIndex2 = which;
                 });
                 builder2.setPositiveButton("OK!", null);
+                builder2.setNegativeButton("Cancel", (dialog, which) -> {
+                    Intent intent = new Intent(LogUsageActivity.this, ChildDashboardMainActivity.class);
+                    startActivity(intent);
+                    finish();
+                });
                 builder2.setCancelable(false);
 
                 AlertDialog alert2 = builder2.create();
@@ -154,6 +162,11 @@ public class LogUsageActivity extends AppCompatActivity {
                             builder3.setMessage("Enter a rating of your breathing.");
                             builder3.setView(inputText);
                             builder3.setPositiveButton("OK!", null);
+                            builder3.setNegativeButton("Cancel", (dialog, which) -> {
+                                Intent intent = new Intent(LogUsageActivity.this, ChildDashboardMainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            });
                             builder3.setCancelable(false);
 
                             AlertDialog alert3 = builder3.create();

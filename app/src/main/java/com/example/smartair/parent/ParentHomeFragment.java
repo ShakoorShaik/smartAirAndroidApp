@@ -1,7 +1,6 @@
 package com.example.smartair.parent;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import utils.ChildAccountManager;
 import utils.Medicine;
 import utils.MedicineManager;
 import utils.TriageHistoryManager;
@@ -37,6 +37,11 @@ import utils.ZoneHistoryManager;
 
 import utils.ParentEmergency;
 
+    private RecyclerView calendarRecyclerView;
+    private TextView monthYearText;
+    private YearMonth currentDisplayMonth;
+
+    public ParentHomeFragment() {
 public class ParentHomeFragment extends Fragment {
 
     private RecyclerView calendarRecyclerView;
@@ -79,6 +84,19 @@ public class ParentHomeFragment extends Fragment {
                 });
             }
 
+        View calendarView = view.findViewById(R.id.mainCalendarView);
+        if (calendarView != null) {
+            calendarRecyclerView = calendarView.findViewById(R.id.recyclerViewCalendar);
+            monthYearText = calendarView.findViewById(R.id.textMonthYear);
+            ImageButton buttonPrevMonth = calendarView.findViewById(R.id.buttonPrevMonth);
+            ImageButton buttonNextMonth = calendarView.findViewById(R.id.buttonNextMonth);
+
+            currentDisplayMonth = YearMonth.now();
+            updateMonthDisplay();
+
+            if (buttonPrevMonth != null) {
+                buttonPrevMonth.setOnClickListener(v -> {
+                    currentDisplayMonth = currentDisplayMonth.minusMonths(1);
 
             if (buttonNextMonth != null) {
                 buttonNextMonth.setOnClickListener(v -> {
@@ -88,6 +106,17 @@ public class ParentHomeFragment extends Fragment {
                 });
             }
 
+
+            if (buttonNextMonth != null) {
+                buttonNextMonth.setOnClickListener(v -> {
+                    currentDisplayMonth = currentDisplayMonth.plusMonths(1);
+                    updateMonthDisplay();
+                    loadCalendarData();
+                });
+            }
+
+            loadCalendarData();
+        }
             loadCalendarData();
         }
 
@@ -110,6 +139,153 @@ public class ParentHomeFragment extends Fragment {
             monthYearText.setText(currentDisplayMonth.format(DateTimeFormatter.ofPattern("MMMM yyyy")));
         }
     }
+
+    private void loadCalendarData() {
+        MedicineManager.loadMedicines(new MedicineManager.MedicineListCallback() {
+            @Override
+            public void onSuccess(List<Medicine> medicines) {
+                ZoneHistoryManager.loadRedZoneDates(getContext(), new ZoneHistoryManager.RedZoneDatesCallback() {
+                    @Override
+                    public void onSuccess(Map<LocalDate, Boolean> redZoneMap) {
+                        TriageHistoryManager.loadTriageDates(getContext(), new TriageHistoryManager.TriageDatesCallback() {
+                            @Override
+                            public void onSuccess(Map<LocalDate, Boolean> triageMap) {
+                                Map<LocalDate, List<Medicine>> expiryMap = new HashMap<>();
+                                for (Medicine medicine : medicines) {
+                                    if (medicine.getAmountLeft() > 0) {
+                                        LocalDate expiry = medicine.getExpiry();
+                                        if (!expiryMap.containsKey(expiry)) {
+                                            expiryMap.put(expiry, new ArrayList<>());
+                                        }
+                                        Objects.requireNonNull(expiryMap.get(expiry)).add(medicine);
+                                    }
+                                }
+
+                                MedicineCalendarAdapter calendarAdapter = new MedicineCalendarAdapter(
+                                        currentDisplayMonth, expiryMap, redZoneMap, triageMap);
+
+                                if (getContext() != null && calendarRecyclerView != null) {
+                                    GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 7);
+                                    calendarRecyclerView.setLayoutManager(layoutManager);
+                                    calendarRecyclerView.setAdapter(calendarAdapter);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                Map<LocalDate, List<Medicine>> expiryMap = new HashMap<>();
+                                for (Medicine medicine : medicines) {
+                                    if (medicine.getAmountLeft() > 0) {
+                                        LocalDate expiry = medicine.getExpiry();
+                                        if (!expiryMap.containsKey(expiry)) {
+                                            expiryMap.put(expiry, new ArrayList<>());
+                                        }
+                                        expiryMap.get(expiry).add(medicine);
+                                    }
+                                }
+                                MedicineCalendarAdapter calendarAdapter = new MedicineCalendarAdapter(
+                                        currentDisplayMonth, expiryMap, redZoneMap, new HashMap<>());
+                                if (getContext() != null && calendarRecyclerView != null) {
+                                    GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 7);
+                                    calendarRecyclerView.setLayoutManager(layoutManager);
+                                    calendarRecyclerView.setAdapter(calendarAdapter);
+                                }
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        TriageHistoryManager.loadTriageDates(getContext(), new TriageHistoryManager.TriageDatesCallback() {
+                            @Override
+                            public void onSuccess(Map<LocalDate, Boolean> triageMap) {
+                                Map<LocalDate, List<Medicine>> expiryMap = new HashMap<>();
+                                for (Medicine medicine : medicines) {
+                                    if (medicine.getAmountLeft() > 0) {
+                                        LocalDate expiry = medicine.getExpiry();
+                                        if (!expiryMap.containsKey(expiry)) {
+                                            expiryMap.put(expiry, new ArrayList<>());
+                                        }
+                                        expiryMap.get(expiry).add(medicine);
+                                    }
+                                }
+                                MedicineCalendarAdapter calendarAdapter = new MedicineCalendarAdapter(
+                                        currentDisplayMonth, expiryMap, new HashMap<>(), triageMap);
+                                if (getContext() != null && calendarRecyclerView != null) {
+                                    GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 7);
+                                    calendarRecyclerView.setLayoutManager(layoutManager);
+                                    calendarRecyclerView.setAdapter(calendarAdapter);
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                                Map<LocalDate, List<Medicine>> expiryMap = new HashMap<>();
+                                for (Medicine medicine : medicines) {
+                                    if (medicine.getAmountLeft() > 0) {
+                                        LocalDate expiry = medicine.getExpiry();
+                                        if (!expiryMap.containsKey(expiry)) {
+                                            expiryMap.put(expiry, new ArrayList<>());
+                                        }
+                                        expiryMap.get(expiry).add(medicine);
+                                    }
+                                }
+                                MedicineCalendarAdapter calendarAdapter = new MedicineCalendarAdapter(
+                                        currentDisplayMonth, expiryMap, new HashMap<>(), new HashMap<>());
+                                if (getContext() != null && calendarRecyclerView != null) {
+                                    GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 7);
+                                    calendarRecyclerView.setLayoutManager(layoutManager);
+                                    calendarRecyclerView.setAdapter(calendarAdapter);
+                                }
+                            }
+                        });
+            }
+        });
+    }
+
+            @Override
+            public void onFailure(Exception e) {
+                ZoneHistoryManager.loadRedZoneDates(getContext(), new ZoneHistoryManager.RedZoneDatesCallback() {
+                    @Override
+                    public void onSuccess(Map<LocalDate, Boolean> redZoneMap) {
+                        TriageHistoryManager.loadTriageDates(getContext(), new TriageHistoryManager.TriageDatesCallback() {
+                            @Override
+                            public void onSuccess(Map<LocalDate, Boolean> triageMap) {
+                                MedicineCalendarAdapter calendarAdapter = new MedicineCalendarAdapter(
+                                        currentDisplayMonth, new HashMap<>(), redZoneMap, triageMap);
+                                if (getContext() != null && calendarRecyclerView != null) {
+                                    GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 7);
+                                    calendarRecyclerView.setLayoutManager(layoutManager);
+                                    calendarRecyclerView.setAdapter(calendarAdapter);
+                }
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                                MedicineCalendarAdapter calendarAdapter = new MedicineCalendarAdapter(
+                                        currentDisplayMonth, new HashMap<>(), redZoneMap, new HashMap<>());
+                                if (getContext() != null && calendarRecyclerView != null) {
+                                    GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 7);
+                                    calendarRecyclerView.setLayoutManager(layoutManager);
+                                    calendarRecyclerView.setAdapter(calendarAdapter);
+                                }
+            }
+        });
+    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        MedicineCalendarAdapter calendarAdapter = new MedicineCalendarAdapter(
+                                currentDisplayMonth, new HashMap<>(), new HashMap<>(), new HashMap<>());
+                        if (getContext() != null && calendarRecyclerView != null) {
+                            GridLayoutManager layoutManager = new GridLayoutManager(getContext(), 7);
+                            calendarRecyclerView.setLayoutManager(layoutManager);
+                            calendarRecyclerView.setAdapter(calendarAdapter);
+                        }
+                    }
+                });
+            }
+        });
 
     private void loadCalendarData() {
         MedicineManager.loadMedicines(new MedicineManager.MedicineListCallback() {

@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartair.R;
 import com.example.smartair.child.ChildDashboardHome;
+import com.example.smartair.child.ChildDashboardMainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +57,6 @@ public class ParentChildrenFragment extends Fragment {
         Button buttonAddChild = view.findViewById(R.id.buttonAddChild);
         Button buttonAddChildProfile = view.findViewById(R.id.buttonAddChildProfile);
         Button buttonEditPBs = view.findViewById(R.id.buttonEditPBs);
-        Button buttonGoToChild = view.findViewById(R.id.buttonGoToChild);
         recyclerViewChildren = view.findViewById(R.id.recyclerViewChildren);
         textViewNoChildren = view.findViewById(R.id.textViewNoChildren);
         progressBar = view.findViewById(R.id.progressBar);
@@ -74,7 +74,7 @@ public class ParentChildrenFragment extends Fragment {
 
                 manager.SaveChildId((String) currentChild.get("uid"));
 
-                Intent intent = new Intent(requireContext(), ChildDashboardHome.class);
+                Intent intent = new Intent(requireContext(), ChildDashboardMainActivity.class);
 
 
 
