@@ -1,6 +1,7 @@
 package com.example.smartair.parent;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,17 +13,23 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartair.R;
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import utils.ChildAccountManager;
 import utils.Medicine;
 import utils.MedicineManager;
 import utils.TriageHistoryManager;
@@ -35,6 +42,8 @@ public class ParentHomeFragment extends Fragment {
     private RecyclerView calendarRecyclerView;
     private TextView monthYearText;
     private YearMonth currentDisplayMonth;
+    private TextView lastRescue;
+    private Date lastRescueDate = null;
 
     public ParentHomeFragment() {
     }
@@ -48,9 +57,9 @@ public class ParentHomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
         ParentEmergency.listenEmergency(this);
         View view = inflater.inflate(R.layout.fragment_parent_home, container, false);
+        lastRescue = view.findViewById(R.id.last_rescue_date);
 
         View calendarView = view.findViewById(R.id.mainCalendarView);
         if (calendarView != null) {
@@ -81,6 +90,9 @@ public class ParentHomeFragment extends Fragment {
 
             loadCalendarData();
         }
+
+        getMostRecentRescue();
+
 
         return view;
     }
@@ -245,6 +257,74 @@ public class ParentHomeFragment extends Fragment {
                 });
             }
         });
+    }
+
+    public void getMostRecentRescue() {
+        FirebaseUser currUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currUser == null) { return; }
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String uid = currUser.getUid();
+
+        db.collection("users").document(uid).get().addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                DocumentSnapshot document = task.getResult();
+                // get linked children
+                List<Map<String, Object>> linkedChildren =
+                        (List<Map<String, Object>>) document.get("linkedChildren");
+
+                if (linkedChildren != null && !linkedChildren.isEmpty()) {
+
+                    // extract children uid's to perform query
+                    for (Map<String, Object> child : linkedChildren) {
+                        String childUid = (String) child.get("uid");
+                        if (childUid != null) {
+                            getChildMostRecentRescue(childUid);
+                        }
+                    }
+
+                }
+            }
+
+        });
+    }
+
+    private void getChildMostRecentRescue(String uid) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("users").document(uid).collection("inhaler_log")
+                .whereEqualTo("medicationType",  "Rescue")
+                .orderBy("timestamp", Query.Direction.DESCENDING).limit(1).get()
+                .addOnSuccessListener(querySnapshot -> {
+                    if (querySnapshot != null && !querySnapshot.isEmpty()) {
+                        DocumentSnapshot doc = querySnapshot.getDocuments().get(0);
+                        Timestamp timestamp = doc.getTimestamp("timestamp");
+
+                        if (timestamp != null) {
+                            updateRescueCard(timestamp.toDate());
+                        }
+                    }
+
+                }).addOnFailureListener(e -> {
+                    Log.e("FIX_ME", "------------------------------------------------");
+                    Log.e("FIX_ME", "ERROR TYPE: " + e.getMessage());
+                    Log.e("FIX_ME", "------------------------------------------------");
+                });
+    }
+
+    private void updateRescueCard(Date date) {
+        if (lastRescueDate == null || date.after(lastRescueDate)) {
+
+            lastRescueDate = date;
+
+            if (getActivity() != null) {
+                CharSequence timeAgo = android.text.format.DateUtils
+                        .getRelativeTimeSpanString(lastRescueDate.getTime(),
+                                System.currentTimeMillis(),
+                                android.text.format.DateUtils.MINUTE_IN_MILLIS);
+                lastRescue.setText(timeAgo);
+            }
+        }
     }
 }
 
