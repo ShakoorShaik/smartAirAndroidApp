@@ -9,6 +9,10 @@ import com.example.smartair.R;
 import utils.DatabaseManager;
 import utils.ParentProviderLinking;
 
+/*
+New to add invalidate code button
+ */
+
 public class ParentLinkGeneration extends AppCompatActivity{
 
     private TextView textViewGeneratedCode;
