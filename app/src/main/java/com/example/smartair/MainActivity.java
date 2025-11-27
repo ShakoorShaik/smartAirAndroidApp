@@ -11,10 +11,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.smartair.child.ChildHome;
+import com.example.smartair.child.ChildDashboardHome;
 import com.example.smartair.parent.ParentDashboardWithChildrenActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -61,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
                         startActivity(intent);
                         finish();
                     } else if (data.equals("Child")) {
-                        Intent intent = new Intent(getApplicationContext(), ChildHome.class);
+                        Intent intent = new Intent(getApplicationContext(), ChildDashboardHome.class);
                         startActivity(intent);
                         finish();
                     } else {

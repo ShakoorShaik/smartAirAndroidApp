@@ -18,14 +18,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartair.R;
+import com.example.smartair.child.ChildDashboardHome;
+import com.example.smartair.child.ChildDashboardMainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import utils.ChildAccountManager;
+import utils.ChildIdManager;
 import utils.PBManager;
 import utils.PEFManager;
+import utils.ParentEmergency;
 import utils.ZoneManager;
 
 public class ParentChildrenFragment extends Fragment {
@@ -37,6 +41,12 @@ public class ParentChildrenFragment extends Fragment {
     private List<Map<String, Object>> childrenList;
 
     public ParentChildrenFragment() {
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+        ParentEmergency.listenEmergency(this);
     }
 
     @Override
@@ -57,6 +67,19 @@ public class ParentChildrenFragment extends Fragment {
             public void onDeleteClick(int position) {
                 showDeleteConfirmation(position);
             }
+            @Override
+            public void onClick(int position) {
+                Map<String, Object> currentChild = childrenList.get(position);
+                ChildIdManager manager = new ChildIdManager(requireContext());
+
+                manager.SaveChildId((String) currentChild.get("uid"));
+
+                Intent intent = new Intent(requireContext(), ChildDashboardMainActivity.class);
+
+
+
+                startActivity(intent);
+                }
         });
 
         recyclerViewChildren.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -92,6 +115,8 @@ public class ParentChildrenFragment extends Fragment {
                 showEditPBsDialog();
             }
         });
+
+
 
         loadChildren();
 
@@ -234,7 +259,7 @@ public class ParentChildrenFragment extends Fragment {
                     recyclerViewPBs.postDelayed(() -> {
                         if (errorCount[0] == 0) {
                             Toast.makeText(getContext(), "PB values saved successfully", Toast.LENGTH_SHORT).show();
-                            loadChildren(); // Refresh the list
+                            loadChildren();
                         } else {
                             Toast.makeText(getContext(), "Some PB values could not be saved", Toast.LENGTH_SHORT).show();
                             loadChildren();

@@ -9,13 +9,21 @@ import android.widget.Toast;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import com.example.smartair.R;
 import com.example.smartair.child.emergency.Emergency;
 import com.example.smartair.child.inhalertechnique.InhalerTechniqueFirst;
+import com.example.smartair.parent.ParentChildrenFragment;
+import com.example.smartair.parent.ParentHomeFragment;
+import com.example.smartair.parent.ParentMedicineFragment;
+import com.example.smartair.parent.ParentSettingsFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import utils.ChildEmergency;
 
 public class ChildDashboardTasks extends AppCompatActivity {
 
@@ -27,18 +35,29 @@ public class ChildDashboardTasks extends AppCompatActivity {
     private Button buttonRecordSymptom;
 
     private Button buttonEmergency;
-    FirebaseAuth mAuth;
-    FirebaseFirestore db;
-    FirebaseUser childUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_child_tasks);
 
-        mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
-        childUser = mAuth.getCurrentUser();
+        BottomNavigationView bottomNav = findViewById(R.id.navBar);
+        bottomNav.setSelectedItemId(R.id.bottom_tasks);
+        bottomNav.setOnItemSelectedListener(item -> {
+            int itemId = item.getItemId();
+            if (itemId == R.id.bottom_home) {
+                startActivity(new Intent(ChildDashboardTasks.this, ChildDashboardHome.class));
+                finish();
+                return true;
+            } else if (itemId == R.id.bottom_tasks) {
+                return true;
+            } else if (itemId == R.id.bottom_settings) {
+                startActivity(new Intent(ChildDashboardTasks.this, ChildDashboardSettings.class));
+                finish();
+                return true;
+            }
+            return false;
+        });
 
         Badge = findViewById(R.id.badge);
         Badge.setImageResource(R.drawable.bronze_badge);      //todo there should be some logic to decide which badge
@@ -75,7 +94,7 @@ public class ChildDashboardTasks extends AppCompatActivity {
         });
 
         buttonEmergency.setOnClickListener(v -> {
-            startActivity(new Intent(this, Emergency.class));
+            ChildEmergency.emergencyPrompt(this);
         });
 
     }

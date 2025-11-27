@@ -23,7 +23,6 @@ public class AddChildActivity extends AppCompatActivity {
     private EditText editTextChildName;
     private EditText editTextChildDob;
     private EditText editTextNotes;
-    private Button buttonSaveChild;
 
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
@@ -39,7 +38,7 @@ public class AddChildActivity extends AppCompatActivity {
         editTextChildName = findViewById(R.id.editTextChildName);
         editTextChildDob = findViewById(R.id.editTextChildDob);
         editTextNotes = findViewById(R.id.editTextNotes);
-        buttonSaveChild = findViewById(R.id.buttonSaveChild);
+        Button buttonSaveChild = findViewById(R.id.buttonSaveChild);
         Button buttonReturn = findViewById(R.id.buttonReturn);
 
         buttonReturn.setOnClickListener(new View.OnClickListener() {
@@ -82,12 +81,10 @@ public class AddChildActivity extends AppCompatActivity {
     }
 
     private void saveChildProfile() {
-        // Get all data
         String childName = editTextChildName.getText().toString().trim();
         String childDob = editTextChildDob.getText().toString().trim();
         String notes = editTextNotes.getText().toString().trim();
 
-        // Data validation
         if (childName.isEmpty() || childDob.isEmpty()) {
             Toast.makeText(this, "Please fill in all required fields", Toast.LENGTH_SHORT).show();
             return;
@@ -119,10 +116,10 @@ public class AddChildActivity extends AppCompatActivity {
                 .update("children", FieldValue.arrayUnion(child))
                 .addOnSuccessListener(aVoid -> {
                     Map<String, Object> linkedChildInfo = new HashMap<>();
-                    linkedChildInfo.put("uid", parentUid); // Use parent UID since it's a profile
+                    linkedChildInfo.put("uid", parentUid);
                     linkedChildInfo.put("name", childName);
                     linkedChildInfo.put("linkedAt", System.currentTimeMillis());
-                    linkedChildInfo.put("isProfile", true); // Mark as profile (not separate account)
+                    linkedChildInfo.put("isProfile", true);
                     linkedChildInfo.put("dob", childDob);
                     linkedChildInfo.put("notes", notes);
 

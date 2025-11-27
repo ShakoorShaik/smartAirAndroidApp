@@ -47,7 +47,6 @@ public class PEFManager {
                             callback.onSuccess(null);
                         }
                     } else {
-                        // No PEF readings found
                         callback.onSuccess(null);
                     }
                 })
@@ -97,7 +96,6 @@ public class PEFManager {
                             callback.onSuccess(null);
                         }
                     } else {
-                        // No PEF reading for this date
                         callback.onSuccess(null);
                     }
                 })

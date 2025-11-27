@@ -50,6 +50,16 @@
             android:textSize="14sp"
             android:textStyle="bold" />
 
+        <TextView
+            android:id="@+id/textViewZone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Zone: --"
+            android:textColor="#757575"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
         <Button
             android:id="@+id/buttonGoToChild"
             android:layout_width="wrap_content"
@@ -70,4 +80,3 @@
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
-

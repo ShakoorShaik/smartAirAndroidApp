@@ -15,7 +15,8 @@
         <TextView
             android:id="@+id/zoneStepsTextView"
             android:layout_width="340dp"
-            android:layout_height="512dp" />
+            android:layout_height="512dp"
+            android:layout_gravity="center"/>
 
     </LinearLayout>
 
