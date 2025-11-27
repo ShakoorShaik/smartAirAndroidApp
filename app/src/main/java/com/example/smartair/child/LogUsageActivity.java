@@ -83,11 +83,6 @@ public class LogUsageActivity extends AppCompatActivity {
                     builder3.setMessage("Enter a rating of your breathing.");
                     builder3.setView(inputText);
                     builder3.setPositiveButton("OK!", null);
-                    builder3.setNegativeButton("Cancel", (dialog, which) -> {
-                        Intent intent = new Intent(LogUsageActivity.this, ChildDashboardHome.class);
-                        startActivity(intent);
-                        finish();
-                    });
                     builder3.setCancelable(false);
                     AlertDialog alert3 = builder3.create();
                     alert3.show();
@@ -135,11 +130,6 @@ public class LogUsageActivity extends AppCompatActivity {
                     feelingIndex2 = which;
                 });
                 builder2.setPositiveButton("OK!", null);
-                builder2.setNegativeButton("Cancel", (dialog, which) -> {
-                    Intent intent = new Intent(LogUsageActivity.this, ChildDashboardHome.class);
-                    startActivity(intent);
-                    finish();
-                });
                 builder2.setCancelable(false);
 
                 AlertDialog alert2 = builder2.create();
@@ -164,11 +154,6 @@ public class LogUsageActivity extends AppCompatActivity {
                             builder3.setMessage("Enter a rating of your breathing.");
                             builder3.setView(inputText);
                             builder3.setPositiveButton("OK!", null);
-                            builder3.setNegativeButton("Cancel", (dialog, which) -> {
-                                Intent intent = new Intent(LogUsageActivity.this, ChildDashboardHome.class);
-                                startActivity(intent);
-                                finish();
-                            });
                             builder3.setCancelable(false);
 
                             AlertDialog alert3 = builder3.create();
@@ -185,6 +170,10 @@ public class LogUsageActivity extends AppCompatActivity {
 
                                         postbreathRating = Integer.parseInt(input);
                                         saveInhalerLog();
+                                        Intent intent = new Intent(
+                                                LogUsageActivity.this,
+                                                ChildDashboardHome.class);
+                                        startActivity(intent);
 
                                     }
 
