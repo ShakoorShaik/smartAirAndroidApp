@@ -43,6 +43,7 @@ import utils.Medicine;
 import utils.DatabaseManager;
 import utils.PBManager;
 import utils.ParentEmergency;
+import utils.ParentRescue;
 import utils.ZoneManager;
 import utils.ChildAccountManager;
 import utils.PEFManager;
@@ -68,6 +69,7 @@ public class ParentMedicineFragment extends Fragment {
     public void onStart(){
         super.onStart();
         ParentEmergency.listenEmergency(this);
+        ParentRescue.listenRescue(this);
     }
 
     @Override

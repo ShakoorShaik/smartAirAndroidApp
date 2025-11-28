@@ -14,6 +14,7 @@ import com.example.smartair.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 import utils.ParentEmergency;
+import utils.ParentRescue;
 
 public class ParentSettingsFragment extends Fragment {
 
@@ -24,6 +25,7 @@ public class ParentSettingsFragment extends Fragment {
     public void onStart(){
         super.onStart();
         ParentEmergency.listenEmergency(this);
+        ParentRescue.listenRescue(this);
     }
 
     @Override

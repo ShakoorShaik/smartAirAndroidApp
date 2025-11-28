@@ -27,6 +27,7 @@ import java.util.Map;
 
 import utils.ChildIdManager;
 import utils.DatabaseManager;
+import utils.RescueAlertManager;
 
 public class LogUsageActivity extends AppCompatActivity {
 
@@ -289,6 +290,19 @@ public class LogUsageActivity extends AppCompatActivity {
         inhalerLog.put("postDoseStatus", postdose);
         inhalerLog.put("preDoseBreathRating", prebreathRating);
         inhalerLog.put("postDoseBreathRating", postbreathRating);
+
+        String ChildId = FirebaseAuth.getInstance().getUid();
+        if (medicationType.equals("Rescue")){
+            ChildIdManager manager = new ChildIdManager(this);
+            String curr_child_id = manager.getChildId();
+            if (!curr_child_id.equals("NA")) {
+                RescueAlertManager.toggleRescueFlag(curr_child_id);
+            }
+            else {
+                RescueAlertManager.toggleRescueFlag(ChildId);
+            }
+
+        }
 
         DatabaseManager.FirestoreCallback callback =  new DatabaseManager.FirestoreCallback() {
             @Override
