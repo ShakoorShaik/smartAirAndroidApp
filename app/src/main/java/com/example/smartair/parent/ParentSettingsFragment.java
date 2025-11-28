@@ -35,6 +35,7 @@ public class ParentSettingsFragment extends Fragment {
 
         Button buttonLogout = view.findViewById(R.id.buttonLogout);
         Button buttonThresholds = view.findViewById(R.id.buttonThresholds);
+        Button buttonRescue = view.findViewById(R.id.buttonRescue);
         buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,6 +50,13 @@ public class ParentSettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), SetChildThresholds.class);
+                startActivity(intent);
+            }
+        });
+        buttonRescue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), setRescueThreshold.class);
                 startActivity(intent);
             }
         });

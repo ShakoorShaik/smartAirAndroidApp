@@ -17,7 +17,7 @@ import java.util.Date;
 
 public class ParentRescue {
 
-    private static final Integer defaultThreshold = 0;
+    private static final Integer defaultThreshold = 3;
     public interface PRCallback {
         void onSuccess(Integer number);
         void onFailure(Exception e);
@@ -38,7 +38,7 @@ public class ParentRescue {
                 if (dc.getType() == DocumentChange.Type.MODIFIED) {
                     DocumentSnapshot doc = dc.getDocument();
                     String ChildUid = doc.getId();
-                    Boolean flag = dc.getDocument().getBoolean("emergencyFlag");
+                    Boolean flag = dc.getDocument().getBoolean("rescueFlag");
                     String name = dc.getDocument().getString("name");
                     if (flag == Boolean.FALSE){
                         countRescueAttempts(ChildUid, new PRCallback() {
@@ -54,8 +54,10 @@ public class ParentRescue {
                                                 rescuePromptParent(name, rescueCount, defaultThreshold, fragment);
                                             }
                                         }
-                                        if (rescueCount >= threshold){
+                                        else {
+                                            if (rescueCount >= threshold) {
                                             rescuePromptParent(name, rescueCount, threshold, fragment);
+                                            }
                                         }
 
                                     }
@@ -105,7 +107,7 @@ public class ParentRescue {
         Activity activity = fragment.getActivity();
         if (activity != null && !activity.isFinishing()) {
             AlertDialog alertDialog = new AlertDialog.Builder(activity).create();
-            alertDialog.setTitle("Your child " + name + " attempted " + rescueCount + " rescues, greater than " + rescueThreshold + "threshold.");
+            alertDialog.setTitle("Your child " + name + " attempted " + rescueCount + " rescues, greater than " + rescueThreshold + " threshold in the span of 3 hours.");
             alertDialog.show();
         }
     }

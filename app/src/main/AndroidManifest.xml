@@ -118,6 +118,10 @@
             android:name=".parent.SetChildThresholds"
             android:exported="false" >
         </activity>
+        <activity
+            android:name=".parent.setRescueThreshold"
+            android:exported="false" >
+        </activity>
     </application>
 
 </manifest>
