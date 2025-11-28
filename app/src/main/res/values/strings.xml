@@ -14,7 +14,6 @@
     <string name="return_">Return</string>
     <string-array name="account_type_array">
         <item>Parent</item>
-        <item>Child</item>
         <item>Provider</item>
     </string-array>
     <string name="parent_dashboard">Parent Dashboard</string>

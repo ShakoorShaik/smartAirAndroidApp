@@ -185,7 +185,7 @@ public class LogUsageActivity extends AppCompatActivity {
                                         saveInhalerLog();
                                         Intent intent = new Intent(
                                                 LogUsageActivity.this,
-                                                ChildDashboardHome.class);
+                                                ChildDashboardMainActivity.class);
                                         startActivity(intent);
 
                                     }

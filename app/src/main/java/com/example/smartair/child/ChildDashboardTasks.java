@@ -23,7 +23,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import utils.BadgeStreakManager;
 import utils.ChildEmergency;
+import utils.ChildIdManager;
 
 public class ChildDashboardTasks extends AppCompatActivity {
 
@@ -82,10 +84,6 @@ public class ChildDashboardTasks extends AppCompatActivity {
         });
 
         buttonTriggerHistory.setOnClickListener(v -> {  //todo
-            Toast.makeText(this, "TODO NOT FUNCTIONAL", Toast.LENGTH_LONG).show();
-        });
-
-        buttonRecordSymptom.setOnClickListener(v -> {   //todo
             Toast.makeText(this, "TODO NOT FUNCTIONAL", Toast.LENGTH_LONG).show();
         });
 
