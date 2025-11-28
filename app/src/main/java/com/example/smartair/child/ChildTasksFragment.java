@@ -16,6 +16,8 @@ import androidx.fragment.app.Fragment;
 import com.example.smartair.R;
 import com.example.smartair.child.emergency.Emergency;
 import com.example.smartair.child.inhalertechnique.InhalerTechniqueFirst;
+import com.example.smartair.child.logtrigger.LogTriggerActivity;
+
 import utils.ChildEmergency;
 
 public class ChildTasksFragment extends Fragment {
@@ -52,12 +54,13 @@ public class ChildTasksFragment extends Fragment {
         buttonRecordSymptom = view.findViewById(R.id.symptomRecordButton);
         buttonEmergency = view.findViewById(R.id.emergencyButton);
 
+
         buttonTechniqueHelper.setOnClickListener(v -> {
             startActivity(new Intent(getActivity(), InhalerTechniqueFirst.class));
         });
 
         buttonRecordTrigger.setOnClickListener(v -> {
-            Toast.makeText(getActivity(), "TODO NOT FUNCTIONAL", Toast.LENGTH_LONG).show();
+            startActivity((new Intent(getActivity(), LogTriggerActivity.class)));
         });
 
         buttonTriggerHistory.setOnClickListener(v -> {
