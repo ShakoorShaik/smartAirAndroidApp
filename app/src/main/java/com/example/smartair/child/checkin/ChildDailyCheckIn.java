@@ -2,8 +2,10 @@ package com.example.smartair.child.checkin;
 
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.smartair.R;
@@ -27,6 +29,8 @@ public class ChildDailyCheckIn extends AppCompatActivity {
     private LinearLayout selectedSleepOption = null;
     private LinearLayout selectedCoughOption = null;
     private LinearLayout selectedLimitsOption = null;
+
+    private Switch enteredByParent = null;
 
     private EditText notesEditText;
     private Button submitButton;
@@ -79,6 +83,7 @@ public class ChildDailyCheckIn extends AppCompatActivity {
 
         submitButton = findViewById(R.id.btnSubmit);
         notesEditText = findViewById(R.id.notesEditText);
+        enteredByParent = findViewById(R.id.switch1);
 
         //Question 1
         LinearLayout badSleep = findViewById(R.id.emojiBad);
@@ -145,6 +150,18 @@ public class ChildDailyCheckIn extends AppCompatActivity {
         badLimits.setOnClickListener(v -> {
             handleLimitsSelection(badLimits, "0");
         });
+
+        Boolean isChecked = enteredByParent.isChecked();
+
+        enteredByParent.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    checkInData.enteredByParent = true;
+                }
+            }
+        });
+
 
         submitButton.setOnClickListener(v -> {
             checkInData.notes = notesEditText.getText().toString();

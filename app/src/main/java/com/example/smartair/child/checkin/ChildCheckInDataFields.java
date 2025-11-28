@@ -17,10 +17,12 @@ public class ChildCheckInDataFields {
     public String userEmail; //uh might not need
     public String userId;
 
+    public Boolean enteredByParent = false;
+
     public ChildCheckInDataFields() {}
 
     public ChildCheckInDataFields (String nightWaking, String coughWheeze,
-                                          String activityLimits, String notes) {
+                                          String activityLimits, String notes, Boolean enteredByParent) {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -29,6 +31,7 @@ public class ChildCheckInDataFields {
             this.userId = user.getUid();
         }
 
+        this.enteredByParent = enteredByParent;
         this.nightWaking = nightWaking;
         this.coughWheeze = coughWheeze;
         this.activityLimits = activityLimits;
