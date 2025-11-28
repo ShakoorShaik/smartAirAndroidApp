@@ -255,7 +255,11 @@ public class BadgeStreakManager {
                                 if (task.isSuccessful()) {
                                     DocumentSnapshot document = task.getResult();
                                     if (document.exists()) {
-                                        callback.onSuccess(Integer.valueOf(document.getString(Threshold)));
+                                        String X = document.getString(Threshold);
+                                        if (X != null){
+                                            callback.onSuccess(Integer.valueOf(X));
+                                        }
+                                        callback.onSuccess(default_threshold);
                                     } else {
                                         callback.onFailure(task.getException());
                                     }
