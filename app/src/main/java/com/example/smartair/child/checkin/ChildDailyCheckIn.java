@@ -17,12 +17,6 @@ import java.util.Locale;
 
 public class ChildDailyCheckIn extends AppCompatActivity {
 
-
-    /*
-    implement child entered daily check in or parent entered daily check in
-     */
-
-
     private ChildCheckInDataFields checkInData;
     private DailyCheckInDataWriting dataWriter;
 
