@@ -5,24 +5,23 @@
     android:orientation="vertical"
     android:padding="20dp">
 
-    <TextView
-        android:layout_width="match_parent"
+
+    <Button
+        android:id="@+id/button9"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Log Daily Trigger"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginBottom="16dp" />
+        android:text="return"
+        android:layout_marginBottom="10dp"/>
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Track when triggers affect you"
-        android:textSize="16sp"
-        android:gravity="center"
-        android:layout_marginBottom="16dp" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Log Daily Trigger"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="16dp" />
 
-    <!-- Added Date Display -->
     <TextView
         android:id="@+id/tvDate"
         android:layout_width="match_parent"

@@ -33,13 +33,21 @@ public class LogTriggerActivity extends AppCompatActivity {
     private Map<String, Integer> triggerCounts = new HashMap<>();
     private Map<String, TextView> countDisplayViews = new HashMap<>();
 
+    private String currentDate;
+
     private void resetCounters() {
-        for (String triggerName : triggerCounts.keySet()) {
-            triggerCounts.put(triggerName, 0);
-            TextView countView = countDisplayViews.get(triggerName);
-            if (countView != null) {
-                countView.setText("< 0 >");
+        String today = ChildrenTriggerCountAndDates.getTodayDate();
+        if (!today.equals(currentDate)) {
+            for (String triggerName : triggerCounts.keySet()) {
+                triggerCounts.put(triggerName, 0);
+                TextView countView = countDisplayViews.get(triggerName);
+                if (countView != null) {
+                    countView.setText("< 0 >");
+                }
             }
+            currentDate = today;
+            setupDateDisplay();
+            showToast("New day - counters reset to zero");
         }
     }
 
@@ -62,7 +70,7 @@ public class LogTriggerActivity extends AppCompatActivity {
     }
 
     private void setupDateDisplay() {
-        String today = ChildrenTriggerCountAndDates.getTodayDate();
+        currentDate = ChildrenTriggerCountAndDates.getTodayDate();
         SimpleDateFormat displayFormat = new SimpleDateFormat("EEEE, MMMM d, yyyy", Locale.getDefault());
         String displayDate = displayFormat.format(new Date());
         dateDisplay.setText("Today: " + displayDate);
@@ -99,7 +107,6 @@ public class LogTriggerActivity extends AppCompatActivity {
         row.setPadding(32, 24, 32, 24);
         row.setBackgroundResource(R.drawable.edittext_background);
 
-        // Trigger name
         TextView nameView = new TextView(this);
         LinearLayout.LayoutParams nameParams = new LinearLayout.LayoutParams(
                 0, LinearLayout.LayoutParams.WRAP_CONTENT, 0.6f
@@ -109,7 +116,6 @@ public class LogTriggerActivity extends AppCompatActivity {
         nameView.setTextSize(18);
         nameView.setTypeface(null, android.graphics.Typeface.BOLD);
 
-        // Counter section
         LinearLayout counterSection = new LinearLayout(this);
         counterSection.setOrientation(LinearLayout.HORIZONTAL);
         counterSection.setGravity(android.view.Gravity.CENTER_VERTICAL | android.view.Gravity.END);
@@ -118,11 +124,9 @@ public class LogTriggerActivity extends AppCompatActivity {
         );
         counterSection.setLayoutParams(counterParams);
 
-        // Decrease button
         Button decreaseBtn = createCounterButton("-");
         decreaseBtn.setOnClickListener(v -> decreaseCount(triggerName));
 
-        // Count display
         TextView countView = new TextView(this);
         countView.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
@@ -136,7 +140,6 @@ public class LogTriggerActivity extends AppCompatActivity {
 
         countDisplayViews.put(triggerName, countView);
 
-        // Increase button
         Button increaseBtn = createCounterButton("+");
         increaseBtn.setOnClickListener(v -> increaseCount(triggerName));
 
@@ -165,11 +168,13 @@ public class LogTriggerActivity extends AppCompatActivity {
     }
 
     private void increaseCount(String triggerName) {
+        resetCounters();
         int current = triggerCounts.getOrDefault(triggerName, 0);
         updateCount(triggerName, current + 1);
     }
 
     private void decreaseCount(String triggerName) {
+        resetCounters();
         int current = triggerCounts.getOrDefault(triggerName, 0);
         updateCount(triggerName, Math.max(0, current - 1));
     }
@@ -181,7 +186,6 @@ public class LogTriggerActivity extends AppCompatActivity {
             countView.setText("< " + newCount + " >");
         }
     }
-
 
     private void saveTriggerData(ChildrenTriggerCountAndDates data, ChildrenTriggerDataWriting.WriteCallback callback) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -234,7 +238,6 @@ public class LogTriggerActivity extends AppCompatActivity {
                     if (completed[0] == total) {
                         runOnUiThread(() -> {
                             showToast("Triggers saved successfully!");
-                            resetCounters();
                         });
                     }
                 }
@@ -272,6 +275,15 @@ public class LogTriggerActivity extends AppCompatActivity {
         setupViews();
         setupClickListeners();
         setupDateDisplay();
+
+        Button returnButton = findViewById(R.id.button9);
+        returnButton.setOnClickListener(v -> finish());
+
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        resetCounters();
+    }
 }
