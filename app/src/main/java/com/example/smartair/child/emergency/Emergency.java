@@ -7,19 +7,20 @@ import android.os.Handler;
 import android.os.Looper;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.TextView;
+
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartair.R;
-import com.example.smartair.child.inhalertechnique.InhalerTechniqueFirst;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-import utils.ChildAccountManager;
+import utils.ChildIdManager;
+
+import utils.EmergencyManager;
 import utils.ZoneManager;
 
 public class Emergency extends AppCompatActivity {
@@ -35,19 +36,22 @@ public class Emergency extends AppCompatActivity {
     private Button buttonNextSteps;
 
     private Button buttonNotEmergency;
-    FirebaseAuth mAuth;
-    FirebaseFirestore db;
-    FirebaseUser childUser;
+
+    String userID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_child_emergency);
-
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        ChildIdManager manager = new ChildIdManager(this);
+        String curr_child_id = manager.getChildId();
+        if (!curr_child_id.equals("NA")) {
+            userID = curr_child_id;
+        } else {
+            userID = user.getUid();
+        }
         checkIn10();
-
-        mAuth = FirebaseAuth.getInstance();
-        db = FirebaseFirestore.getInstance();
-        childUser = mAuth.getCurrentUser();
 
         checkboxCsfs = findViewById(R.id.checkbox_csfs);
         checkboxCp = findViewById(R.id.checkbox_cp);
@@ -59,22 +63,24 @@ public class Emergency extends AppCompatActivity {
         buttonNotEmergency = findViewById(R.id.button_not_emergency);
 
         buttonNextSteps.setOnClickListener(v -> {
-            log_triage();
             checkIn10();
             if (checkboxCsfs.isChecked() || checkboxCp.isChecked() || checkboxLnbg.isChecked() || checkboxRra.isChecked()){
                 escalation();
             }
             else{
-                ZoneManager.getTodayZone(mAuth.getUid(), new ZoneManager.ZoneCallback() {
+                ZoneManager.getTodayZone(userID, new ZoneManager.ZoneCallback() {
                     @Override
                     public void onSuccess(ZoneManager.Zone zone, Integer pefValue, Integer pbValue) {
                         if (zone == ZoneManager.Zone.GREEN){
+                            log_triage("green zone steps");
                             startActivity(new Intent(getApplicationContext(), GreenZoneSteps.class));
                         }
                         else if (zone == ZoneManager.Zone.YELLOW){
+                            log_triage("yellow zone steps");
                             startActivity(new Intent(getApplicationContext(), YellowZoneSteps.class));
                         }
                         else{
+                            log_triage("red zone steps");
                             startActivity(new Intent(getApplicationContext(), RedZoneSteps.class));
                         }
                     }
@@ -95,6 +101,7 @@ public class Emergency extends AppCompatActivity {
 
     private void escalation(){
         send_parent_alert();
+        log_triage("call 911");
         AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setTitle("CALL EMERGENCY SERVICES IMMEDIATELY");
         alertDialog.setMessage("YOUR SYMPTOMS ARE TOO SEVERE, PLEASE CALL EMERGENCY SERVICES. YOUR PARENT HAS BEEN ALERTED");
@@ -108,8 +115,8 @@ public class Emergency extends AppCompatActivity {
         new Handler(Looper.getMainLooper()).postDelayed(() -> {checkUpPrompt();}, 1000 * 60 * 10);
     }
 
-    private void log_triage(){
-        ChildAccountManager.logTriage(checkboxCsfs.isChecked(), checkboxCp.isChecked(), checkboxLnbg.isChecked(), checkboxRra.isChecked(), checkboxO.isChecked());
+    private void log_triage(String guidance){
+        EmergencyManager.logTriage(userID, checkboxCsfs.isChecked(), checkboxCp.isChecked(), checkboxLnbg.isChecked(), checkboxRra.isChecked(), checkboxO.isChecked(), guidance);
     }
 
     private void checkUpPrompt(){
@@ -137,6 +144,6 @@ public class Emergency extends AppCompatActivity {
     }
 
     private void send_parent_alert(){
-        ChildAccountManager.toggleEmergencyFlag();
+        EmergencyManager.toggleEmergencyFlag(userID);
     }
 }

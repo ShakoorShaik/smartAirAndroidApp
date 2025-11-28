@@ -32,6 +32,7 @@ public class ParentSettingsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_parent_settings, container, false);
 
         Button buttonLogout = view.findViewById(R.id.buttonLogout);
+        Button buttonThresholds = view.findViewById(R.id.buttonThresholds);
         buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -40,6 +41,13 @@ public class ParentSettingsFragment extends Fragment {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 getActivity().finish();
+            }
+        });
+        buttonThresholds.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), SetChildThresholds.class);
+                startActivity(intent);
             }
         });
 

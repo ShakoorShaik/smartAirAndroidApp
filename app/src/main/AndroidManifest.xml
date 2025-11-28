@@ -114,6 +114,10 @@
             android:name=".child.emergency.GreenZoneSteps"
             android:exported="false" >
         </activity>
+        <activity
+            android:name=".parent.SetChildThresholds"
+            android:exported="false" >
+        </activity>
     </application>
 
 </manifest>
