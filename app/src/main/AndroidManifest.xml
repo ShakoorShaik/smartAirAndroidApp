@@ -57,6 +57,12 @@
             android:name=".child.LogUsageActivity"
             android:exported="false"></activity>
         <activity
+            android:name=".child.logtrigger.LogTriggerActivity"
+            android:exported="false"></activity>
+        <activity
+            android:name=".child.checkin.ChildDailyCheckIn"
+            android:exported="false" ></activity>
+        <activity
             android:name=".child.ChildDashboardSettings"
             android:exported="false"></activity> <!-- Forget Password Activities -->
         <activity

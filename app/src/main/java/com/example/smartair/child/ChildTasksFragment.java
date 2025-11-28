@@ -20,6 +20,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import utils.BadgeStreakManager;
+import com.example.smartair.child.logtrigger.LogTriggerActivity;
+
 import utils.ChildEmergency;
 import utils.ChildIdManager;
 
@@ -82,12 +84,13 @@ public class ChildTasksFragment extends Fragment {
         buttonRecordSymptom = view.findViewById(R.id.symptomRecordButton);
         buttonEmergency = view.findViewById(R.id.emergencyButton);
 
+
         buttonTechniqueHelper.setOnClickListener(v -> {
             startActivity(new Intent(getActivity(), InhalerTechniqueFirst.class));
         });
 
         buttonRecordTrigger.setOnClickListener(v -> {
-            Toast.makeText(getActivity(), "TODO NOT FUNCTIONAL", Toast.LENGTH_LONG).show();
+            startActivity((new Intent(getActivity(), LogTriggerActivity.class)));
         });
 
         buttonTriggerHistory.setOnClickListener(v -> {

@@ -38,7 +38,7 @@
 
     <Button
         android:id="@+id/recordTriggerButton"
-        android:text="Record a trigger"
+        android:text="Log triggers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
@@ -60,7 +60,7 @@
 
     <Button
         android:id="@+id/symptomRecordButton"
-        android:text="Record a symptom"
+        android:text="Log symptoms"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"

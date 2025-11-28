@@ -12,8 +12,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.smartair.R;
+import com.example.smartair.child.checkin.ChildDailyCheckIn;
 import com.example.smartair.child.emergency.Emergency;
 import com.example.smartair.child.inhalertechnique.InhalerTechniqueFirst;
+import com.example.smartair.child.logtrigger.LogTriggerActivity;
 import com.example.smartair.parent.ParentChildrenFragment;
 import com.example.smartair.parent.ParentHomeFragment;
 import com.example.smartair.parent.ParentMedicineFragment;
@@ -79,8 +81,12 @@ public class ChildDashboardTasks extends AppCompatActivity {
             startActivity(new Intent(this, InhalerTechniqueFirst.class));
         });
 
-        buttonRecordTrigger.setOnClickListener(v -> {   //todo
-            Toast.makeText(this, "TODO NOT FUNCTIONAL", Toast.LENGTH_LONG).show();
+        buttonRecordTrigger.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ChildDashboardTasks.this, LogTriggerActivity.class));
+                finish();
+            }
         });
 
         buttonTriggerHistory.setOnClickListener(v -> {  //todo
@@ -94,6 +100,7 @@ public class ChildDashboardTasks extends AppCompatActivity {
         buttonEmergency.setOnClickListener(v -> {
             ChildEmergency.emergencyPrompt(this);
         });
+
 
     }
 
