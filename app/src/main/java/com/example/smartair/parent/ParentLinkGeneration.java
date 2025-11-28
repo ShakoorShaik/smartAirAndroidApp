@@ -29,6 +29,9 @@ public class ParentLinkGeneration extends AppCompatActivity{
 
         Button returnButton = findViewById(R.id.button3);
         returnButton.setOnClickListener(v -> finish());
+
+        Button invalidateCode = findViewById(R.id.button10);
+        invalidateCode.setOnClickListener(v -> invalidateCode());
     }
 
     private void generateCode() {
@@ -43,5 +46,20 @@ public class ParentLinkGeneration extends AppCompatActivity{
                 Toast.makeText(ParentLinkGeneration.this, "Error: " + e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void invalidateCode() {
+        ParentProviderLinking.InvalidateCode(new ParentProviderLinking.InvalidateCallback() {
+            @Override
+            public void onSuccess() {
+                Toast.makeText(ParentLinkGeneration.this, "Referral code invalidated", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                Toast.makeText(ParentLinkGeneration.this, "Failed to invalidate code: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 }

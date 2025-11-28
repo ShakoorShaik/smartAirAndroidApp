@@ -19,6 +19,10 @@ public class ParentProviderLinking{
         void onFailure(Exception e);
     }
 
+    public interface InvalidateCallback {
+        void onSuccess();
+        void onFailure(Exception e);
+    }
     public static void generateLinkCode(DatabaseManager.DataSuccessFailCallback callback) {
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -68,12 +72,29 @@ public class ParentProviderLinking{
                 });
     }
 
+    public static void InvalidateCode(InvalidateCallback callBack) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user == null) {
+            callBack.onFailure(new Exception("User is null"));
+            return;
+        }
+
+        String userUid = user.getUid();
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("users").document(userUid).update("referralCodeUsed", true)
+                .addOnSuccessListener(aVoid -> callBack.onSuccess()).addOnFailureListener(callBack::onFailure);
+
+    }
+
     public static void redeemCode(String code, RedeemCallback callback) {
 
         FirebaseUser provider = FirebaseAuth.getInstance().getCurrentUser();
 
         if (provider == null) {
-            callback.onFailure(new Exception("Provider not logged in"));
+            callback.onFailure(new Exception("User is null"));
             return;
         }
 
