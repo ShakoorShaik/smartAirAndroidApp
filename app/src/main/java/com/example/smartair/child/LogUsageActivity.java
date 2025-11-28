@@ -1,5 +1,6 @@
 package com.example.smartair.child;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -8,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -15,6 +17,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartair.R;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,13 +33,18 @@ public class LogUsageActivity extends AppCompatActivity {
     private RadioButton rescueRadioButton;
     private RadioButton controllerRadioButton;
     private EditText doseCountEditText;
+    private TextView buttonLowCanister;
     private int prebreathRating;
     private int postbreathRating;
     private String predose;
     private String postdose;
+    private String canTypeAlert;
     private int feelingIndex1 = -1;
-
     private int feelingIndex2 = -1;
+    private int canIndex = -1;
+    String childId = null;
+    String parentId = null;
+    String childName = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +56,7 @@ public class LogUsageActivity extends AppCompatActivity {
         controllerRadioButton = findViewById(R.id.controllerRadioButton);
         doseCountEditText = findViewById(R.id.doseCountEditText);
         Button saveButton = findViewById(R.id.saveButton);
+        buttonLowCanister = findViewById(R.id.text_low_canister);
 
 
         AlertDialog.Builder builder = new AlertDialog.Builder(LogUsageActivity.this);
@@ -116,6 +128,47 @@ public class LogUsageActivity extends AppCompatActivity {
             }
 
 
+        });
+
+        buttonLowCanister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder lowCanConfirmation = new AlertDialog.Builder(LogUsageActivity.this);
+                String [] canType = {"Rescue", "Controller"};
+
+                lowCanConfirmation.setTitle("Select Canister Type to Alert Parent");
+                lowCanConfirmation.setSingleChoiceItems(canType, canIndex, (dialog,which) -> {
+                    canIndex = which;
+                });
+                lowCanConfirmation.setPositiveButton("Alert",null);
+                lowCanConfirmation.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                lowCanConfirmation.setCancelable(true);
+
+                AlertDialog lowCanisterAlert = lowCanConfirmation.create();
+                lowCanisterAlert.show();
+
+                lowCanisterAlert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (canIndex == -1) {
+                            Toast.makeText(LogUsageActivity.this, "Choose Canister Type!", Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                        else {
+                            canTypeAlert = canType[canIndex];
+                            sendLowCanisterAlert();
+                            lowCanisterAlert.dismiss();
+                        }
+
+
+                    }
+                });
+            }
         });
 
 
@@ -255,5 +308,82 @@ public class LogUsageActivity extends AppCompatActivity {
         if (!curr_child_id.equals("NA")) {
             DatabaseManager.getInstance().addInhalerLog(curr_child_id, inhalerLog, callback);
         } else { DatabaseManager.getInstance().addInhalerLog(inhalerLog, callback); }
+    }
+
+    private void sendLowCanisterAlert() {
+        ChildIdManager childIdManager = new ChildIdManager(LogUsageActivity.this);
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        childId = childIdManager.getChildId();
+
+        if (!childId.equals("NA")) {
+
+            if (user == null) { return; }
+
+            parentId = user.getUid();
+            db.collection("users").document(childId).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful() && task.getResult() != null) {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+
+                    if(documentSnapshot.exists()) {
+                        childName = documentSnapshot.getString("name");
+
+                        if(childName != null) {
+                            saveLowCanAlert(childId, parentId, childName);
+                        }
+                    }
+                }
+            });
+
+
+        }
+        else {
+
+            if (user == null) { return; }
+            childId = user.getUid();
+
+            db.collection("users").document(childId).get().addOnCompleteListener(task -> {
+                if (task.isSuccessful() && task.getResult() != null) {
+                    DocumentSnapshot documentSnapshot = task.getResult();
+
+                    if(documentSnapshot.exists()) {
+                        parentId = documentSnapshot.getString("parentUid");
+                        childName = documentSnapshot.getString("name");
+
+                        if(parentId != null && childName != null) {
+                            saveLowCanAlert(childId, parentId, childName);
+                        }
+                    }
+                }
+            });
+
+
+
+        }
+
+
+
+
+
+
+
+    }
+    private void saveLowCanAlert(String childId, String parentId, String childName) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        Map<String, Object> alert = new HashMap<>();
+
+        alert.put("childUid", childId);
+        alert.put("childName", childName);
+        alert.put("canType", canTypeAlert);
+        alert.put("status", "unread");
+
+        db.collection("users").document(parentId)
+                .collection("low_canister_alerts")
+                .add(alert)
+                .addOnSuccessListener(doc -> {
+                    Toast.makeText(LogUsageActivity.this,
+                                    "Alert Sent to Parent", Toast.LENGTH_LONG)
+                            .show();
+                });
     }
 }
