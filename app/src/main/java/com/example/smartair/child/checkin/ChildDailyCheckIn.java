@@ -83,9 +83,9 @@ public class ChildDailyCheckIn extends AppCompatActivity {
         notesEditText = findViewById(R.id.notesEditText);
 
         //Question 1
-        LinearLayout badSleep = findViewById(R.id.emojiSleepy);
-        LinearLayout goodSleep = findViewById(R.id.emojiOk);
-        LinearLayout okSleep = findViewById(R.id.emojiBad);
+        LinearLayout badSleep = findViewById(R.id.emojiBad);
+        LinearLayout goodSleep = findViewById(R.id.emojiSleepy);
+        LinearLayout okSleep = findViewById(R.id.emojiOk);
 
         //Question 2
         LinearLayout badCough = findViewById(R.id.emojiMask);

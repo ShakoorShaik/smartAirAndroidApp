@@ -15,6 +15,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.example.smartair.R;
+import com.example.smartair.child.checkin.ChildDailyCheckIn;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -34,6 +35,8 @@ public class ChildHomeFragment extends Fragment {
     private static final String TAG = "ChildHomeFragment";
     private CardView todayZone;
     private TextView zonePercentage;
+
+    private Button dailyCheckIn;
 
     @Nullable
     @Override
@@ -69,6 +72,14 @@ public class ChildHomeFragment extends Fragment {
         });
 
         loadZoneInfo();
+
+        dailyCheckIn = view.findViewById(R.id.button7);
+        dailyCheckIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), ChildDailyCheckIn.class));
+            }
+        });
     }
 
     @Override
