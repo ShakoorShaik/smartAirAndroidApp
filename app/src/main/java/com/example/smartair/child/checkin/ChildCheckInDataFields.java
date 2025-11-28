@@ -16,7 +16,10 @@ public class ChildCheckInDataFields {
     public String date;
     public String userEmail; //uh might not need
     public String userId;
-    public void ChildCheckInDataFields (String nightWaking, String coughWheeze,
+
+    public ChildCheckInDataFields() {}
+
+    public ChildCheckInDataFields (String nightWaking, String coughWheeze,
                                           String activityLimits, String notes) {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

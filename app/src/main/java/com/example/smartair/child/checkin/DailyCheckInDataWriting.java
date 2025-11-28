@@ -5,6 +5,7 @@ import java.util.Map;
 import utils.DatabaseManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class DailyCheckInDataWriting {
 
@@ -36,27 +37,21 @@ public class DailyCheckInDataWriting {
                 data.userId != null && !data.userId.isEmpty();
     }
 
-    private Map<String, Object> convertToFirebaseFormat (ChildCheckInDataFields data) {
+    private Map<String, Object> convertToFirebaseFormat(ChildCheckInDataFields data) {
         Map<String, Object> firebaseData = new HashMap<>();
 
         firebaseData.put("nightWaking", data.nightWaking);
-        firebaseData.put("CoughWheezes", data.coughWheeze);
+        firebaseData.put("coughWheeze", data.coughWheeze);
         firebaseData.put("activityLimits", data.activityLimits);
         firebaseData.put("notes", data.notes);
-
         firebaseData.put("date", data.date);
-        firebaseData.put("userId", data.userId);
         firebaseData.put("userEmail", data.userEmail);
+        firebaseData.put("timestamp", System.currentTimeMillis());
 
         return firebaseData;
     }
 
-    private String generateDocumentPath (ChildCheckInDataFields data) {
-        return "daily_checkins/" + data.userId + "_" + data.date;
-    }
-
     public void writeDailyCheckIn(ChildCheckInDataFields data, WriteCallback callback) {
-
         autoInitializeFields(data);
 
         if (!isDataValid(data)) {
@@ -64,55 +59,47 @@ public class DailyCheckInDataWriting {
             return;
         }
 
-        Map<String, Object> firebaseData = convertToFirebaseFormat(data);
-        String docPath = generateDocumentPath(data);
-
-        DatabaseManager.writeData(docPath, firebaseData, new DatabaseManager.SuccessFailCallback() {
-            @Override
-            public void onSuccess() {
-                callback.onSuccess();
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                String errorMessage = "Failed to save check in" + e.getMessage();
-                callback.onFailure(errorMessage);
-            }
-        });
-    }
-
-    private String generateDocPathForDate(String date)  {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        String userId;
-
-        if (user != null) {
-            userId = user.getUid();
-        } else {
-            userId = "unknown";
+        if (user == null) {
+            callback.onFailure("User is null");
+            return;
         }
-        return "daily_checkins/" + userId + "_" + date;
 
+        Map<String, Object> firebaseData = convertToFirebaseFormat(data);
+
+        FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(user.getUid())
+                .collection("daily_checkin_logs")
+                .document(data.date)
+                .set(firebaseData)
+                .addOnSuccessListener(aVoid -> callback.onSuccess())
+                .addOnFailureListener(e -> callback.onFailure("Failed to save check in: " + e.getMessage()));
     }
 
     public interface CheckExistingCallback {
         void onCheckExistingResult(Boolean exists);
     }
 
-    public void checkExistingCheckIn(String date, final CheckExistingCallback callback) {
-        String docPath = generateDocPathForDate(date);
+    public void checkExistingCheckIn(String date, CheckExistingCallback callback) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null) {
+            callback.onCheckExistingResult(false);
+            return;
+        }
 
-        DatabaseManager.getData(docPath, new DatabaseManager.DataSuccessFailCallback() {
-            @Override
-            public void onSuccess(String data) {
-                boolean exist = data != null && !data.isEmpty();
-                callback.onCheckExistingResult(exist);
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-                callback.onCheckExistingResult(false);
-            }
-        });
+        FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(user.getUid())
+                .collection("daily_checkin_logs")
+                .document(date)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null && task.getResult().exists()) {
+                        callback.onCheckExistingResult(true);
+                    } else {
+                        callback.onCheckExistingResult(false);
+                    }
+                });
     }
 }

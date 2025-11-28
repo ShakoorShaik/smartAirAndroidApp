@@ -21,6 +21,11 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+/*
+check for caps and lower case
+ */
+
+
 public class LogTriggerActivity extends AppCompatActivity {
 
     private EditText newTriggerInput;

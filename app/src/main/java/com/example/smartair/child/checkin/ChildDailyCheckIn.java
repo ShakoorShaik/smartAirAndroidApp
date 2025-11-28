@@ -64,7 +64,6 @@ public class ChildDailyCheckIn extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_child_daily_checkin);
 
-        // Initialize data writer
         dataWriter = new DailyCheckInDataWriting();
 
         checkInData = new ChildCheckInDataFields();
@@ -76,7 +75,6 @@ public class ChildDailyCheckIn extends AppCompatActivity {
             checkInData.userEmail = user.getEmail();
         }
 
-        // Set current date
         checkInData.date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
         submitButton = findViewById(R.id.btnSubmit);
@@ -156,7 +154,7 @@ public class ChildDailyCheckIn extends AppCompatActivity {
                 public void onSuccess() {
                     runOnUiThread(() -> {
                         Toast.makeText(ChildDailyCheckIn.this, "Check-in submitted!", Toast.LENGTH_SHORT).show();
-                        finish(); // Close activity
+                        finish();
                     });
                 }
 
