@@ -25,5 +25,11 @@
         android:layout_height="wrap_content"
         android:text="Configure Child Badge Thresholds" />
 
+    <Button
+        android:id="@+id/buttonRescue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Configure Child Rescue Attempt Threshold" />
+
 </LinearLayout>
 

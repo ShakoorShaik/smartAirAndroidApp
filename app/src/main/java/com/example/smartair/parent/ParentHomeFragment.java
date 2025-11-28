@@ -33,6 +33,7 @@ import java.util.Objects;
 import utils.ChildAccountManager;
 import utils.Medicine;
 import utils.MedicineManager;
+import utils.ParentRescue;
 import utils.TriageHistoryManager;
 import utils.ZoneHistoryManager;
 import utils.PBManager;
@@ -60,6 +61,7 @@ public class ParentHomeFragment extends Fragment {
     public void onStart(){
         super.onStart();
         ParentEmergency.listenEmergency(this);
+        ParentRescue.listenRescue(this);
     }
 
     @Override

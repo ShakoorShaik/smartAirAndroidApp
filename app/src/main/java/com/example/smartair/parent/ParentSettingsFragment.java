@@ -14,6 +14,7 @@ import com.example.smartair.R;
 import com.google.firebase.auth.FirebaseAuth;
 
 import utils.ParentEmergency;
+import utils.ParentRescue;
 
 public class ParentSettingsFragment extends Fragment {
 
@@ -24,6 +25,7 @@ public class ParentSettingsFragment extends Fragment {
     public void onStart(){
         super.onStart();
         ParentEmergency.listenEmergency(this);
+        ParentRescue.listenRescue(this);
     }
 
     @Override
@@ -33,6 +35,7 @@ public class ParentSettingsFragment extends Fragment {
 
         Button buttonLogout = view.findViewById(R.id.buttonLogout);
         Button buttonThresholds = view.findViewById(R.id.buttonThresholds);
+        Button buttonRescue = view.findViewById(R.id.buttonRescue);
         buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,6 +50,13 @@ public class ParentSettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), SetChildThresholds.class);
+                startActivity(intent);
+            }
+        });
+        buttonRescue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), setRescueThreshold.class);
                 startActivity(intent);
             }
         });
