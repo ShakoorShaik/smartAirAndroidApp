@@ -1,5 +1,6 @@
 package com.example.smartair.parent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -101,6 +102,15 @@ public class ParentHomeFragment extends Fragment {
 
         getMostRecentRescue();
         loadZoneInfo(view);
+
+        View historyBtn = view.findViewById(R.id.historyButton);
+        if (historyBtn != null) {
+            historyBtn.setOnClickListener(v -> {
+                if (getContext() != null) {
+                    startActivity(new Intent(getContext(), ParentHistoryActivity.class));
+                }
+            });
+        }
 
         return view;
     }
