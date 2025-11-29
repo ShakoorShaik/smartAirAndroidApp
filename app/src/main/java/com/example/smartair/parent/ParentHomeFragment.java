@@ -45,6 +45,7 @@ import utils.ZoneHistoryManager;
 import utils.PBManager;
 import utils.PEFManager;
 import utils.ZoneManager;
+import utils.ChildAccountManager;
 
 import utils.ParentEmergency;
 
@@ -60,6 +61,11 @@ public class ParentHomeFragment extends Fragment {
     private TextView lastRescue;
     private Date lastRescueDate = null;
     private int rescue_count;
+    private List<Map<String, Object>> linkedChildren;
+    private int currentChildIndex = 0;
+    private CardView zoneCard;
+    private TextView zonePercentage;
+    private TextView childNameText;
 
     public ParentHomeFragment() {
     }
@@ -363,16 +369,23 @@ public class ParentHomeFragment extends Fragment {
     }
 
     private void loadZoneInfo(View view) {
-        TextView zonePercentage = view.findViewById(R.id.zone_percentage);
-        CardView zoneCard = view.findViewById(R.id.zone_card);
+        zonePercentage = view.findViewById(R.id.zone_percentage);
+        zoneCard = view.findViewById(R.id.zone_card);
+        childNameText = view.findViewById(R.id.child_name_text);
 
         if (zonePercentage == null || zoneCard == null) {
             return;
         }
 
+        if (childNameText != null) {
+            childNameText.setVisibility(View.GONE);
+        }
+
+        currentChildIndex = 0;
+
         FirebaseUser currUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currUser == null) {
-            displayDefaultZone(zonePercentage, zoneCard);
+            displayDefaultZone();
             return;
         }
 
@@ -380,31 +393,62 @@ public class ParentHomeFragment extends Fragment {
         db.collection("users").document(currUser.getUid()).get().addOnCompleteListener(task -> {
             if (task.isSuccessful() && task.getResult() != null) {
                 DocumentSnapshot document = task.getResult();
-                List<Map<String, Object>> linkedChildren =
-                        (List<Map<String, Object>>) document.get("linkedChildren");
+                linkedChildren = (List<Map<String, Object>>) document.get("linkedChildren");
 
                 if (linkedChildren != null && !linkedChildren.isEmpty()) {
-                    String firstChildUid = (String) linkedChildren.get(0).get("uid");
-                    if (firstChildUid != null) {
-                        updateZoneInfoForChild(firstChildUid, zonePercentage, zoneCard);
+                    if (linkedChildren.size() > 1 && childNameText != null) {
+                        childNameText.setVisibility(View.VISIBLE);
+                    }
+
+                    if (currentChildIndex >= linkedChildren.size()) {
+                        currentChildIndex = 0;
+                    }
+                    
+                    String childUid = (String) linkedChildren.get(currentChildIndex).get("uid");
+                    if (childUid != null) {
+                        updateZoneInfoForChild(childUid, currentChildIndex);
+                        setupClickListener();
                     } else {
-                        displayDefaultZone(zonePercentage, zoneCard);
+                        displayDefaultZone();
                     }
                 } else {
-                    displayDefaultZone(zonePercentage, zoneCard);
+                    displayDefaultZone();
                 }
             } else {
-                displayDefaultZone(zonePercentage, zoneCard);
+                displayDefaultZone();
             }
         });
     }
 
-    private void updateZoneInfoForChild(String childUid, TextView zonePercentage, CardView zoneCard) {
+    private void setupClickListener() {
+        if (zoneCard == null || linkedChildren == null || linkedChildren.size() <= 1) {
+            return;
+        }
+
+        zoneCard.setOnClickListener(v -> {
+            if (linkedChildren != null && !linkedChildren.isEmpty()) {
+                currentChildIndex = (currentChildIndex + 1) % linkedChildren.size();
+                String childUid = (String) linkedChildren.get(currentChildIndex).get("uid");
+                if (childUid != null) {
+                    updateZoneInfoForChild(childUid, currentChildIndex);
+                }
+            }
+        });
+    }
+
+    private void updateZoneInfoForChild(String childUid, int childIndex) {
+        if (childNameText != null && linkedChildren != null && childIndex < linkedChildren.size()) {
+            String childName = (String) linkedChildren.get(childIndex).get("name");
+            if (childName != null) {
+                childNameText.setText(childName);
+            }
+        }
+
         PBManager.getPB(childUid, new PBManager.PBCallback() {
             @Override
             public void onSuccess(Integer pbValue) {
                 if (pbValue == null || pbValue <= 0) {
-                    displayDefaultZone(zonePercentage, zoneCard);
+                    displayDefaultZone();
                     return;
                 }
 
@@ -415,28 +459,30 @@ public class ParentHomeFragment extends Fragment {
                     @Override
                     public void onSuccess(Integer pefValue) {
                         if (pefValue == null || pefValue <= 0) {
-                            displayDefaultZone(zonePercentage, zoneCard);
+                            displayDefaultZone();
                         } else {
                             ZoneManager.Zone zone = ZoneManager.calculateZone(pefValue, pbValue);
-                            displayZoneInfo(zone, pefValue, pbValue, zonePercentage, zoneCard);
+                            displayZoneInfo(zone, pefValue, pbValue);
                         }
                     }
 
                     @Override
                     public void onFailure(Exception e) {
-                        displayDefaultZone(zonePercentage, zoneCard);
+                        displayDefaultZone();
                     }
                 });
             }
 
             @Override
             public void onFailure(Exception e) {
-                displayDefaultZone(zonePercentage, zoneCard);
+                displayDefaultZone();
             }
         });
     }
 
-    private void displayZoneInfo(ZoneManager.Zone zone, int pefValue, int pbValue, TextView zonePercentage, CardView zoneCard) {
+    private void displayZoneInfo(ZoneManager.Zone zone, int pefValue, int pbValue) {
+        if (zonePercentage == null || zoneCard == null) return;
+        
         int percentage = (int) (((double) pefValue / pbValue) * 100);
 
         String zoneName = zone.toString().substring(0, 1).toUpperCase()
@@ -463,7 +509,9 @@ public class ParentHomeFragment extends Fragment {
         zoneCard.setCardBackgroundColor(cardColor);
     }
 
-    private void displayDefaultZone(TextView zonePercentage, CardView zoneCard) {
+    private void displayDefaultZone() {
+        if (zonePercentage == null || zoneCard == null) return;
+        
         zonePercentage.setText("--");
         zoneCard.setCardBackgroundColor(0xFFBDBDBD);
     }
