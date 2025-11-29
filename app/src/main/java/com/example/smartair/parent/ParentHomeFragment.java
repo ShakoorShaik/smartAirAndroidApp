@@ -1,6 +1,7 @@
 package com.example.smartair.parent;
 
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,18 +21,22 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import utils.ChildAccountManager;
 import utils.Medicine;
 import utils.MedicineManager;
 import utils.ParentRescue;
@@ -53,6 +59,7 @@ public class ParentHomeFragment extends Fragment {
     private YearMonth currentDisplayMonth;
     private TextView lastRescue;
     private Date lastRescueDate = null;
+    private int rescue_count;
 
     public ParentHomeFragment() {
     }
@@ -101,6 +108,7 @@ public class ParentHomeFragment extends Fragment {
 
         getMostRecentRescue();
         loadZoneInfo(view);
+        loadWeeklyRescues(view);
 
         return view;
     }
@@ -345,10 +353,10 @@ public class ParentHomeFragment extends Fragment {
             lastRescueDate = date;
 
             if (getActivity() != null) {
-                CharSequence timeAgo = android.text.format.DateUtils
+                CharSequence timeAgo = DateUtils
                         .getRelativeTimeSpanString(lastRescueDate.getTime(),
                                 System.currentTimeMillis(),
-                                android.text.format.DateUtils.MINUTE_IN_MILLIS);
+                                DateUtils.MINUTE_IN_MILLIS);
                 lastRescue.setText(timeAgo);
             }
         }
@@ -356,7 +364,7 @@ public class ParentHomeFragment extends Fragment {
 
     private void loadZoneInfo(View view) {
         TextView zonePercentage = view.findViewById(R.id.zone_percentage);
-        androidx.cardview.widget.CardView zoneCard = view.findViewById(R.id.zone_card);
+        CardView zoneCard = view.findViewById(R.id.zone_card);
 
         if (zonePercentage == null || zoneCard == null) {
             return;
@@ -391,7 +399,7 @@ public class ParentHomeFragment extends Fragment {
         });
     }
 
-    private void updateZoneInfoForChild(String childUid, TextView zonePercentage, androidx.cardview.widget.CardView zoneCard) {
+    private void updateZoneInfoForChild(String childUid, TextView zonePercentage, CardView zoneCard) {
         PBManager.getPB(childUid, new PBManager.PBCallback() {
             @Override
             public void onSuccess(Integer pbValue) {
@@ -428,7 +436,7 @@ public class ParentHomeFragment extends Fragment {
         });
     }
 
-    private void displayZoneInfo(ZoneManager.Zone zone, int pefValue, int pbValue, TextView zonePercentage, androidx.cardview.widget.CardView zoneCard) {
+    private void displayZoneInfo(ZoneManager.Zone zone, int pefValue, int pbValue, TextView zonePercentage, CardView zoneCard) {
         int percentage = (int) (((double) pefValue / pbValue) * 100);
 
         String zoneName = zone.toString().substring(0, 1).toUpperCase()
@@ -455,7 +463,7 @@ public class ParentHomeFragment extends Fragment {
         zoneCard.setCardBackgroundColor(cardColor);
     }
 
-    private void displayDefaultZone(TextView zonePercentage, androidx.cardview.widget.CardView zoneCard) {
+    private void displayDefaultZone(TextView zonePercentage, CardView zoneCard) {
         zonePercentage.setText("--");
         zoneCard.setCardBackgroundColor(0xFFBDBDBD);
     }
@@ -465,6 +473,77 @@ public class ParentHomeFragment extends Fragment {
         if (view != null) {
             loadZoneInfo(view);
         }
+    }
+
+    private void loadWeeklyRescues(View v) {
+        TextView num_weekly_rescues = v.findViewById(R.id.text_num_rescues);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        if (user == null || num_weekly_rescues == null) { return; }
+
+        db.collection("users").document(user.getUid()).get()
+                .addOnCompleteListener(task -> {
+            if (task.isSuccessful() && task.getResult() != null) {
+                DocumentSnapshot documentSnapshot = task.getResult();
+
+                List<Map<String, Object>> linkedChildren =
+                        (List<Map<String, Object>>) documentSnapshot.get("linkedChildren");
+                if (linkedChildren != null) {
+                    for (Map<String, Object> child : linkedChildren) {
+                        if (child.get("uid") != null) {
+                            updateNumWeeklyRescues(num_weekly_rescues, (String) child.get("uid"));
+                        }
+
+                    }
+
+                }
+            }
+        });
+
+
+
+    }
+
+    private void updateNumWeeklyRescues(TextView num_weekly_rescues, String childId) {
+
+        LocalDate today = LocalDate.now();
+        LocalDate localWeekStart = today.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        LocalDate localWeekEnd = localWeekStart.plusWeeks(1);
+        Timestamp weekStart = new Timestamp(
+                Date.from(localWeekStart.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        Timestamp weekEnd = new Timestamp(
+                Date.from(localWeekEnd.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+        Log.d("DEBUG_QUERY", "Start: " + weekStart.toDate().toString());
+        Log.d("DEBUG_QUERY", "End: " + weekEnd.toDate().toString());
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        db.collection("users")
+                .document(childId)
+                .collection("inhaler_log").whereGreaterThanOrEqualTo("timestamp", weekStart)
+                .whereLessThan("timestamp", weekEnd).get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        Log.d("DEBUG_QUERY", "task successful");
+                        QuerySnapshot query = task.getResult();
+                        Log.d("DEBUG_QUERY", "task result");
+
+                        if (!query.isEmpty()) {
+                            Log.d("DEBUG_QUERY", "query nonempty");
+                            for (DocumentSnapshot doc: query) {
+                                Log.d("DEBUG_QUERY", "doc");
+                                if ("Rescue".equals(doc.getString("medicationType"))) {
+                                    Log.d("DEBUG_QUERY", "rescue attempt");
+                                    rescue_count++;
+                                    num_weekly_rescues.setText(rescue_count + " times");
+                                }
+                            }
+                        }
+                    }
+                });
+
+
+
     }
 }
 
