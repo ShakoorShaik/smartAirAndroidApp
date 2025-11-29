@@ -25,6 +25,14 @@ import java.util.Map;
 check for caps and lower case
  */
 
+// rewrite this entire shit
+
+/*
+check subcollection trigger log to see if previous triggers are recorded
+-> then load them as a wdiget -> check today's date -> if date exists load the count for that specific trigger
+
+-> create subcollection trigger log option, increment/over write when submit
+ */
 
 public class LogTriggerActivity extends AppCompatActivity {
 

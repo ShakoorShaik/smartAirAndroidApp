@@ -95,54 +95,48 @@ public class ChildDailyCheckIn extends AppCompatActivity {
         LinearLayout goodLimits = findViewById(R.id.emojiRun);
 
         // _______________________________________
-        // 0 = bad
-        // 1 = ok
-        // 2 = good
-        // _______________________________________
-
-        // _______________________________________
         // QUESTION 1
         // _______________________________________
         goodSleep.setOnClickListener(v -> {
-            handleSleepSelection(goodSleep, "2");
+            handleSleepSelection(goodSleep, "good");
         });
 
         okSleep.setOnClickListener(v -> {
-            handleSleepSelection(okSleep, "1");
+            handleSleepSelection(okSleep, "ok");
         });
 
         badSleep.setOnClickListener(v -> {
-            handleSleepSelection(badSleep, "0");
+            handleSleepSelection(badSleep, "bad");
         });
 
         // _______________________________________
         // QUESTION 2
         // _______________________________________
         goodCough.setOnClickListener(v -> {
-            handleCoughSelection(goodCough, "2");
+            handleCoughSelection(goodCough, "good");
         });
 
         okCough.setOnClickListener(v -> {
-            handleCoughSelection(okCough, "1");
+            handleCoughSelection(okCough, "ok");
         });
 
         badCough.setOnClickListener(v -> {
-            handleCoughSelection(badCough, "0");
+            handleCoughSelection(badCough, "bad");
         });
 
         // _______________________________________
         // QUESTION 3
         // _______________________________________
         goodLimits.setOnClickListener(v -> {
-            handleLimitsSelection(goodLimits, "2");
+            handleLimitsSelection(goodLimits, "good");
         });
 
         okLimits.setOnClickListener(v -> {
-            handleLimitsSelection(okLimits, "1");
+            handleLimitsSelection(okLimits, "ok");
         });
 
         badLimits.setOnClickListener(v -> {
-            handleLimitsSelection(badLimits, "0");
+            handleLimitsSelection(badLimits, "bad");
         });
 
         Boolean isChecked = enteredByParent.isChecked();
