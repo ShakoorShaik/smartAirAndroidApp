@@ -77,49 +77,16 @@ public class ChildrenAdapter extends RecyclerView.Adapter<ChildrenAdapter.ChildV
                         updateZoneForChild(holder, childUid, pefValue);
                     } else {
                         holder.textViewPEF.setText("PEF: --");
-                        PEFManager.getMostRecentPEF(childUid, new PEFManager.PEFCallback() {
-                            @Override
-                            public void onSuccess(Integer recentPEF) {
-                                if (recentPEF != null) {
-                                    holder.textViewPEF.setText("PEF: " + recentPEF + " L/min (Recent)");
-                                } else {
-                                    holder.textViewPEF.setText("PEF: --");
-                                }
-                                holder.textViewZone.setText("Zone: --");
-                                holder.textViewZone.setTextColor(0xFF757575);
-                            }
-
-                            @Override
-                            public void onFailure(Exception e) {
-                                holder.textViewPEF.setText("PEF: --");
-                                holder.textViewZone.setText("Zone: --");
-                                holder.textViewZone.setTextColor(0xFF757575);
-                            }
-                        });
+                        holder.textViewZone.setText("Zone: --");
+                        holder.textViewZone.setTextColor(0xFF757575);
                     }
                 }
 
                 @Override
                 public void onFailure(Exception e) {
-                    PEFManager.getMostRecentPEF(childUid, new PEFManager.PEFCallback() {
-                        @Override
-                        public void onSuccess(Integer recentPEF) {
-                            if (recentPEF != null) {
-                                holder.textViewPEF.setText("PEF: " + recentPEF + " L/min (Recent)");
-                            } else {
-                                holder.textViewPEF.setText("PEF: --");
-                            }
-                            holder.textViewZone.setText("Zone: --");
-                            holder.textViewZone.setTextColor(0xFF757575);
-                        }
-
-                        @Override
-                        public void onFailure(Exception e2) {
-                            holder.textViewPEF.setText("PEF: --");
-                            holder.textViewZone.setText("Zone: --");
-                            holder.textViewZone.setTextColor(0xFF757575);
-                        }
-                    });
+                    holder.textViewPEF.setText("PEF: --");
+                    holder.textViewZone.setText("Zone: --");
+                    holder.textViewZone.setTextColor(0xFF757575);
                 }
             });
 

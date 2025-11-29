@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.Timestamp;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -63,13 +64,22 @@ public class TriageHistoryManager {
                                 if (task.isSuccessful()) {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         try {
-                                            Long timestamp = document.getLong("timestamp");
-                                            if (timestamp != null) {
-                                                LocalDate date = new java.util.Date(timestamp)
+                                            Timestamp timestampObj = document.getTimestamp("timestamp");
+                                            if (timestampObj != null) {
+                                                LocalDate date = timestampObj.toDate()
                                                         .toInstant()
                                                         .atZone(ZoneId.systemDefault())
                                                         .toLocalDate();
                                                 triageDates.put(date, true);
+                                            } else {
+                                                Long timestamp = document.getLong("timestamp");
+                                                if (timestamp != null) {
+                                                    LocalDate date = new java.util.Date(timestamp)
+                                                            .toInstant()
+                                                            .atZone(ZoneId.systemDefault())
+                                                            .toLocalDate();
+                                                    triageDates.put(date, true);
+                                                }
                                             }
                                         } catch (Exception e) {
                                             // Skip invalid entries
