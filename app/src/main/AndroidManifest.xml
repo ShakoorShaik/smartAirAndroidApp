@@ -122,6 +122,9 @@
             android:name=".parent.setRescueThreshold"
             android:exported="false" >
         </activity>
+        <activity
+            android:name=".parent.ParentExportHistoryActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
