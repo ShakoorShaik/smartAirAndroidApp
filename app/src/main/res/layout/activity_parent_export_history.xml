@@ -67,11 +67,30 @@
             android:layout_width="match_parent"
             android:layout_height="24dp" />
 
+        <TextView
+            android:id="@+id/textViewExportInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ℹ️ Exported files will be saved to your Downloads folder"
+            android:textSize="14sp"
+            android:textColor="@android:color/darker_gray"
+            android:padding="12dp"
+            android:background="@android:color/transparent"
+            android:layout_marginBottom="16dp" />
+
         <Button
             android:id="@+id/buttonExport"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Export" />
+
+        <Button
+            android:id="@+id/buttonOpenDownloads"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Open Downloads Folder"
+            android:layout_marginTop="8dp"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/buttonReturn"
