@@ -9,7 +9,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="0dp">
 
     <TextView
         android:id="@+id/textView7"
@@ -31,62 +32,80 @@
         android:importantForAccessibility="no"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
+        app:tint="#FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_add" />
+        app:srcCompat="@android:drawable/ic_menu_add"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerMeds"
         android:layout_width="0dp"
-        android:layout_height="230dp"
-        android:layout_marginTop="104dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_height="260dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginHorizontal="20dp"
+
         android:importantForAccessibility="no"
-        android:paddingTop="0dp"
+        android:padding="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/textView7" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="20dp"
+        android:background="#A0A0A0"
+        app:layout_constraintTop_toBottomOf="@id/recyclerMeds"
+        tools:layout_editor_absoluteX="20dp" />
 
     <Button
         android:id="@+id/buttonEditPEF"
         android:layout_width="0dp"
-        android:layout_height="73dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="10dp"
         android:text="EDIT PEF"
         android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/buttonEditPB"
+        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerMeds"
-        app:layout_constraintHorizontal_weight="1" />
+        app:layout_constraintTop_toBottomOf="@+id/view" />
 
     <Button
         android:id="@+id/buttonEditPB"
         android:layout_width="0dp"
-        android:layout_height="73dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         android:text="EDIT PB"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toEndOf="@+id/buttonEditPEF"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerMeds"
-        app:layout_constraintHorizontal_weight="1" />
+        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+    <View
+        android:id="@+id/view2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#A0A0A0"
+        android:layout_marginTop="20dp"
+        android:layout_marginHorizontal="20dp"
+        app:layout_constraintTop_toBottomOf="@id/buttonEditPB"/>
 
     <include
         android:id="@+id/medicineCalendarView"
         layout="@layout/calendar_month_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_margin="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonEditPEF" />
+        app:layout_constraintTop_toBottomOf="@id/view2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
