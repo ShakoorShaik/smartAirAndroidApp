@@ -1,25 +1,36 @@
 package utils;
 
 import static utils.CodeGeneration.generateCode;
+import static utils.DatabaseManager.getData;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+import java.util.Date;
+import com.google.firebase.Timestamp;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.Map;
 
 public class ParentProviderLinking{
 
-    private static final long EXPIRATION_MS = 7 * 24 *60 * 60 * 1000;
-
     public interface RedeemCallback {
         void onSuccess(String parentEmail);
         void onFailure(Exception e);
     }
+    public static void generateLinkCode(DatabaseManager.SuccessFailCallback callback) {
+        generateUniqueCode(5, callback);
+    }
 
-    public static void generateLinkCode(DatabaseManager.DataSuccessFailCallback callback) {
+    private static void generateUniqueCode(int attempts, DatabaseManager.SuccessFailCallback callback) {
+
+        if (attempts <= 0) {
+            callback.onFailure(new Exception("Failed to generate unique code after multiple attempts"));
+            return;
+        }
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -28,44 +39,42 @@ public class ParentProviderLinking{
             callback.onFailure(new Exception("User is null"));
             return;
         }
+        Instant sevenDays = Instant.now().plus(7, ChronoUnit.DAYS);
+        Timestamp expiresAt = new Timestamp(Date.from(sevenDays));
 
         String code = generateCode(7);
 
         db.collection("users")
-                .whereEqualTo("referralCode", code)
+                .whereEqualTo("linkingCode.referralCode", code)
                 .get()
-                .addOnCompleteListener(task -> {
-                    if (!task.isSuccessful()) {
-                        callback.onFailure(task.getException());
-                        return;
+                .addOnSuccessListener(query -> {
+                    if (query.isEmpty()) {
+
+                        Map<String, Object> body = new HashMap<>();
+                        body.put("email", user.getEmail());
+                        body.put("referralCodeUsed", false);
+                        body.put("referralCode", code);
+                        body.put("referralExpires", expiresAt);
+
+                        DatabaseManager.writeData("linkingCode", body, callback);
+                    } else {
+                        generateUniqueCode(attempts-1, callback);
                     }
 
-                    boolean exists = false;
-                    for (QueryDocumentSnapshot ignored : task.getResult()) {
-                        exists = true;
-                        break;
-                    }
+                }).addOnFailureListener(e -> {generateUniqueCode(attempts-1, callback);});
+    }
 
-                    if (exists) {
-                        generateLinkCode(callback);
-                        return;
-                    }
+    public static void InvalidateCode(DatabaseManager.SuccessFailCallback callBack) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                    long expiration = System.currentTimeMillis() + EXPIRATION_MS;
+        if (user == null) {
+            callBack.onFailure(new Exception("User is null"));
+            return;
+        }
+        Map<String, Object> body = new HashMap<>();
+        body.put("referralCodeUsed", true);
 
-                    Map<String, Object> body = new HashMap<>();
-                    body.put("email", user.getEmail());
-                    body.put("referralCodeUsed", false);
-                    body.put("referralCode", code);
-                    body.put("referralExpires", expiration);
-
-                    db.collection("users")
-                            .document(user.getUid())
-                            .set(body, com.google.firebase.firestore.SetOptions.merge())
-                            .addOnSuccessListener(aVoid -> callback.onSuccess(code))
-                            .addOnFailureListener(callback::onFailure);
-
-                });
+        DatabaseManager.writeData("linkingCode", body, callBack);
     }
 
     public static void redeemCode(String code, RedeemCallback callback) {
@@ -73,14 +82,15 @@ public class ParentProviderLinking{
         FirebaseUser provider = FirebaseAuth.getInstance().getCurrentUser();
 
         if (provider == null) {
-            callback.onFailure(new Exception("Provider not logged in"));
+            callback.onFailure(new Exception("User is null"));
             return;
         }
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+
         db.collection("users")
-                .whereEqualTo("referralCode", code)
+                .whereEqualTo("linkingCode.referralCode", code)
                 .get()
                 .addOnSuccessListener(query -> {
 
@@ -89,15 +99,22 @@ public class ParentProviderLinking{
                         return;
                     }
 
-                    Map<String, Object> data = query.getDocuments().get(0).getData();
-                    String parentUid = query.getDocuments().get(0).getId();
+                    QueryDocumentSnapshot document = (QueryDocumentSnapshot) query.getDocuments().get(0);
+                    String parentUid = document.getId();
+
+                    Map<String, Object> linkingCode = (Map<String, Object>) document.get("linkingCode");
+
+                    if (linkingCode == null) {
+                        callback.onFailure(new Exception("Malformed code data - no liking code info"));
+                        return;
+                    }
 
                     try {
-                        long expiresAt = (long) data.get("referralExpires");
-                        String parentEmail = (String) data.get("email");
-                        boolean used = (boolean) data.get("referralCodeUsed");
+                        Timestamp expiresAt = (Timestamp) linkingCode.get("referralExpires");
+                        String parentEmail = (String) linkingCode.get("email");
+                        boolean used = (boolean) linkingCode.get("referralCodeUsed");
 
-                        if (System.currentTimeMillis() > expiresAt) {
+                        if (Instant.now().isAfter(expiresAt.toDate().toInstant())) {
                             callback.onFailure(new Exception("Code expired"));
                             return;
                         }
@@ -118,9 +135,10 @@ public class ParentProviderLinking{
                                 .addOnSuccessListener(a -> {
 
                                     db.collection("users")
-                                                    .document(parentUid)
-                                                    .update("referralCodeUsed", true);
-                                    callback.onSuccess(parentEmail);
+                                            .document(parentUid)
+                                            .update("linkingCode.referralCodeUsed", true)
+                                            .addOnSuccessListener(b -> callback.onSuccess(parentEmail))
+                                            .addOnFailureListener(callback::onFailure);
                                 })
                                 .addOnFailureListener(callback::onFailure);
 
@@ -128,7 +146,6 @@ public class ParentProviderLinking{
                         callback.onFailure(new Exception("Malformed code data"));
                     }
 
-                })
-                .addOnFailureListener(callback::onFailure);
+                }).addOnFailureListener(callback::onFailure);
     }
 }
