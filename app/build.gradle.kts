@@ -43,6 +43,7 @@ android {
 }
 
 dependencies {
+    implementation("com.itextpdf:itext7-core:7.2.5")
     implementation(platform("com.google.firebase:firebase-bom:34.5.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-auth")
