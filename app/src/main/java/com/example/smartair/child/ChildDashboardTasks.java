@@ -12,13 +12,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartair.R;
 import com.example.smartair.child.inhalertechnique.InhalerTechniqueFirst;
-import com.example.smartair.child.logtriggerandsymtomps.LogSymptomActivity;
-import com.example.smartair.child.logtriggerandsymtomps.LogTriggerActivity;
+import com.example.smartair.child.logtriggerandsymptoms.LogTriggerActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import utils.BadgeStreakManager;
 import utils.ChildEmergency;
-import utils.ChildIdManager;
 
 public class ChildDashboardTasks extends AppCompatActivity {
 

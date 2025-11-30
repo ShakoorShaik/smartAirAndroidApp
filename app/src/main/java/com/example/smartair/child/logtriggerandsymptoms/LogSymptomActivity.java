@@ -1,11 +1,9 @@
-package com.example.smartair.child.logtriggerandsymtomps;
+package com.example.smartair.child.logtriggerandsymptoms;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
 import com.example.smartair.R;
-import com.example.smartair.child.logtriggerandsymtomps.ChildrenSymptomDataWriting;
-import com.example.smartair.child.logtriggerandsymtomps.LogTriggerActivity;
 
 public class LogSymptomActivity extends LogTriggerActivity {
 

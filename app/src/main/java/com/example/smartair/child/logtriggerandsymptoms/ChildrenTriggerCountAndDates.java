@@ -1,4 +1,4 @@
-package com.example.smartair.child.logtriggerandsymtomps;
+package com.example.smartair.child.logtriggerandsymptoms;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

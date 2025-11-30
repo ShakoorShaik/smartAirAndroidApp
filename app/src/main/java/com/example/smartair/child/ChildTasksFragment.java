@@ -16,13 +16,12 @@ import androidx.fragment.app.Fragment;
 
 import com.example.smartair.R;
 import com.example.smartair.child.inhalertechnique.InhalerTechniqueFirst;
-import com.example.smartair.child.logtriggerandsymtomps.LogSymptomActivity;
-import com.example.smartair.child.logtriggerandsymtomps.LogTriggerActivity;
+import com.example.smartair.child.logtriggerandsymptoms.LogSymptomActivity;
+import com.example.smartair.child.logtriggerandsymptoms.LogTriggerActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import utils.BadgeStreakManager;
-import com.example.smartair.child.logtrigger.LogTriggerActivity;
 
 import utils.ChildEmergency;
 import utils.ChildIdManager;

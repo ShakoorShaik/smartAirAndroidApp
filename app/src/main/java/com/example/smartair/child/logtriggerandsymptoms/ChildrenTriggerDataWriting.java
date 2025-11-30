@@ -1,4 +1,4 @@
-package com.example.smartair.child.logtriggerandsymtomps;
+package com.example.smartair.child.logtriggerandsymptoms;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -13,9 +13,19 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-public class ChildrenSymptomDataWriting extends ChildrenTriggerDataWriting{
 
-    @Override
+public class ChildrenTriggerDataWriting {
+
+    public interface OnTriggersLoadedListener {
+        void onTriggersLoaded(Map<String, Object> triggersWithTimestamps);
+        void onFailure(Exception e);
+    }
+
+    public interface WriteCallback {
+        void onSuccess();
+        void onFailure(Exception e);
+    }
+
     public void deleteDataFields(String triggerName, Timestamp timestampToRemove, WriteCallback callBack) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -32,14 +42,13 @@ public class ChildrenSymptomDataWriting extends ChildrenTriggerDataWriting{
 
         db.collection("users")
                 .document(user.getUid())
-                .collection("symptomLogs")
+                .collection("triggerLogs")
                 .document(todayDate)
                 .update(updates)
                 .addOnSuccessListener(aVoid -> callBack.onSuccess())
                 .addOnFailureListener(callBack::onFailure);
     }
 
-    @Override
     public void queryTodayTriggers(OnTriggersLoadedListener callback) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -53,7 +62,7 @@ public class ChildrenSymptomDataWriting extends ChildrenTriggerDataWriting{
 
         db.collection("users")
                 .document(user.getUid())
-                .collection("symptomLogs")
+                .collection("triggerLogs")
                 .document(todayDate)
                 .get()
                 .addOnCompleteListener(task -> {
@@ -66,7 +75,6 @@ public class ChildrenSymptomDataWriting extends ChildrenTriggerDataWriting{
                 });
     }
 
-    @Override
     public void WriteDateToSubCollection(ChildrenTriggerCountAndDates data, WriteCallback callBack) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -83,7 +91,7 @@ public class ChildrenSymptomDataWriting extends ChildrenTriggerDataWriting{
 
         db.collection("users")
                 .document(user.getUid())
-                .collection("symptomLogs")
+                .collection("triggerLogs")
                 .document(data.getDate())
                 .set(triggerTimeStamp, SetOptions.merge())
                 .addOnSuccessListener(aVoid -> callBack.onSuccess())
