@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <style name="Theme.SmartAirParent" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="materialButtonStyle">@style/RoundedMaterialButton</item>
+        <item name="colorPrimary">#5FB8E9</item>
+        <item name="colorSecondary">#70DBF3</item>
+        <item name="colorPrimaryVariant">#4A92E8</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+    </style>
 
-    <style name="Theme.SmartAir" parent="Theme.MaterialComponents.Light.NoActionBar" />
+    <style name="RoundedMaterialButton" parent="Widget.MaterialComponents.Button">
+        <item name="shapeAppearance">@style/RoundedShape</item>
+        <item name="elevation">100dp</item>
+    </style>
+
+    <style name="RoundedShape" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">6dp</item>
+    </style>
 </resources>
