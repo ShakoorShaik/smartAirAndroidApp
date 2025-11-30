@@ -9,21 +9,12 @@ import android.widget.Toast;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 import com.example.smartair.R;
-import com.example.smartair.child.checkin.ChildDailyCheckIn;
-import com.example.smartair.child.emergency.Emergency;
 import com.example.smartair.child.inhalertechnique.InhalerTechniqueFirst;
-import com.example.smartair.child.logtrigger.LogTriggerActivity;
-import com.example.smartair.parent.ParentChildrenFragment;
-import com.example.smartair.parent.ParentHomeFragment;
-import com.example.smartair.parent.ParentMedicineFragment;
-import com.example.smartair.parent.ParentSettingsFragment;
+import com.example.smartair.child.logtriggerandsymtomps.LogSymptomActivity;
+import com.example.smartair.child.logtriggerandsymtomps.LogTriggerActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 
 import utils.ChildEmergency;
 
@@ -91,12 +82,12 @@ public class ChildDashboardTasks extends AppCompatActivity {
             Toast.makeText(this, "TODO NOT FUNCTIONAL", Toast.LENGTH_LONG).show();
         });
 
-        buttonRecordSymptom.setOnClickListener(v -> {   //todo
-            Toast.makeText(this, "TODO NOT FUNCTIONAL", Toast.LENGTH_LONG).show();
-        });
-
-        buttonRecordSymptom.setOnClickListener(v -> {   //todo
-            Toast.makeText(this, "TODO NOT FUNCTIONAL", Toast.LENGTH_LONG).show();
+        buttonRecordSymptom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ChildDashboardTasks.this, LogSymptomActivity.class));
+                finish();
+            }
         });
 
         buttonEmergency.setOnClickListener(v -> {

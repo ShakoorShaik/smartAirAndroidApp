@@ -1,9 +1,8 @@
-package com.example.smartair.child.logtrigger;
+package com.example.smartair.child.logtriggerandsymtomps;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Map;
 
 public class ChildrenTriggerCountAndDates {
     private String triggerName;

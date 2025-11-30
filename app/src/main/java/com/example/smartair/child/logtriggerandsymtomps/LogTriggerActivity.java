@@ -1,4 +1,4 @@
-package com.example.smartair.child.logtrigger;
+package com.example.smartair.child.logtriggerandsymtomps;
 
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -20,16 +20,16 @@ import java.util.Map;
 
 public class LogTriggerActivity extends AppCompatActivity {
 
-    private EditText newTriggerInput;
-    private LinearLayout triggersContainer;
-    private LinearLayout emptyStateView;
-    private ScrollView triggersScrollView;
-    private TextView dateDisplay;
-    private Button logTrigger;
-    private Button returnButton;
+    protected EditText newTriggerInput;
+    protected LinearLayout triggersContainer;
+    protected LinearLayout emptyStateView;
+    protected ScrollView triggersScrollView;
+    protected TextView dateDisplay;
+    protected Button logTrigger;
+    protected Button returnButton;
 
-    private ChildrenTriggerDataWriting dataWriter;
-    private List<TriggerOccurrence> currentTriggers = new ArrayList<>();
+    protected ChildrenTriggerDataWriting dataWriter;
+    protected List<TriggerOccurrence> currentTriggers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +87,7 @@ public class LogTriggerActivity extends AppCompatActivity {
         });
     }
 
-    private void loadTodayTriggers() {
+    void loadTodayTriggers() {
         dataWriter.queryTodayTriggers(new ChildrenTriggerDataWriting.OnTriggersLoadedListener() {
             @Override
             public void onTriggersLoaded(Map<String, Object> triggersData) {
@@ -213,7 +213,7 @@ public class LogTriggerActivity extends AppCompatActivity {
         loadTodayTriggers();
     }
 
-    private static class TriggerOccurrence {
+    static class TriggerOccurrence {
         String triggerName;
         Timestamp timestamp;
 

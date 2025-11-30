@@ -1,4 +1,4 @@
-package com.example.smartair.child.logtrigger;
+package com.example.smartair.child.logtriggerandsymtomps;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;

@@ -14,9 +14,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.smartair.R;
-import com.example.smartair.child.emergency.Emergency;
 import com.example.smartair.child.inhalertechnique.InhalerTechniqueFirst;
-import com.example.smartair.child.logtrigger.LogTriggerActivity;
+import com.example.smartair.child.logtriggerandsymtomps.LogSymptomActivity;
+import com.example.smartair.child.logtriggerandsymtomps.LogTriggerActivity;
 
 import utils.ChildEmergency;
 
@@ -68,7 +68,7 @@ public class ChildTasksFragment extends Fragment {
         });
 
         buttonRecordSymptom.setOnClickListener(v -> {
-            Toast.makeText(getActivity(), "TODO NOT FUNCTIONAL", Toast.LENGTH_LONG).show();
+            startActivity((new Intent(getActivity(), LogSymptomActivity.class)));
         });
 
         buttonEmergency.setOnClickListener(v -> {
