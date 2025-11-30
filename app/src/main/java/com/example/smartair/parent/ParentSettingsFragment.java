@@ -61,6 +61,15 @@ public class ParentSettingsFragment extends Fragment {
             }
         });
 
+        Button buttonExportHistory = view.findViewById(R.id.buttonExportHistory);
+        buttonExportHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ParentExportHistoryActivity.class);
+                startActivity(intent);
+            }
+        });
+
         return view;
     }
 }

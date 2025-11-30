@@ -31,5 +31,11 @@
         android:layout_height="wrap_content"
         android:text="Configure Child Rescue Attempt Threshold" />
 
+    <Button
+        android:id="@+id/buttonExportHistory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Export PDF/CSV of history" />
+
 </LinearLayout>
 
