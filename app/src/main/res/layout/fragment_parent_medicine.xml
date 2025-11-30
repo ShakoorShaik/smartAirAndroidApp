@@ -13,13 +13,12 @@
 
     <TextView
         android:id="@+id/textView7"
-        android:layout_width="223dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="32dp"
-        android:fontFamily="sans-serif"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:text="Inventory"
         android:textAlignment="center"
-        android:textSize="34sp"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -30,10 +29,10 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:importantForAccessibility="no"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView7"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.645"
         app:srcCompat="@android:drawable/ic_menu_add" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -61,7 +60,7 @@
         app:layout_constraintEnd_toStartOf="@+id/buttonEditPB"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerMeds"
-        app:layout_constraintWidth_percent="0.48" />
+        app:layout_constraintHorizontal_weight="1" />
 
     <Button
         android:id="@+id/buttonEditPB"
@@ -75,7 +74,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/buttonEditPEF"
         app:layout_constraintTop_toBottomOf="@+id/recyclerMeds"
-        app:layout_constraintWidth_percent="0.48" />
+        app:layout_constraintHorizontal_weight="1" />
 
     <include
         android:id="@+id/medicineCalendarView"
