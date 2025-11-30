@@ -1,5 +1,6 @@
 package com.example.smartair.parent;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -43,6 +44,7 @@ import utils.Medicine;
 import utils.DatabaseManager;
 import utils.PBManager;
 import utils.ParentEmergency;
+import utils.ParentRescue;
 import utils.ZoneManager;
 import utils.ChildAccountManager;
 import utils.PEFManager;
@@ -68,6 +70,7 @@ public class ParentMedicineFragment extends Fragment {
     public void onStart(){
         super.onStart();
         ParentEmergency.listenEmergency(this);
+        ParentRescue.listenRescue(this);
     }
 
     @Override
@@ -825,24 +828,6 @@ public class ParentMedicineFragment extends Fragment {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
                 editPEFDate.setText(dateFormat.format(calendar.getTime()));
 
-                editPEFDate.setOnClickListener(v -> {
-                    int year = calendar.get(Calendar.YEAR);
-                    int month = calendar.get(Calendar.MONTH);
-                    int day = calendar.get(Calendar.DAY_OF_MONTH);
-
-                    DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
-                            new DatePickerDialog.OnDateSetListener() {
-                                @Override
-                                public void onDateSet(DatePicker view, int selectedYear,
-                                                      int monthOfYear, int dayOfMonth) {
-                                    Calendar selectedDate = Calendar.getInstance();
-                                    selectedDate.set(selectedYear, monthOfYear, dayOfMonth);
-                                    editPEFDate.setText(dateFormat.format(selectedDate.getTime()));
-                                }
-                            }, year, month, day);
-                    datePickerDialog.show();
-                });
-
                 List<String> childNames = new ArrayList<>();
                 List<String> childUids = new ArrayList<>();
                 for (Map<String, Object> child : children) {
@@ -859,8 +844,78 @@ public class ParentMedicineFragment extends Fragment {
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 spinnerChild.setAdapter(adapter);
 
+                Runnable loadExistingPEF = () -> {
+                    int selectedPosition = spinnerChild.getSelectedItemPosition();
+                    String dateStr = editPEFDate.getText().toString().trim();
+                    
+                    if (selectedPosition >= 0 && selectedPosition < childUids.size() && !dateStr.isEmpty()) {
+                        String childUid = childUids.get(selectedPosition);
+                        PEFManager.getPEFDocumentIdByDate(childUid, dateStr, new PEFManager.PEFDocumentCallback() {
+                            @Override
+                            public void onSuccess(String documentId, Integer pefValue) {
+                                if (pefValue != null && documentId != null) {
+                                    editPEFValue.setText(String.valueOf(pefValue));
+                                } else {
+                                    editPEFValue.setText("");
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                            }
+                        });
+                    }
+                };
+
+                editPEFDate.setOnClickListener(v -> {
+                    int year = calendar.get(Calendar.YEAR);
+                    int month = calendar.get(Calendar.MONTH);
+                    int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+                    DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(),
+                            new DatePickerDialog.OnDateSetListener() {
+                                @Override
+                                public void onDateSet(DatePicker view, int selectedYear,
+                                                      int monthOfYear, int dayOfMonth) {
+                                    Calendar selectedDate = Calendar.getInstance();
+                                    selectedDate.set(selectedYear, monthOfYear, dayOfMonth);
+                                    editPEFDate.setText(dateFormat.format(selectedDate.getTime()));
+                                    loadExistingPEF.run();
+                                }
+                            }, year, month, day);
+                    datePickerDialog.show();
+                });
+
+                spinnerChild.setOnItemSelectedListener(new android.widget.AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(android.widget.AdapterView<?> parent, View view, int position, long id) {
+                        loadExistingPEF.run();
+                    }
+
+                    @Override
+                    public void onNothingSelected(android.widget.AdapterView<?> parent) {
+                    }
+                });
+
+                editPEFDate.addTextChangedListener(new android.text.TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        loadExistingPEF.run();
+                    }
+
+                    @Override
+                    public void afterTextChanged(android.text.Editable s) {
+                    }
+                });
+
+                loadExistingPEF.run();
+
                 new AlertDialog.Builder(getContext())
-                        .setTitle("Enter PEF Reading")
+                        .setTitle("Enter/Edit PEF Reading")
                         .setView(dialogView)
                         .setPositiveButton("Save", (dialog, which) -> {
                             String pefStr = editPEFValue.getText().toString().trim();
@@ -961,73 +1016,133 @@ public class ParentMedicineFragment extends Fragment {
     }
 
     private void savePEFAndCheckZone(String childUid, String childName, int pefValue, String dateStr, long timestamp, int personalBest) {
-        PEFManager.savePEFReading(childUid, pefValue, dateStr, timestamp, new DatabaseManager.SuccessFailCallback() {
+        PEFManager.getPEFDocumentIdByDate(childUid, dateStr, new PEFManager.PEFDocumentCallback() {
             @Override
-            public void onSuccess() {
-                ZoneManager.Zone zone = ZoneManager.calculateZone(pefValue, personalBest);
-
-                ZoneManager.logZoneChange(getContext(), childUid, zone, pefValue, dateStr, new DatabaseManager.SuccessFailCallback() {
+            public void onSuccess(String documentId, Integer existingPEF) {
+                DatabaseManager.SuccessFailCallback saveCallback = new DatabaseManager.SuccessFailCallback() {
                     @Override
                     public void onSuccess() {
+                        ZoneManager.Zone zone = ZoneManager.calculateZone(pefValue, personalBest);
+
+                        ZoneManager.logZoneChange(getContext(), childUid, zone, pefValue, dateStr, new DatabaseManager.SuccessFailCallback() {
+                            @Override
+                            public void onSuccess() {
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                            }
+                        });
+
+                        if (zone == ZoneManager.Zone.RED) {
+                            new AlertDialog.Builder(getContext())
+                                    .setTitle("⚠️ Red Zone Alert")
+                                    .setMessage(childName + " has entered the RED ZONE!\n\n" +
+                                            "PEF: " + pefValue + " L/min\n" +
+                                            "PB: " + personalBest + " L/min\n" +
+                                            "Percentage: " + String.format("%.1f", (double) pefValue / personalBest * 100) + "%\n\n" +
+                                            "Please take immediate action.")
+                                    .setPositiveButton("OK", null)
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+                        }
+
+                        String message = (documentId != null && existingPEF != null) ? 
+                                "PEF reading updated for " + childName : 
+                                "PEF reading saved for " + childName;
+                        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+
+                        refreshRelatedFragments();
                     }
 
                     @Override
                     public void onFailure(Exception e) {
+                        Toast.makeText(getContext(),
+                                "Error saving PEF: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                });
+                };
 
-                if (zone == ZoneManager.Zone.RED) {
-                    new AlertDialog.Builder(getContext())
-                            .setTitle("⚠️ Red Zone Alert")
-                            .setMessage(childName + " has entered the RED ZONE!\n\n" +
-                                    "PEF: " + pefValue + " L/min\n" +
-                                    "PB: " + personalBest + " L/min\n" +
-                                    "Percentage: " + String.format("%.1f", (double) pefValue / personalBest * 100) + "%\n\n" +
-                                    "Please take immediate action.")
-                            .setPositiveButton("OK", null)
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
+                if (documentId != null && existingPEF != null) {
+                    PEFManager.updatePEFReading(childUid, documentId, pefValue, dateStr, timestamp, saveCallback);
+                } else {
+                    PEFManager.savePEFReading(childUid, pefValue, dateStr, timestamp, saveCallback);
                 }
-
-                Toast.makeText(getContext(),
-                        "PEF reading saved for " + childName, Toast.LENGTH_SHORT).show();
-
-                // Refresh other fragments that display PEF/zone data
-                refreshRelatedFragments();
             }
 
             @Override
             public void onFailure(Exception e) {
-                Toast.makeText(getContext(),
-                        "Error saving PEF: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                PEFManager.savePEFReading(childUid, pefValue, dateStr, timestamp, new DatabaseManager.SuccessFailCallback() {
+                    @SuppressLint("DefaultLocale")
+                    @Override
+                    public void onSuccess() {
+                        ZoneManager.Zone zone = ZoneManager.calculateZone(pefValue, personalBest);
+
+                        ZoneManager.logZoneChange(getContext(), childUid, zone, pefValue, dateStr, new DatabaseManager.SuccessFailCallback() {
+                            @Override
+                            public void onSuccess() {
+                            }
+
+                            @Override
+                            public void onFailure(Exception e) {
+                            }
+                        });
+
+                        if (zone == ZoneManager.Zone.RED) {
+                            new AlertDialog.Builder(getContext())
+                                    .setTitle("⚠️ Red Zone Alert")
+                                    .setMessage(childName + " has entered the RED ZONE!\n\n" +
+                                            "PEF: " + pefValue + " L/min\n" +
+                                            "PB: " + personalBest + " L/min\n" +
+                                            "Percentage: " + String.format("%.1f", (double) pefValue / personalBest * 100) + "%\n\n" +
+                                            "Please take immediate action.")
+                                    .setPositiveButton("OK", null)
+                                    .setIcon(android.R.drawable.ic_dialog_alert)
+                                    .show();
+                        }
+
+                        Toast.makeText(getContext(),
+                                "PEF reading saved for " + childName, Toast.LENGTH_SHORT).show();
+
+                        refreshRelatedFragments();
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        Toast.makeText(getContext(),
+                                "Error saving PEF: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         });
     }
 
     private void refreshRelatedFragments() {
         if (getActivity() == null) return;
-        
-        androidx.fragment.app.FragmentManager fm = getActivity().getSupportFragmentManager();
-        
-        // Check the currently displayed fragment and refresh it
-        Fragment currentFragment = fm.findFragmentById(R.id.fragmentContainer);
-        if (currentFragment instanceof ParentChildrenFragment) {
-            ((ParentChildrenFragment) currentFragment).loadChildren();
-        } else if (currentFragment instanceof ParentHomeFragment) {
-            ((ParentHomeFragment) currentFragment).refreshZoneInfo();
-        }
-        
-        // Also check all fragments in case they're still in memory
-        List<Fragment> fragments = fm.getFragments();
-        for (Fragment fragment : fragments) {
-            if (fragment != null && fragment != currentFragment) {
-                if (fragment instanceof ParentChildrenFragment) {
-                    ((ParentChildrenFragment) fragment).loadChildren();
-                } else if (fragment instanceof ParentHomeFragment) {
-                    ((ParentHomeFragment) fragment).refreshZoneInfo();
+
+        android.os.Handler handler = new android.os.Handler(android.os.Looper.getMainLooper());
+        handler.postDelayed(() -> {
+            if (getActivity() == null) return;
+            
+            androidx.fragment.app.FragmentManager fm = getActivity().getSupportFragmentManager();
+
+            Fragment currentFragment = fm.findFragmentById(R.id.fragmentContainer);
+            if (currentFragment instanceof ParentChildrenFragment) {
+                ((ParentChildrenFragment) currentFragment).loadChildren();
+            } else if (currentFragment instanceof ParentHomeFragment) {
+                ((ParentHomeFragment) currentFragment).refreshZoneInfo();
+            }
+
+            List<Fragment> fragments = fm.getFragments();
+            for (Fragment fragment : fragments) {
+                if (fragment != null && fragment != currentFragment) {
+                    if (fragment instanceof ParentChildrenFragment) {
+                        ((ParentChildrenFragment) fragment).loadChildren();
+                    } else if (fragment instanceof ParentHomeFragment) {
+                        ((ParentHomeFragment) fragment).refreshZoneInfo();
+                    }
                 }
             }
-        }
+        }, 300);
     }
 
     private void showEditPBsDialog() {
@@ -1082,7 +1197,6 @@ public class ParentMedicineFragment extends Fragment {
                                 } else {
                                     Toast.makeText(getContext(), "Some PB values could not be saved", Toast.LENGTH_SHORT).show();
                                 }
-                                // Refresh related fragments after PB values are updated
                                 refreshRelatedFragments();
                             }, 500);
                         })

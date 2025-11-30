@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.Timestamp;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -63,13 +64,22 @@ public class TriageHistoryManager {
                                 if (task.isSuccessful()) {
                                     for (QueryDocumentSnapshot document : task.getResult()) {
                                         try {
-                                            Long timestamp = document.getLong("timestamp");
-                                            if (timestamp != null) {
-                                                LocalDate date = new java.util.Date(timestamp)
+                                            Timestamp timestampObj = document.getTimestamp("timestamp");
+                                            if (timestampObj != null) {
+                                                LocalDate date = timestampObj.toDate()
                                                         .toInstant()
                                                         .atZone(ZoneId.systemDefault())
                                                         .toLocalDate();
                                                 triageDates.put(date, true);
+                                            } else {
+                                                Long timestamp = document.getLong("timestamp");
+                                                if (timestamp != null) {
+                                                    LocalDate date = new java.util.Date(timestamp)
+                                                            .toInstant()
+                                                            .atZone(ZoneId.systemDefault())
+                                                            .toLocalDate();
+                                                    triageDates.put(date, true);
+                                                }
                                             }
                                         } catch (Exception e) {
                                             // Skip invalid entries
@@ -95,6 +105,46 @@ public class TriageHistoryManager {
                 callback.onFailure(e);
             }
         });
+    }
+
+    public interface TriageDataCallback {
+        void onSuccess(java.util.List<java.util.Map<String, Object>> triageData);
+        void onFailure(Exception e);
+    }
+
+    /**
+     * Retrieves all triage/symptom data for a specific child for export purposes
+     * @param childUid The UID of the child
+     * @param callback Callback with list of triage entries
+     */
+    public static void getAllTriageDataForChild(String childUid, TriageDataCallback callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        if (childUid == null || childUid.isEmpty()) {
+            callback.onFailure(new Exception("Invalid child UID"));
+            return;
+        }
+
+        db.collection("users").document(childUid)
+                .collection("TriageHistory")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    java.util.List<java.util.Map<String, Object>> triageData = new java.util.ArrayList<>();
+                    for (com.google.firebase.firestore.QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        java.util.Map<String, Object> data = new java.util.HashMap<>();
+                        data.put("timestamp", document.getLong("timestamp"));
+                        data.put("severity", document.getString("severity"));
+                        data.put("breathing", document.get("breathing"));
+                        data.put("talking", document.get("talking"));
+                        data.put("walking", document.get("walking"));
+                        data.put("consciousness", document.get("consciousness"));
+                        data.put("medication", document.get("medication"));
+                        data.put("otherSymptoms", document.get("Other symptoms"));
+                        triageData.add(data);
+                    }
+                    callback.onSuccess(triageData);
+                })
+                .addOnFailureListener(callback::onFailure);
     }
 }
 

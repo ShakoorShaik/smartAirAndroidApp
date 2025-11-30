@@ -9,9 +9,14 @@ import android.widget.VideoView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartair.R;
+import com.example.smartair.child.ChildDashboardMainActivity;
 import com.example.smartair.child.ChildDashboardTasks;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import utils.ChildAccountManager;
+import utils.ChildIdManager;
+import utils.InhalerTechniqueManager;
 
 public class InhalerTechniqueVideo extends AppCompatActivity {
 
@@ -19,10 +24,20 @@ public class InhalerTechniqueVideo extends AppCompatActivity {
     protected Button buttonBack;
     protected Button buttonFinish;
 
+    String userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        ChildIdManager manager = new ChildIdManager(this);
+        String curr_child_id = manager.getChildId();
+        if (!curr_child_id.equals("NA")) {
+            userID = curr_child_id;
+        } else {
+            userID = user.getUid();
+        }
 
         setContentView(R.layout.activity_inhaler_technique_video);
         videoInhalerTechnique = findViewById(R.id.techniqueVideo);
@@ -47,8 +62,8 @@ public class InhalerTechniqueVideo extends AppCompatActivity {
         });
 
         buttonFinish.setOnClickListener(v -> {
-            ChildAccountManager.incrementCorrectInhalerUse();
-            startActivity(new Intent(this, ChildDashboardTasks.class));
+            InhalerTechniqueManager.logCorrectInhalerUse(userID);
+            startActivity(new Intent(this, ChildDashboardMainActivity.class));
         });
 
     }

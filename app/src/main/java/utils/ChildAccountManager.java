@@ -13,9 +13,12 @@ import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class ChildAccountManager {
@@ -124,56 +127,6 @@ public class ChildAccountManager {
                         callback.onFailure(task.getException());
                     }
                 });
-    }
-    public static void incrementCorrectInhalerUse() {
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            FirebaseAuth mAuth = FirebaseAuth.getInstance();
-            FirebaseUser user = mAuth.getCurrentUser();
-            if (user == null) {
-                return;
-            }
-            String userId = user.getUid();
-
-            DocumentReference userRef = db.collection("users").document(userId);
-
-            userRef.update("correctInhalerUses", FieldValue.increment(1));
-        }
-
-    public static void logTriage(boolean csfs, boolean cp, boolean lnbg, boolean rra, boolean o) {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user == null) {
-            return;
-        }
-        String userId = user.getUid();
-
-        CollectionReference triageRef = db.collection("users").document(userId).collection("TriageHistory");
-
-        Map<String, Object> triageData = new HashMap<>();
-        triageData.put("I cannot speak full sentences.", csfs);
-        triageData.put("I am having chest pulls.", cp);
-        triageData.put("My lips/nails are blue/grey.", lnbg);
-        triageData.put("Have you taken rescue medicine in the past 20 minutes?", rra);
-        triageData.put("Other symptoms", o);
-        triageData.put("timestamp", System.currentTimeMillis());
-
-        triageRef.add(triageData);
-    }
-    public static void toggleEmergencyFlag(){
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        if (user == null) {
-            return;
-        }
-        String userId = user.getUid();
-        DocumentReference docRef = db.collection("users").document(userId);
-        docRef.get().addOnSuccessListener(dS -> {
-            docRef.update("emergencyFlag", false).addOnSuccessListener(v -> {
-                docRef.update("emergencyFlag", true);
-            });
-        });
     }
 
 }

@@ -30,6 +30,7 @@ import utils.ChildIdManager;
 import utils.PBManager;
 import utils.PEFManager;
 import utils.ParentEmergency;
+import utils.ParentRescue;
 import utils.ZoneManager;
 
 public class ParentChildrenFragment extends Fragment {
@@ -47,6 +48,7 @@ public class ParentChildrenFragment extends Fragment {
     public void onStart(){
         super.onStart();
         ParentEmergency.listenEmergency(this);
+        ParentRescue.listenRescue(this);
     }
 
     @Override

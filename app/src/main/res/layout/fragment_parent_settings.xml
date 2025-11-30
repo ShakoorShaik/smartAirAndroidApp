@@ -92,5 +92,23 @@
         android:text="Save Changes" />
 
 
+    <Button
+        android:id="@+id/buttonThresholds"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Configure Child Badge Thresholds" />
+
+    <Button
+        android:id="@+id/buttonRescue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Configure Child Rescue Attempt Threshold" />
+
+    <Button
+        android:id="@+id/buttonExportHistory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Export PDF/CSV of history" />
+
 </LinearLayout>
 

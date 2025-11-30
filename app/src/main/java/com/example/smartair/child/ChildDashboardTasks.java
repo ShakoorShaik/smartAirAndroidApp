@@ -16,7 +16,9 @@ import com.example.smartair.child.logtriggerandsymtomps.LogSymptomActivity;
 import com.example.smartair.child.logtriggerandsymtomps.LogTriggerActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import utils.BadgeStreakManager;
 import utils.ChildEmergency;
+import utils.ChildIdManager;
 
 public class ChildDashboardTasks extends AppCompatActivity {
 
@@ -82,12 +84,8 @@ public class ChildDashboardTasks extends AppCompatActivity {
             Toast.makeText(this, "TODO NOT FUNCTIONAL", Toast.LENGTH_LONG).show();
         });
 
-        buttonRecordSymptom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ChildDashboardTasks.this, LogSymptomActivity.class));
-                finish();
-            }
+        buttonRecordSymptom.setOnClickListener(v -> {   //todo
+            Toast.makeText(this, "TODO NOT FUNCTIONAL", Toast.LENGTH_LONG).show();
         });
 
         buttonEmergency.setOnClickListener(v -> {

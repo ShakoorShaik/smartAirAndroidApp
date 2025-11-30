@@ -44,8 +44,8 @@
 
     <EditText
         android:id="@+id/doseCountEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="210dp"
+        android:layout_height="51dp"
         android:layout_marginTop="32dp"
         android:ems="10"
         android:hint="Number of puffs"
@@ -63,5 +63,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/doseCountEditText" />
+
+    <TextView
+        android:id="@+id/text_low_canister"
+        android:layout_width="159dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="126dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="126dp"
+        android:text="LOW CANISTER?"
+        android:textAlignment="center"
+        android:textColor="#FF0505"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/saveButton" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
