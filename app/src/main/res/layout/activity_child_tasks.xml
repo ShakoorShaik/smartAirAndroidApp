@@ -9,6 +9,8 @@
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         android:padding="32dp">
 
         <ImageView

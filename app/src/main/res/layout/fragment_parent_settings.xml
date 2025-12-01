@@ -15,12 +15,6 @@
         android:textSize="24sp"
         android:layout_marginTop="30dp" />
 
-    <Button
-        android:id="@+id/buttonLogout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/logout"
-        android:layout_marginBottom="10dp"/>
 
 
     <TextView

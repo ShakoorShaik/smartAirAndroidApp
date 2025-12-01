@@ -101,14 +101,7 @@ public class ChildDashboardHome extends AppCompatActivity {
 
         loadZoneInfo();
 
-        Button dailyCheckIn = findViewById(R.id.button7);
 
-        dailyCheckIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ChildDashboardHome.this, ChildDailyCheckIn.class));
-            }
-        });
 
     }
 
