@@ -2,6 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="15dp"
+    tools:context=".LoginActivityView">
     android:id="@+id/main"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -89,7 +93,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@drawable/circle_button"/>
 
-    <!-- Login button -->
+    <!-- LoginActivityView button -->
     <Button
         android:id="@+id/button_login"
         android:text="@string/login"

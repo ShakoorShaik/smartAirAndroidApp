@@ -3,25 +3,13 @@ package com.example.smartair.parent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import com.example.smartair.Login;
 import com.example.smartair.R;
-import com.example.smartair.child.ChildDashboardHome;
-import com.example.smartair.parent.ChildrenAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-import utils.ChildAccountManager;
-import utils.ChildIdManager;
-import utils.DatabaseManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
