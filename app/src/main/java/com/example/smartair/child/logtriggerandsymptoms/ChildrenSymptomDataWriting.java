@@ -18,14 +18,8 @@ import java.util.Map;
 public class ChildrenSymptomDataWriting extends ChildrenTriggerDataWriting{
 
     @Override
-    public void deleteDataFields(String triggerName, Timestamp timestampToRemove, WriteCallback callBack) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    public void deleteDataFields(String userID, String triggerName, Timestamp timestampToRemove, WriteCallback callBack) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        if (user == null) {
-            callBack.onFailure(new Exception("User not logged in"));
-            return;
-        }
 
         String todayDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
@@ -33,7 +27,7 @@ public class ChildrenSymptomDataWriting extends ChildrenTriggerDataWriting{
         updates.put(triggerName, FieldValue.arrayRemove(timestampToRemove));
 
         db.collection("users")
-                .document(user.getUid())
+                .document(userID)
                 .collection("symptomLogs")
                 .document(todayDate)
                 .update(updates)
@@ -42,19 +36,13 @@ public class ChildrenSymptomDataWriting extends ChildrenTriggerDataWriting{
     }
 
     @Override
-    public void queryTodayTriggers(OnTriggersLoadedListener callback) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    public void queryTodayTriggers(String userID, OnTriggersLoadedListener callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        if (user == null) {
-            callback.onFailure(new Exception("User not logged in"));
-            return;
-        }
 
         String todayDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
         db.collection("users")
-                .document(user.getUid())
+                .document(userID)
                 .collection("symptomLogs")
                 .document(todayDate)
                 .get()
@@ -69,14 +57,8 @@ public class ChildrenSymptomDataWriting extends ChildrenTriggerDataWriting{
     }
 
     @Override
-    public void WriteDateToSubCollection(ChildrenTriggerCountAndDates data, WriteCallback callBack) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    public void WriteDateToSubCollection(String userID, ChildrenTriggerCountAndDates data, WriteCallback callBack) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        if (user == null) {
-            callBack.onFailure(new Exception("User not logged in"));
-            return;
-        }
 
         Timestamp currTime = Timestamp.now();
 
@@ -84,7 +66,7 @@ public class ChildrenSymptomDataWriting extends ChildrenTriggerDataWriting{
         triggerTimeStamp.put(data.getTriggerName(), FieldValue.arrayUnion(currTime));
 
         db.collection("users")
-                .document(user.getUid())
+                .document(userID)
                 .collection("symptomLogs")
                 .document(data.getDate())
                 .set(triggerTimeStamp, SetOptions.merge())
