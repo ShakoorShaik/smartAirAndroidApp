@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SmartAir">
+        android:theme="@style/Theme.SmartAirParent">
         <activity
             android:name=".parent.ParentHistoryActivity"
             android:exported="false" />
@@ -24,8 +24,7 @@
             android:exported="false" /> <!-- Launcher Activity -->
         <activity
             android:name=".Login"
-            android:exported="true"
-            android:theme="@style/Theme.SmartAir">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -127,6 +126,9 @@
         </activity>
         <activity
             android:name=".parent.ParentExportHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".parent.ParentAdherenceScheduleActivity"
             android:exported="false" />
         <provider
             android:name="androidx.core.content.FileProvider"
