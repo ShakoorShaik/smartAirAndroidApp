@@ -1,6 +1,7 @@
 package com.example.smartair.parent;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -40,7 +41,7 @@ public class setRescueThreshold extends AppCompatActivity {
         });
 
         buttonNext.setOnClickListener(v -> {
-            if (!(thresholdRescue.getText().isEmpty())) {
+            if (!(TextUtils.isEmpty(thresholdRescue.getText()))) {
                 DatabaseManager.writeData("rescueHourThreshold", thresholdRescue.getText().toString(), new DatabaseManager.SuccessFailCallback() {
                     @Override
                     public void onSuccess() {

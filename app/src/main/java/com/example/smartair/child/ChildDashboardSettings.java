@@ -8,12 +8,11 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.smartair.child.emergency.Emergency;
+import com.example.smartair.LoginActivityView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import com.example.smartair.Login;
 import com.example.smartair.R;
 
 import utils.ChildEmergency;
@@ -55,7 +54,7 @@ public class ChildDashboardSettings extends AppCompatActivity {
                 DatabaseManager.accountLogout();
                 ChildIdManager manager = new ChildIdManager(ChildDashboardSettings.this);
                 manager.clearChildId();
-                startActivity(new Intent(ChildDashboardSettings.this, Login.class));
+                startActivity(new Intent(ChildDashboardSettings.this, LoginActivityView.class));
                 finish();
             }
         });

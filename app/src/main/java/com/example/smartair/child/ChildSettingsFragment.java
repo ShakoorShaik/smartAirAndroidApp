@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.smartair.Login;
+import com.example.smartair.LoginActivityView;
 import com.example.smartair.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -43,7 +43,7 @@ public class ChildSettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 DatabaseManager.accountLogout();
-                startActivity(new Intent(getActivity(), Login.class));
+                startActivity(new Intent(getActivity(), LoginActivityView.class));
                 getActivity().finish();
             }
         });

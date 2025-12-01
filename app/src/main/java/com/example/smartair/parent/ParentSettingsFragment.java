@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
-import com.example.smartair.Login;
+import com.example.smartair.LoginActivityView;
 import com.example.smartair.R;
 import com.example.smartair.parent.sharewithprovider.ParentProviderViewables;
 import com.example.smartair.parent.sharewithprovider.ParentViewableDataWriting;
@@ -58,7 +58,7 @@ public class ParentSettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(getActivity(), Login.class);
+                Intent intent = new Intent(getActivity(), LoginActivityView.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 getActivity().finish();

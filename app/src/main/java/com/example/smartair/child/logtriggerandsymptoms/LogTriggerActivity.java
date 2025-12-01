@@ -12,11 +12,16 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.smartair.R;
 import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import utils.ChildIdManager;
 
 public class LogTriggerActivity extends AppCompatActivity {
 
@@ -31,10 +36,21 @@ public class LogTriggerActivity extends AppCompatActivity {
     protected ChildrenTriggerDataWriting dataWriter;
     protected List<TriggerOccurrence> currentTriggers = new ArrayList<>();
 
+    protected String userID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_triggers);
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        ChildIdManager manager = new ChildIdManager(this);
+        String curr_child_id = manager.getChildId();
+        if (!curr_child_id.equals("NA")) {
+            userID = curr_child_id;
+        } else {
+            userID = user.getUid();
+        }
 
         setupViews();
         setupClickListeners();
@@ -70,7 +86,7 @@ public class LogTriggerActivity extends AppCompatActivity {
 
         ChildrenTriggerCountAndDates data = new ChildrenTriggerCountAndDates(triggerName);
 
-        dataWriter.WriteDateToSubCollection(data, new ChildrenTriggerDataWriting.WriteCallback() {
+        dataWriter.WriteDateToSubCollection(userID, data, new ChildrenTriggerDataWriting.WriteCallback() {
             @Override
             public void onSuccess() {
                 runOnUiThread(() -> {
@@ -88,7 +104,7 @@ public class LogTriggerActivity extends AppCompatActivity {
     }
 
     void loadTodayTriggers() {
-        dataWriter.queryTodayTriggers(new ChildrenTriggerDataWriting.OnTriggersLoadedListener() {
+        dataWriter.queryTodayTriggers(userID, new ChildrenTriggerDataWriting.OnTriggersLoadedListener() {
             @Override
             public void onTriggersLoaded(Map<String, Object> triggersData) {
                 runOnUiThread(() -> updateTriggersList(triggersData));
@@ -181,7 +197,7 @@ public class LogTriggerActivity extends AppCompatActivity {
     }
 
     private void removeTrigger(TriggerOccurrence occurrence) {
-        dataWriter.deleteDataFields(occurrence.triggerName, occurrence.timestamp, new ChildrenTriggerDataWriting.WriteCallback() {
+        dataWriter.deleteDataFields(userID, occurrence.triggerName, occurrence.timestamp, new ChildrenTriggerDataWriting.WriteCallback() {
             @Override
             public void onSuccess() {
                 runOnUiThread(() -> {

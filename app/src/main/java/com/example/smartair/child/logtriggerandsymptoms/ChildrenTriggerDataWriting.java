@@ -1,5 +1,7 @@
 package com.example.smartair.child.logtriggerandsymptoms;
 
+import android.os.Build;
+
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,14 +28,8 @@ public class ChildrenTriggerDataWriting {
         void onFailure(Exception e);
     }
 
-    public void deleteDataFields(String triggerName, Timestamp timestampToRemove, WriteCallback callBack) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    public void deleteDataFields(String userID, String triggerName, Timestamp timestampToRemove, WriteCallback callBack) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        if (user == null) {
-            callBack.onFailure(new Exception("User not logged in"));
-            return;
-        }
 
         String todayDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
@@ -41,7 +37,7 @@ public class ChildrenTriggerDataWriting {
         updates.put(triggerName, FieldValue.arrayRemove(timestampToRemove));
 
         db.collection("users")
-                .document(user.getUid())
+                .document(userID)
                 .collection("triggerLogs")
                 .document(todayDate)
                 .update(updates)
@@ -49,19 +45,13 @@ public class ChildrenTriggerDataWriting {
                 .addOnFailureListener(callBack::onFailure);
     }
 
-    public void queryTodayTriggers(OnTriggersLoadedListener callback) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    public void queryTodayTriggers(String userID, OnTriggersLoadedListener callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-        if (user == null) {
-            callback.onFailure(new Exception("User not logged in"));
-            return;
-        }
 
         String todayDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
 
         db.collection("users")
-                .document(user.getUid())
+                .document(userID)
                 .collection("triggerLogs")
                 .document(todayDate)
                 .get()
@@ -75,22 +65,16 @@ public class ChildrenTriggerDataWriting {
                 });
     }
 
-    public void WriteDateToSubCollection(ChildrenTriggerCountAndDates data, WriteCallback callBack) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    public void WriteDateToSubCollection(String userID, ChildrenTriggerCountAndDates data, WriteCallback callBack) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        if (user == null) {
-            callBack.onFailure(new Exception("User not logged in"));
-            return;
-        }
-
-        Timestamp currTime = new Timestamp(Instant.now());
+        Timestamp currTime = Timestamp.now();
 
         Map<String, Object> triggerTimeStamp = new HashMap<>();
         triggerTimeStamp.put(data.getTriggerName(), FieldValue.arrayUnion(currTime));
 
         db.collection("users")
-                .document(user.getUid())
+                .document(userID)
                 .collection("triggerLogs")
                 .document(data.getDate())
                 .set(triggerTimeStamp, SetOptions.merge())
