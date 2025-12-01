@@ -23,7 +23,7 @@
             android:name=".MainActivity"
             android:exported="false" /> <!-- Launcher Activity -->
         <activity
-            android:name=".Login"
+            android:name=".LoginActivityView"
             android:exported="true"
             android:theme="@style/Theme.SmartAir">
             <intent-filter>

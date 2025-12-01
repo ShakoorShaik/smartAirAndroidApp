@@ -19,10 +19,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 
 import com.example.smartair.parent.ParentDashboardWithChildrenActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -71,7 +67,7 @@ public class Registration extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         textView = findViewById(R.id.loginNow);
         textView.setOnClickListener(v -> {
-            Intent intent = new Intent(getApplicationContext(), Login.class);
+            Intent intent = new Intent(getApplicationContext(), LoginActivityView.class);
             startActivity(intent);
             finish();
         });
@@ -114,7 +110,7 @@ public class Registration extends AppCompatActivity {
                     if ("Parent".equals(selectedAccountType)) {
                         intent = new Intent(getApplicationContext(), ParentDashboardWithChildrenActivity.class);
                     } else {
-                        intent = new Intent(getApplicationContext(), Login.class);
+                        intent = new Intent(getApplicationContext(), LoginActivityView.class);
                     }
 
                     startActivity(intent);
