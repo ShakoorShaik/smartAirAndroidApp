@@ -3,26 +3,102 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="16dp"
+    android:gravity="center_horizontal">
 
     <TextView
+        android:id="@+id/settingsText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Settings"
+        android:textAlignment="center"
         android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp" />
+        android:layout_marginTop="30dp" />
 
     <Button
         android:id="@+id/buttonLogout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/logout" />
+        android:text="@string/logout"
+        android:layout_marginBottom="10dp"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Share With Provider"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="10dp" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select what to share with providers"
+        android:layout_marginBottom="10dp"/>
+
+    <Switch
+        android:id="@+id/RescueLog"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Share Rescue Logs"
+        android:textSize="18sp" />
+
+    <Switch
+        android:id="@+id/ControllerAdherenceSummary"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Share Controller Adherence Summaries"
+        android:textSize="18sp" />
+
+    <Switch
+        android:id="@+id/SymptompLog"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Share Symptom Logs"
+        android:textSize="18sp" />
+
+    <Switch
+        android:id="@+id/TriggerLog"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Share Trigger Logs"
+        android:textSize="18sp" />
+
+    <Switch
+        android:id="@+id/PeakFlow"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Share Peak Flows"
+        android:textSize="18sp" />
+
+    <Switch
+        android:id="@+id/TriageIncident"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Share Triage Incidents"
+        android:textSize="18sp" />
+
+    <Switch
+        android:id="@+id/SummaryChart"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:text="Share Summary Charts"
+        android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/button8"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Save Changes" />
+
 
     <Button
         android:id="@+id/buttonThresholds"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:text="Configure Child Badge Thresholds" />
 
     <Button
@@ -32,10 +108,22 @@
         android:text="Configure Child Rescue Attempt Threshold" />
 
     <Button
+        android:id="@+id/buttonLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/logout" />
+
+    <Button
         android:id="@+id/buttonExportHistory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Export PDF/CSV of history" />
+
+    <Button
+        android:id="@+id/buttonAdherenceSchedule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Configure Adherence Schedule" />
 
 </LinearLayout>
 

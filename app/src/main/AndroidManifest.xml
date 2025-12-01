@@ -12,7 +12,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.SmartAir">
+        android:theme="@style/Theme.SmartAirParent">
         <activity
             android:name=".parent.ParentHistoryActivity"
             android:exported="false" />
@@ -46,10 +46,10 @@
             android:exported="false"></activity>
         <activity
             android:name=".parent.ParentLinkGeneration"
-            android:exported="false"></activity> <!-- Child Activities -->
+            android:exported="false"></activity>
         <activity
             android:name=".child.ChildDashboardMainActivity"
-            android:exported="false"></activity>
+            android:exported="false"></activity> <!-- Child Activities -->
         <activity
             android:name=".child.ChildDashboardHome"
             android:exported="false"></activity>
@@ -57,7 +57,10 @@
             android:name=".child.LogUsageActivity"
             android:exported="false"></activity>
         <activity
-            android:name=".child.logtrigger.LogTriggerActivity"
+            android:name=".child.logtriggerandsymptoms.LogTriggerActivity"
+            android:exported="false"></activity>
+        <activity
+            android:name=".child.logtriggerandsymptoms.LogSymptomActivity"
             android:exported="false"></activity>
         <activity
             android:name=".child.checkin.ChildDailyCheckIn"
@@ -124,6 +127,9 @@
         </activity>
         <activity
             android:name=".parent.ParentExportHistoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".parent.ParentAdherenceScheduleActivity"
             android:exported="false" />
         <provider
             android:name="androidx.core.content.FileProvider"

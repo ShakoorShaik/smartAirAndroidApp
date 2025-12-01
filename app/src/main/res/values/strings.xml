@@ -8,7 +8,7 @@
     <string name="click_to_login">Click to login</string>
     <string name="click_to_register">Click to Register</string>
     <string name="logout">Logout</string>
-    <string name="forgot_passoword">Forgot Passoword?</string>
+    <string name="forgot_password">Forgot Password?</string>
     <string name="enter_your_email">Enter your email</string>
     <string name="send_recovery_link">Send recovery link</string>
     <string name="return_">Return</string>
@@ -39,4 +39,9 @@
     <string name="med_page">Medicine</string>
     <string name="edit_pb">Edit PB</string>
     <string name="linked_with">Currently Linked with: parentX</string>
+    <string-array name="frequency_options">
+        <item>Daily (1x)</item>
+        <item>Twice Daily (2x)</item>
+        <item>Every Other Day</item>
+    </string-array>
 </resources>
