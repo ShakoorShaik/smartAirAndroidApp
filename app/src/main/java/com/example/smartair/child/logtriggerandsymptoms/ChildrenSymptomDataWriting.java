@@ -1,5 +1,7 @@
 package com.example.smartair.child.logtriggerandsymptoms;
 
+import android.os.Build;
+
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -76,7 +78,7 @@ public class ChildrenSymptomDataWriting extends ChildrenTriggerDataWriting{
             return;
         }
 
-        Timestamp currTime = new Timestamp(Instant.now());
+        Timestamp currTime = Timestamp.now();
 
         Map<String, Object> triggerTimeStamp = new HashMap<>();
         triggerTimeStamp.put(data.getTriggerName(), FieldValue.arrayUnion(currTime));
