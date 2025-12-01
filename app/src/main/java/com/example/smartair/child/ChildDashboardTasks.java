@@ -9,25 +9,13 @@ import android.widget.Toast;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 
 import com.example.smartair.R;
-import com.example.smartair.child.checkin.ChildDailyCheckIn;
-import com.example.smartair.child.emergency.Emergency;
 import com.example.smartair.child.inhalertechnique.InhalerTechniqueFirst;
-import com.example.smartair.child.logtrigger.LogTriggerActivity;
-import com.example.smartair.parent.ParentChildrenFragment;
-import com.example.smartair.parent.ParentHomeFragment;
-import com.example.smartair.parent.ParentMedicineFragment;
-import com.example.smartair.parent.ParentSettingsFragment;
+import com.example.smartair.child.logtriggerandsymptoms.LogTriggerActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-import utils.BadgeStreakManager;
 import utils.ChildEmergency;
-import utils.ChildIdManager;
 
 public class ChildDashboardTasks extends AppCompatActivity {
 

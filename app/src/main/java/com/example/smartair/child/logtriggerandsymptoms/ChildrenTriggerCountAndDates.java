@@ -1,22 +1,17 @@
-package com.example.smartair.child.logtrigger;
+package com.example.smartair.child.logtriggerandsymptoms;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Map;
 
 public class ChildrenTriggerCountAndDates {
     private String triggerName;
-    private int count;
     private String date;
 
     public String getTriggerName() {
         return triggerName;
     }
 
-    public int getCount() {
-        return count;
-    }
 
     public String getDate() {
         return this.date;
@@ -29,9 +24,8 @@ public class ChildrenTriggerCountAndDates {
         return sdf.format(new Date());
     }
 
-    public ChildrenTriggerCountAndDates (String triggerName, int count) {
+    public ChildrenTriggerCountAndDates (String triggerName) {
         this.triggerName = triggerName;
-        this.count = count;
         this.date = getTodayDate();
     }
 }

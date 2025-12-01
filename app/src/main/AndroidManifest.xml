@@ -46,10 +46,10 @@
             android:exported="false"></activity>
         <activity
             android:name=".parent.ParentLinkGeneration"
-            android:exported="false"></activity> <!-- Child Activities -->
+            android:exported="false"></activity>
         <activity
             android:name=".child.ChildDashboardMainActivity"
-            android:exported="false"></activity>
+            android:exported="false"></activity> <!-- Child Activities -->
         <activity
             android:name=".child.ChildDashboardHome"
             android:exported="false"></activity>
@@ -57,7 +57,10 @@
             android:name=".child.LogUsageActivity"
             android:exported="false"></activity>
         <activity
-            android:name=".child.logtrigger.LogTriggerActivity"
+            android:name=".child.logtriggerandsymptoms.LogTriggerActivity"
+            android:exported="false"></activity>
+        <activity
+            android:name=".child.logtriggerandsymptoms.LogSymptomActivity"
             android:exported="false"></activity>
         <activity
             android:name=".child.checkin.ChildDailyCheckIn"

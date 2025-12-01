@@ -2,8 +2,10 @@ package com.example.smartair.child.checkin;
 
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.smartair.R;
@@ -15,18 +17,14 @@ import java.util.Locale;
 
 public class ChildDailyCheckIn extends AppCompatActivity {
 
-
-    /*
-    implement child entered daily check in or parent entered daily check in
-     */
-
-
     private ChildCheckInDataFields checkInData;
     private DailyCheckInDataWriting dataWriter;
 
     private LinearLayout selectedSleepOption = null;
     private LinearLayout selectedCoughOption = null;
     private LinearLayout selectedLimitsOption = null;
+
+    private Switch enteredByParent = null;
 
     private EditText notesEditText;
     private Button submitButton;
@@ -79,6 +77,7 @@ public class ChildDailyCheckIn extends AppCompatActivity {
 
         submitButton = findViewById(R.id.btnSubmit);
         notesEditText = findViewById(R.id.notesEditText);
+        enteredByParent = findViewById(R.id.switch1);
 
         //Question 1
         LinearLayout badSleep = findViewById(R.id.emojiBad);
@@ -96,55 +95,61 @@ public class ChildDailyCheckIn extends AppCompatActivity {
         LinearLayout goodLimits = findViewById(R.id.emojiRun);
 
         // _______________________________________
-        // 0 = bad
-        // 1 = ok
-        // 2 = good
-        // _______________________________________
-
-        // _______________________________________
         // QUESTION 1
         // _______________________________________
         goodSleep.setOnClickListener(v -> {
-            handleSleepSelection(goodSleep, "2");
+            handleSleepSelection(goodSleep, "good");
         });
 
         okSleep.setOnClickListener(v -> {
-            handleSleepSelection(okSleep, "1");
+            handleSleepSelection(okSleep, "ok");
         });
 
         badSleep.setOnClickListener(v -> {
-            handleSleepSelection(badSleep, "0");
+            handleSleepSelection(badSleep, "bad");
         });
 
         // _______________________________________
         // QUESTION 2
         // _______________________________________
         goodCough.setOnClickListener(v -> {
-            handleCoughSelection(goodCough, "2");
+            handleCoughSelection(goodCough, "good");
         });
 
         okCough.setOnClickListener(v -> {
-            handleCoughSelection(okCough, "1");
+            handleCoughSelection(okCough, "ok");
         });
 
         badCough.setOnClickListener(v -> {
-            handleCoughSelection(badCough, "0");
+            handleCoughSelection(badCough, "bad");
         });
 
         // _______________________________________
         // QUESTION 3
         // _______________________________________
         goodLimits.setOnClickListener(v -> {
-            handleLimitsSelection(goodLimits, "2");
+            handleLimitsSelection(goodLimits, "good");
         });
 
         okLimits.setOnClickListener(v -> {
-            handleLimitsSelection(okLimits, "1");
+            handleLimitsSelection(okLimits, "ok");
         });
 
         badLimits.setOnClickListener(v -> {
-            handleLimitsSelection(badLimits, "0");
+            handleLimitsSelection(badLimits, "bad");
         });
+
+        Boolean isChecked = enteredByParent.isChecked();
+
+        enteredByParent.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    checkInData.enteredByParent = true;
+                }
+            }
+        });
+
 
         submitButton.setOnClickListener(v -> {
             checkInData.notes = notesEditText.getText().toString();
