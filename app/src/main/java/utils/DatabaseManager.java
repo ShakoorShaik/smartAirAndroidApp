@@ -62,7 +62,6 @@ public class DatabaseManager {
 
     public interface SuccessFailCallback {
         void onSuccess();
-
         void onFailure(Exception e);
     }
 
