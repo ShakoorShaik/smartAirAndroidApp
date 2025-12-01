@@ -31,7 +31,7 @@ Provider viewables
 
 
 
-public class ProviderInfoViewer extends AppCompatActivity{
+public class ProviderHomePage extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +53,7 @@ public class ProviderInfoViewer extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(ProviderInfoViewer.this, Login.class);
+                Intent intent = new Intent(ProviderHomePage.this, Login.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
@@ -63,7 +63,7 @@ public class ProviderInfoViewer extends AppCompatActivity{
         LinkNewAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ProviderInfoViewer.this, ProviderDashboardActivity.class);
+                Intent intent = new Intent(ProviderHomePage.this, ProviderCodeLinking.class);
                 startActivity(intent);
                 finish();
             }

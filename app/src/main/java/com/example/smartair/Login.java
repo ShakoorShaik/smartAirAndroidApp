@@ -16,10 +16,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 
-import com.example.smartair.child.ChildDashboardHome;
 import com.example.smartair.child.ChildDashboardMainActivity;
 import com.example.smartair.parent.ParentDashboardWithChildrenActivity;
-import com.example.smartair.provider.ProviderDashboardActivity;
+import com.example.smartair.provider.ProviderCodeLinking;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -128,7 +127,7 @@ public class Login extends AppCompatActivity {
                                 if ("Parent".equals(accountType)) {
                                     intent = new Intent(getApplicationContext(), ParentDashboardWithChildrenActivity.class);
                                 } else if ("Provider".equals(accountType)){
-                                    intent = new Intent(getApplicationContext(), ProviderDashboardActivity.class);
+                                    intent = new Intent(getApplicationContext(), ProviderCodeLinking.class);
                                 } else if ("Child".equals(accountType)) {
                                     intent = new Intent(getApplicationContext(), ChildDashboardMainActivity.class);
                                 } else {

@@ -71,7 +71,7 @@
             android:name=".ForgetPasswordActivity"
             android:exported="false" /> <!-- Provider Activity Activities -->
         <activity
-            android:name=".provider.ProviderDashboardActivity"
+            android:name=".provider.ProviderCodeLinking"
             android:exported="false" /> <!-- Child Dashboard Game Activities -->
         <activity
             android:name=".child.ChildDashboardTasks"
@@ -98,7 +98,7 @@
             android:name=".child.inhalertechnique.InhalerTechniqueVideo"
             android:exported="false"></activity>
         <activity
-            android:name=".provider.ProviderInfoViewer"
+            android:name=".provider.ProviderHomePage"
             android:exported="false" /> <!-- Emergency Activities -->
         <activity
             android:name=".child.emergency.Emergency"

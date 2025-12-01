@@ -54,6 +54,11 @@ public class MainActivity extends AppCompatActivity {
             DatabaseManager.getData("accountType", new DatabaseManager.DataSuccessFailCallback() {
                 @Override
                 public void onSuccess(String data) {
+                    if (data == null) {
+                        textView.setText("Account type not found");
+                        return;
+                    }
+
                     if (data.equals("Parent")) {
                         Intent intent = new Intent(getApplicationContext(), ParentDashboardWithChildrenActivity.class);
                         startActivity(intent);
@@ -73,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), Login.class);
                     startActivity(intent);
                     finish();
-
                 }
             });
         }

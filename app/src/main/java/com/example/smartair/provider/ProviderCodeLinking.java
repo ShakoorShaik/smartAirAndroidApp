@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import utils.ParentProviderLinking;
 
-public class ProviderDashboardActivity extends AppCompatActivity {
+public class ProviderCodeLinking extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +28,7 @@ public class ProviderDashboardActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(ProviderDashboardActivity.this, Login.class);
+                Intent intent = new Intent(ProviderCodeLinking.this, Login.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
@@ -48,7 +48,7 @@ public class ProviderDashboardActivity extends AppCompatActivity {
             ParentProviderLinking.redeemCode(Code, new ParentProviderLinking.RedeemCallback() {
                 @Override
                 public void onSuccess(String parentEmail) {
-                    Intent intent = new Intent(ProviderDashboardActivity.this, ProviderInfoViewer.class);
+                    Intent intent = new Intent(ProviderCodeLinking.this, ProviderHomePage.class);
                     intent.putExtra("parentEmail", parentEmail);
 
                     startActivity(intent);
