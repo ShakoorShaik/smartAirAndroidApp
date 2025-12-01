@@ -19,7 +19,7 @@
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/button7"
-        android:layout_width="320dp"
+        android:layout_width="340dp"
         android:layout_height="80dp"
         android:layout_marginTop="30dp"
         android:text="DAILY CHECK IN"
@@ -42,7 +42,7 @@
 
     <Button
         android:id="@+id/button5"
-        android:layout_width="320dp"
+        android:layout_width="340dp"
         android:layout_height="80dp"
         android:layout_marginTop="25dp"
         android:text="Log Inhaler Use"
