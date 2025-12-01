@@ -18,18 +18,15 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/weekly_rescues_card"
-                android:layout_width="0dp"
+                android:layout_width="150dp"
                 android:layout_height="100dp"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="12dp"
-                app:cardBackgroundColor="#6100EC"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="6dp"
+                android:layout_marginTop="25dp"
+                app:cardBackgroundColor="@color/main_blue"
+                app:cardCornerRadius="6dp"
+                app:cardElevation="0dp"
                 app:layout_constraintEnd_toStartOf="@id/historyButton"
-                app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/zone_card"
-                app:layout_constraintWidth_percent="0.45"
                 app:layout_goneMarginStart="12dp">
 
                 <LinearLayout
@@ -169,27 +166,10 @@
                 android:layout_marginTop="30dp" />
 
             <Button
-                android:id="@+id/weeklyRescueButton"
-                android:layout_width="150dp"
-                android:layout_height="110dp"
-                android:layout_marginTop="25dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="0dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/zone_card"
-                android:text="Weekly Rescues"
-                app:layout_constraintEnd_toStartOf="@id/historyButton"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/zone_card"
-                android:textStyle="bold"
-                android:textAllCaps="false"
-                />
-
-            <Button
                 android:id="@+id/historyButton"
                 android:layout_width="150dp"
                 android:layout_height="110dp"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="20dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -216,7 +196,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:layout_marginHorizontal="30dp"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/historyButton" />
