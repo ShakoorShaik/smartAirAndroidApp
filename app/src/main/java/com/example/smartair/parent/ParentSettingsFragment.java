@@ -88,6 +88,14 @@ public class ParentSettingsFragment extends Fragment {
             }
         });
 
+        Button buttonAdherenceSchedule = view.findViewById(R.id.buttonAdherenceSchedule);
+        buttonAdherenceSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ParentAdherenceScheduleActivity.class);
+                startActivity(intent);
+            }
+        });
         //-------------------------------------------------
         // Share provider switches
         //-------------------------------------------------
