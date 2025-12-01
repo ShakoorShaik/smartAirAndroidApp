@@ -16,9 +16,17 @@ import com.google.firebase.auth.FirebaseAuth;
 /*
 Provider viewables
 
-- Trends(Zones, Inhaler uses, Rescues)
-- Children Info (Age/Triggers/PBs)
-- Misc (last Inhaler use/Daily check ins/ Badges/ Streak)
+- Logs(Rescue, Trigger, Symptoms)
+- Summary (Controller adherence
+
+○ Rescue logs
+○ Controller adherence summary
+○ Symptoms
+○ Triggers
+○ Peak-flow (PEF)
+○ Triage incidents
+○ Summary charts (dashboard/report visuals)
+
  */
 
 

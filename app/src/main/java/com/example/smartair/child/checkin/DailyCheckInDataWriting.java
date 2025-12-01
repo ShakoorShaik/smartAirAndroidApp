@@ -40,6 +40,7 @@ public class DailyCheckInDataWriting {
     private Map<String, Object> convertToFirebaseFormat(ChildCheckInDataFields data) {
         Map<String, Object> firebaseData = new HashMap<>();
 
+        firebaseData.put("enteredByParent", data.enteredByParent);
         firebaseData.put("nightWaking", data.nightWaking);
         firebaseData.put("coughWheeze", data.coughWheeze);
         firebaseData.put("activityLimits", data.activityLimits);
@@ -75,31 +76,5 @@ public class DailyCheckInDataWriting {
                 .set(firebaseData)
                 .addOnSuccessListener(aVoid -> callback.onSuccess())
                 .addOnFailureListener(e -> callback.onFailure("Failed to save check in: " + e.getMessage()));
-    }
-
-    public interface CheckExistingCallback {
-        void onCheckExistingResult(Boolean exists);
-    }
-
-    public void checkExistingCheckIn(String date, CheckExistingCallback callback) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user == null) {
-            callback.onCheckExistingResult(false);
-            return;
-        }
-
-        FirebaseFirestore.getInstance()
-                .collection("users")
-                .document(user.getUid())
-                .collection("daily_checkin_logs")
-                .document(date)
-                .get()
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful() && task.getResult() != null && task.getResult().exists()) {
-                        callback.onCheckExistingResult(true);
-                    } else {
-                        callback.onCheckExistingResult(false);
-                    }
-                });
     }
 }
