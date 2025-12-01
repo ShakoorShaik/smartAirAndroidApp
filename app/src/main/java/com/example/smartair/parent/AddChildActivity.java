@@ -1,6 +1,7 @@
 package com.example.smartair.parent;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -8,6 +9,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.smartair.LoginActivityView;
 import com.example.smartair.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -17,13 +20,18 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+
+import utils.ChildAccountManager;
+import utils.DatabaseManager;
 
 public class AddChildActivity extends AppCompatActivity {
 
     private EditText editTextChildName;
     private EditText editTextChildDob;
     private EditText editTextNotes;
-
+    private EditText editTextUsername;
+    private EditText editTextPassword;
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
 
@@ -38,6 +46,8 @@ public class AddChildActivity extends AppCompatActivity {
         editTextChildName = findViewById(R.id.editTextChildName);
         editTextChildDob = findViewById(R.id.editTextChildDob);
         editTextNotes = findViewById(R.id.editTextNotes);
+        editTextUsername = findViewById(R.id.editTextChildUsername);
+        editTextPassword= findViewById(R.id.editTextChildPassword);
         Button buttonSaveChild = findViewById(R.id.buttonSaveChild);
         Button buttonReturn = findViewById(R.id.buttonReturn);
 
@@ -84,8 +94,10 @@ public class AddChildActivity extends AppCompatActivity {
         String childName = editTextChildName.getText().toString().trim();
         String childDob = editTextChildDob.getText().toString().trim();
         String notes = editTextNotes.getText().toString().trim();
+        String username = editTextUsername.getText().toString().trim();
+        String password = editTextPassword.getText().toString();
 
-        if (childName.isEmpty() || childDob.isEmpty()) {
+        if (childName.isEmpty() || childDob.isEmpty() || username.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Please fill in all required fields", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -97,45 +109,51 @@ public class AddChildActivity extends AppCompatActivity {
             return;
         }
 
-        String email = parentUser.getEmail();
-        if (email == null || email.isEmpty()) {
-            Toast.makeText(this, "Parent email not found", Toast.LENGTH_SHORT).show();
-            return;
-        }
+        String email = username + "@childaccount.com";
 
         String parentUid = parentUser.getUid();
 
-        Map<String, Object> child = new HashMap<>();
-        child.put("name", childName);
-        child.put("dob", childDob);
-        child.put("email", email);
-        child.put("notes", notes);
-        System.out.println(child);
-        System.out.println(parentUid);
-        db.collection("users").document(parentUid)
-                .update("children", FieldValue.arrayUnion(child))
-                .addOnSuccessListener(aVoid -> {
-                    Map<String, Object> linkedChildInfo = new HashMap<>();
-                    linkedChildInfo.put("uid", parentUid);
-                    linkedChildInfo.put("name", childName);
-                    linkedChildInfo.put("linkedAt", System.currentTimeMillis());
-                    linkedChildInfo.put("isProfile", true);
-                    linkedChildInfo.put("dob", childDob);
-                    linkedChildInfo.put("notes", notes);
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        FirebaseUser childUser = mAuth.getCurrentUser();
+                        if (childUser != null) {
+                            String childUid = childUser.getUid();
+                            Map<String, Object> childData = new HashMap<>();
+                            childData.put("accountType", "Child");
+                            childData.put("name", childName);
+                            childData.put("dob", childDob);
+                            childData.put("notes", notes);
 
-                    db.collection("users").document(parentUid)
-                            .update("linkedChildren", FieldValue.arrayUnion(linkedChildInfo))
-                            .addOnSuccessListener(aVoid1 -> {
-                                Toast.makeText(AddChildActivity.this, "Child profile saved", Toast.LENGTH_SHORT).show();
-                                setResult(RESULT_OK);
-                                finish();
-                            })
-                            .addOnFailureListener(e -> {
-                                Toast.makeText(AddChildActivity.this, "Error linking child profile: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            });
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(AddChildActivity.this, "Error saving child profile", Toast.LENGTH_SHORT).show();
+                            db.collection("users").document(childUid)
+                                    .set(childData, com.google.firebase.firestore.SetOptions.merge())
+                                    .addOnSuccessListener(aVoid -> {
+                                        ChildAccountManager.linkChildToParent(parentUid, childUid, childName, new DatabaseManager.SuccessFailCallback() {
+                                            @Override
+                                            public void onSuccess() {
+                                                mAuth.signOut();
+                                                Toast.makeText(AddChildActivity.this, "Child account created and linked successfully. Please log in again.", Toast.LENGTH_LONG).show();
+                                                Intent intent = new Intent(AddChildActivity.this, LoginActivityView.class);
+                                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                                startActivity(intent);
+                                                finish();
+                                            }
+
+                                            @Override
+                                            public void onFailure(Exception e) {
+                                                Toast.makeText(AddChildActivity.this, "Error linking child: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+                                    })
+                                    .addOnFailureListener(e -> {
+                                        Toast.makeText(AddChildActivity.this, "Error saving child data: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    });
+                        } else {
+                            Toast.makeText(AddChildActivity.this, "Failed to create child account", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(AddChildActivity.this, "Error creating child account: " + Objects.requireNonNull(task.getException()).getMessage(), Toast.LENGTH_SHORT).show();
+                    }
                 });
     }
 }
