@@ -17,7 +17,6 @@ public class PEFReading {
     public Long getTimestamp() {
         return timestamp;
     }
-
     public Long getValue() {
         return value;
     }

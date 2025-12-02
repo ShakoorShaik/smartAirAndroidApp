@@ -2,6 +2,8 @@ package com.example.smartair.child.checkin;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import utils.ChildIdManager;
 import utils.DatabaseManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -52,25 +54,14 @@ public class DailyCheckInDataWriting {
         return firebaseData;
     }
 
-    public void writeDailyCheckIn(ChildCheckInDataFields data, WriteCallback callback) {
+    public void writeDailyCheckIn(String userID, ChildCheckInDataFields data, WriteCallback callback) {
         autoInitializeFields(data);
-
-        if (!isDataValid(data)) {
-            callback.onFailure("Missing required user information");
-            return;
-        }
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user == null) {
-            callback.onFailure("User is null");
-            return;
-        }
 
         Map<String, Object> firebaseData = convertToFirebaseFormat(data);
 
         FirebaseFirestore.getInstance()
                 .collection("users")
-                .document(user.getUid())
+                .document(userID)
                 .collection("daily_checkin_logs")
                 .document(data.date)
                 .set(firebaseData)

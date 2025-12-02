@@ -16,8 +16,6 @@ import java.util.List;
 class ChildHistoryPefAdapter extends RecyclerView.Adapter<ChildHistoryPefAdapter.MyViewHolder> {
 
     private List<PEFReading> PEFreadingList;
-
-    // Constructor
     public ChildHistoryPefAdapter(List<PEFReading> pefList) {
         this.PEFreadingList = pefList;
     }
@@ -33,16 +31,14 @@ class ChildHistoryPefAdapter extends RecyclerView.Adapter<ChildHistoryPefAdapter
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         PEFReading examItem = PEFreadingList.get(position);
 
-        holder.PEFValue.setText(examItem.getValue().toString());
-        holder.PEFDate.setText(examItem.getDate());
+        holder.PEFValue.setText("Value: " + examItem.getValue().toString());
+        holder.PEFDate.setText("Date: " + examItem.getDate());
     }
 
     @Override
     public int getItemCount() {
         return PEFreadingList.size();
     }
-
-    // ViewHolder class
     static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView PEFValue, PEFDate;
 

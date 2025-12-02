@@ -15,6 +15,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import utils.ChildIdManager;
+
 public class ChildDailyCheckIn extends AppCompatActivity {
 
     private ChildCheckInDataFields checkInData;
@@ -29,6 +31,7 @@ public class ChildDailyCheckIn extends AppCompatActivity {
     private EditText notesEditText;
     private Button submitButton;
 
+    private String userID;
     private void handleSleepSelection (LinearLayout selectedOption, String value) {
         if(selectedSleepOption != null) {
             selectedSleepOption.setSelected(false);
@@ -66,11 +69,14 @@ public class ChildDailyCheckIn extends AppCompatActivity {
 
         checkInData = new ChildCheckInDataFields();
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        if (user != null) {
-            checkInData.userId = user.getUid();
-            checkInData.userEmail = user.getEmail();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        ChildIdManager manager = new ChildIdManager(this);
+        String curr_child_id = manager.getChildId();
+        if (!curr_child_id.equals("NA")) {
+            userID = curr_child_id;
+        } else {
+            userID = user.getUid();
         }
 
         checkInData.date = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
@@ -154,7 +160,7 @@ public class ChildDailyCheckIn extends AppCompatActivity {
         submitButton.setOnClickListener(v -> {
             checkInData.notes = notesEditText.getText().toString();
 
-            dataWriter.writeDailyCheckIn(checkInData, new DailyCheckInDataWriting.WriteCallback() {
+            dataWriter.writeDailyCheckIn(userID, checkInData, new DailyCheckInDataWriting.WriteCallback() {
                 @Override
                 public void onSuccess() {
                     runOnUiThread(() -> {

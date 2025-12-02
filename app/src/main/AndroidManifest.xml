@@ -17,7 +17,7 @@
             android:name=".parent.ParentHistoryActivity"
             android:exported="false" />
         <activity
-            android:name=".child.ChildHistory.ChildHistoryPEFActivity"
+            android:name=".child.ChildHistory.ChildHistoryActivity"
             android:exported="true" /> <!-- Main Activity -->
         <activity
             android:name=".MainActivity"

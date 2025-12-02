@@ -5,6 +5,7 @@ android:layout_width="match_parent"
 android:layout_height="wrap_content"
 android:layout_margin="8dp"
 app:cardCornerRadius="8dp"
+    app:cardBackgroundColor="@color/lightest_gray"
 app:cardElevation="4dp">
 
 <LinearLayout
@@ -17,7 +18,7 @@ app:cardElevation="4dp">
         android:id="@+id/examName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Child Name"
+        android:text="ERROR"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -26,7 +27,7 @@ app:cardElevation="4dp">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
-        android:text="Linked: Date"
+        android:text="ERROR"
         android:textColor="#666666"
         android:textSize="14sp" />
 
