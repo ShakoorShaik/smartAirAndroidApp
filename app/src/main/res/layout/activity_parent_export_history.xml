@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:spinnerMode="dropdown"
-            android:contentDescription="Select child or all children" />
+            android:contentDescription="Select child" />
 
         <View
             android:layout_width="match_parent"
