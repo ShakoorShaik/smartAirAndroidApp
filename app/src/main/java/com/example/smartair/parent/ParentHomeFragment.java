@@ -16,6 +16,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartair.R;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -41,12 +46,15 @@ import java.util.Objects;
 import utils.Medicine;
 import utils.MedicineManager;
 import utils.ParentRescue;
+import utils.SnippetManager;
 import utils.TriageHistoryManager;
 import utils.ZoneHistoryManager;
 import utils.PBManager;
 import utils.PEFManager;
 import utils.ZoneManager;
 import utils.ChildAccountManager;
+import com.github.mikephil.charting.charts.LineChart;
+
 
 import utils.ParentEmergency;
 
@@ -67,6 +75,9 @@ public class ParentHomeFragment extends Fragment {
     private CardView zoneCard;
     private TextView zonePercentage;
     private TextView childNameText;
+    LineChart lineChart;
+
+    boolean isSevenDaySnippet;
 
     public ParentHomeFragment() {
     }
@@ -117,11 +128,18 @@ public class ParentHomeFragment extends Fragment {
         loadZoneInfo(view);
         loadWeeklyRescues(view);
 
+        lineChart = view.findViewById(R.id.historyButton);
+        lineChart.setScaleEnabled(false);
+        lineChart.getDescription().setEnabled(false);
+        lineChart.getAxisRight().setEnabled(false);
+        setSevenDaySnippet();
+        isSevenDaySnippet = true;
+
         View historyBtn = view.findViewById(R.id.historyButton);
         if (historyBtn != null) {
             historyBtn.setOnClickListener(v -> {
                 if (getContext() != null) {
-                    startActivity(new Intent(getContext(), ParentHistoryActivity.class));
+                    toggleSnippet();
                 }
             });
         }
@@ -603,5 +621,85 @@ public class ParentHomeFragment extends Fragment {
 
 
     }
+    private void toggleSnippet() {
+        if (isSevenDaySnippet){
+            setThirtyDaySnippet();
+            isSevenDaySnippet = false;
+        }
+        else{
+            setSevenDaySnippet();
+            isSevenDaySnippet = true;
+        }
+    }
+
+    private void setSevenDaySnippet(){
+        lineChart.getDescription().setEnabled(false);
+        lineChart.getAxisRight().setEnabled(false);
+
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setAxisMinimum(0f);
+        xAxis.setAxisMaximum(6f);
+        xAxis.setGranularity(1f);
+        xAxis.setGranularityEnabled(true);
+        xAxis.setLabelCount(7, true);
+
+        YAxis yAxisLeft = lineChart.getAxisLeft();
+        yAxisLeft.setAxisMinimum(0f);
+        yAxisLeft.setGranularity(1f);
+        yAxisLeft.setGranularityEnabled(true);
+
+        yAxisLeft.setLabelCount(10, false);
+
+        SnippetManager.set7dayData(7, new SnippetManager.SnippetCallback() {
+            @Override
+            public void onSuccess(LineData lineData) {
+                lineChart.setData(lineData);
+                lineChart.notifyDataSetChanged();
+                lineChart.invalidate();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        });
+    }
+
+    private void setThirtyDaySnippet(){
+
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setAxisMinimum(0f);
+        xAxis.setAxisMaximum(29f);
+        xAxis.setGranularity(1f);
+        xAxis.setGranularityEnabled(true);
+
+        xAxis.setLabelCount(7, false);
+
+        YAxis yAxisLeft = lineChart.getAxisLeft();
+        yAxisLeft.setAxisMinimum(0f);
+        yAxisLeft.setGranularity(1f);
+        yAxisLeft.setGranularityEnabled(true);
+
+        yAxisLeft.setLabelCount(10, false);
+
+        SnippetManager.set7dayData(30, new SnippetManager.SnippetCallback() {
+            @Override
+            public void onSuccess(LineData lineData) {
+                lineChart.setData(lineData);
+                lineChart.notifyDataSetChanged();
+                lineChart.invalidate();
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        });
+
+
+    }
+
 }
 
