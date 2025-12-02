@@ -1,6 +1,5 @@
 package com.example.smartair.parent;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -18,9 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.smartair.R;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
-import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,7 +33,6 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -52,7 +48,7 @@ import utils.ZoneHistoryManager;
 import utils.PBManager;
 import utils.PEFManager;
 import utils.ZoneManager;
-import utils.ChildAccountManager;
+
 import com.github.mikephil.charting.charts.LineChart;
 
 
@@ -651,7 +647,7 @@ public class ParentHomeFragment extends Fragment {
 
         yAxisLeft.setLabelCount(10, false);
 
-        SnippetManager.set7dayData(7, new SnippetManager.SnippetCallback() {
+        SnippetManager.getPastScaleDaysData(7, new SnippetManager.SnippetCallback() {
             @Override
             public void onSuccess(LineData lineData) {
                 lineChart.setData(lineData);
@@ -684,7 +680,7 @@ public class ParentHomeFragment extends Fragment {
 
         yAxisLeft.setLabelCount(10, false);
 
-        SnippetManager.set7dayData(30, new SnippetManager.SnippetCallback() {
+        SnippetManager.getPastScaleDaysData(30, new SnippetManager.SnippetCallback() {
             @Override
             public void onSuccess(LineData lineData) {
                 lineChart.setData(lineData);

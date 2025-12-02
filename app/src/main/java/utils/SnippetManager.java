@@ -23,7 +23,7 @@ public class SnippetManager {
         void onSuccess(LineData lineData);
         void onFailure(Exception e);
     }
-    public static void set7dayData(int scale, SnippetCallback callback) {
+    public static void getPastScaleDaysData(int scale, SnippetCallback callback) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -37,6 +37,13 @@ public class SnippetManager {
                 .get()
                 .addOnSuccessListener(task -> {
                     List<DocumentReference> userRefs = new ArrayList<>();
+
+                    if (userRefs.isEmpty()) {
+                        LineData emptyLineData = new LineData(new LineDataSet(new ArrayList<>(), "Total symptoms/days ago"));
+                        callback.onSuccess(emptyLineData);
+                        return;
+                    }
+
                     for (DocumentSnapshot userDoc : task.getDocuments()) {
                         userRefs.add(userDoc.getReference());
                     }
@@ -50,16 +57,10 @@ public class SnippetManager {
                         cal.add(Calendar.DAY_OF_YEAR, -1);
                     }
 
-                    if (userRefs.isEmpty()) {
-                        LineData emptyLineData = new LineData(new LineDataSet(new ArrayList<>(), "Total symptoms/days ago"));
-                        callback.onSuccess(emptyLineData);
-                        return;
-                    }
-
                     int[] dayTotals = new int[days.size()];
 
-                    int totalRequests = days.size() * userRefs.size();
-                    AtomicInteger completed = new AtomicInteger(0);
+                    int totalRequests = days.size() * userRefs.size();  //since we are getting data for every child
+                    AtomicInteger requestsCompletedCount = new AtomicInteger(0);
 
                     for (int dayIndex = 0; dayIndex < days.size(); dayIndex++) {
                         String dayId = days.get(dayIndex);
@@ -77,12 +78,12 @@ public class SnippetManager {
                                             }
                                         }
 
-                                        if (completed.incrementAndGet() == totalRequests) {
+                                        if (requestsCompletedCount.incrementAndGet() == totalRequests) {
                                             finishAndCallback(scale, days, dayTotals, callback);
                                         }
                                     })
                                     .addOnFailureListener(e -> {
-                                        if (completed.incrementAndGet() == totalRequests) {
+                                        if (requestsCompletedCount.incrementAndGet() == totalRequests) {
                                             finishAndCallback(scale, days, dayTotals, callback);
                                         }
                                     });

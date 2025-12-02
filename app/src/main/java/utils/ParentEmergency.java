@@ -29,7 +29,7 @@ public class ParentEmergency {
                         if (dc.getType() == DocumentChange.Type.MODIFIED) {
                             Boolean flag = dc.getDocument().getBoolean("emergencyFlag");
                             String name = dc.getDocument().getString("name");
-                            if (flag == Boolean.FALSE){
+                            if (flag == Boolean.FALSE){         //this means the flag flickered meaning an emergency triage occurred
                                 emergencyPromptParent(name, fragment);
                             }
                         }
