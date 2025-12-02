@@ -38,12 +38,6 @@ public class SnippetManager {
                 .addOnSuccessListener(task -> {
                     List<DocumentReference> userRefs = new ArrayList<>();
 
-                    if (userRefs.isEmpty()) {
-                        LineData emptyLineData = new LineData(new LineDataSet(new ArrayList<>(), "Total symptoms/days ago"));
-                        callback.onSuccess(emptyLineData);
-                        return;
-                    }
-
                     for (DocumentSnapshot userDoc : task.getDocuments()) {
                         userRefs.add(userDoc.getReference());
                     }
@@ -55,6 +49,12 @@ public class SnippetManager {
                     for (int i = 0; i < scale; i++) {
                         days.add(sdf.format(cal.getTime()));
                         cal.add(Calendar.DAY_OF_YEAR, -1);
+                    }
+
+                    if (userRefs.isEmpty()) {
+                        LineData emptyLineData = new LineData(new LineDataSet(new ArrayList<>(), "Total symptoms/days ago"));
+                        callback.onSuccess(emptyLineData);
+                        return;
                     }
 
                     int[] dayTotals = new int[days.size()];
