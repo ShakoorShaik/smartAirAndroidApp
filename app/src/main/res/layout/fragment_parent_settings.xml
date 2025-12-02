@@ -16,95 +16,18 @@
         android:layout_marginTop="30dp" />
 
 
-
-    <TextView
+    <Button
+        android:id="@+id/ChildPrivacy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Share With Provider"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="10dp" />
-
-    <TextView
-        android:id="@+id/textView14"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Select what to share with providers"
-        android:textSize="12dp"
-        android:layout_marginBottom="10dp"/>
-
-    <Switch
-        android:id="@+id/RescueLog"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="Share Rescue Logs"
-        android:textSize="18sp" />
-
-    <Switch
-        android:id="@+id/ControllerAdherenceSummary"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="Share Controller Adherence Summaries"
-        android:textSize="18sp" />
-
-    <Switch
-        android:id="@+id/SymptompLog"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="Share Symptom Logs"
-        android:textSize="18sp" />
-
-    <Switch
-        android:id="@+id/TriggerLog"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="Share Trigger Logs"
-        android:textSize="18sp" />
-
-    <Switch
-        android:id="@+id/PeakFlow"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="Share Peak Flows"
-        android:textSize="18sp" />
-
-    <Switch
-        android:id="@+id/TriageIncident"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="Share Triage Incidents"
-        android:textSize="18sp" />
-
-    <Switch
-        android:id="@+id/SummaryChart"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:text="Share Summary Charts"
-        android:textSize="18sp" />
-
-    <Button
-        android:id="@+id/button8"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Save Changes"
-        android:textAllCaps="false"/>
-
-    <View
-        android:id="@+id/separator1"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#A0A0A0"
-        android:layout_marginTop="20dp"
-        android:layout_marginHorizontal="20dp"/>
+        android:layout_marginTop="30dp"
+        android:text="Configure Child-Provider Visibility" />
 
     <Button
         android:id="@+id/buttonThresholds"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Configure Child Badge Thresholds"
-        android:textAllCaps="false"/>
+        android:text="Configure Child Badge Thresholds" />
 
     <Button
         android:id="@+id/buttonRescue"

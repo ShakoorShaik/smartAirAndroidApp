@@ -17,6 +17,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.smartair.child.ChildDashboardMainActivity;
 import com.example.smartair.parent.ParentDashboardWithChildrenActivity;
+import com.example.smartair.provider.ProviderCodeLinking;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -87,6 +88,13 @@ public class LoginActivityView extends AppCompatActivity {
 
     public void sendToChildHome() {
         Intent intent = new Intent(getApplicationContext(), ChildDashboardMainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+        finish();
+    }
+
+    public void sendToProviderCodeLinking() {
+        Intent intent = new Intent(getApplicationContext(), ProviderCodeLinking.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();

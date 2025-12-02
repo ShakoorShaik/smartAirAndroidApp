@@ -32,6 +32,8 @@ public class LoginActivityPresenter {
             view.sendToParentHome();
         } else if ("Child".equals(accountType)) {
             view.sendToChildHome();
+        } else if ("Provider".equals(accountType)) {
+            view.sendToProviderCodeLinking();
         } else {
             view.sendToMainActivity();
         }
