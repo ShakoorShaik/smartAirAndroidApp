@@ -133,7 +133,7 @@ public class Registration extends AppCompatActivity {
                     String selectedAccountType = spinnerAccountType.getSelectedItem().toString();
                     Intent intent;
                     if ("Parent".equals(selectedAccountType)) {
-                        intent = new Intent(getApplicationContext(), ParentDashboardWithChildrenActivity.class);
+                        intent = new Intent(getApplicationContext(), com.example.smartair.parent.OnboardingActivity.class);
                     } else {
                         intent = new Intent(getApplicationContext(), LoginActivityView.class);
                     }

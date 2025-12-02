@@ -43,12 +43,36 @@
         android:layout_height="260dp"
         android:layout_marginTop="30dp"
         android:layout_marginHorizontal="20dp"
-
         android:importantForAccessibility="no"
         android:padding="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView7" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardNoMedicines"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginHorizontal="20dp"
+        android:visibility="gone"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="2dp"
+        app:cardBackgroundColor="#F5F5F5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView7">
+
+        <TextView
+            android:id="@+id/textViewNoMedicines"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No medicines in inventory. Click the + button to add one."
+            android:textSize="14sp"
+            android:gravity="center"
+            android:padding="16dp" />
+
+    </androidx.cardview.widget.CardView>
 
     <View
         android:id="@+id/view"
@@ -88,7 +112,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toEndOf="@+id/buttonEditPEF"
-        app:layout_constraintTop_toBottomOf="@+id/view"
+        app:layout_constraintTop_toTopOf="@+id/buttonEditPEF"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonEditPEF"
         android:textAllCaps="false"/>
 
     <View
@@ -113,4 +138,3 @@
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>
-
