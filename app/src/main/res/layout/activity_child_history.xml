@@ -1,53 +1,72 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:padding="32dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fillViewport="true">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/scrollPEF"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                tools:ignore="MissingConstraints">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="PEF READINGS"
-                    android:textAlignment="center"
-                    android:paddingTop="60sp"
-                    android:textSize="20sp"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:nestedScrollingEnabled="false"
-                    android:id="@+id/recyclerView"
-                    android:layout_width="match_parent"
-                    android:overScrollMode="never"
-                    android:layout_height="wrap_content"/>
-
-            </LinearLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
-
-    <Button
-        android:id="@+id/returnButton"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Return"
-        android:gravity="center"/>
+        android:orientation="vertical"
+        android:padding="32dp">
 
-</LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="PEF READINGS"
+            android:textAlignment="center"
+            android:textSize="20sp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewPEF"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/dark_blue"
+            android:nestedScrollingEnabled="true"
+            android:overScrollMode="never" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="DAILY CHECK-INS"
+            android:textAlignment="center"
+            android:paddingTop="60dp"
+            android:textSize="20sp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewDaily"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/dark_blue"
+            android:nestedScrollingEnabled="true"
+            android:overScrollMode="never" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="MEDICINE"
+            android:textAlignment="center"
+            android:paddingTop="60dp"
+            android:textSize="20sp"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewMedicine"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@color/dark_blue"
+            android:nestedScrollingEnabled="true"
+            android:overScrollMode="never" />
+
+        <Button
+            android:id="@+id/returnButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:text="Return"
+            android:gravity="center"/>
+
+    </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
 
 

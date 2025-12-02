@@ -15,7 +15,7 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import com.example.smartair.R;
-import com.example.smartair.child.ChildHistory.ChildHistoryPEFActivity;
+import com.example.smartair.child.ChildHistory.ChildHistoryActivity;
 import com.example.smartair.child.checkin.ChildDailyCheckIn;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -68,7 +68,7 @@ public class ChildHomeFragment extends Fragment {
         historyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getActivity(), ChildHistoryPEFActivity.class));
+                startActivity(new Intent(getActivity(), ChildHistoryActivity.class));
             }
         });
 
