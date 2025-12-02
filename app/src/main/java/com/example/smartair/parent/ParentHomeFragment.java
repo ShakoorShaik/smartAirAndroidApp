@@ -71,6 +71,7 @@ public class ParentHomeFragment extends Fragment {
     private CardView zoneCard;
     private TextView zonePercentage;
     private TextView childNameText;
+    private TextView welcomeText;
     LineChart lineChart;
 
     boolean isSevenDaySnippet;
@@ -90,6 +91,9 @@ public class ParentHomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_parent_home, container, false);
         lastRescue = view.findViewById(R.id.last_rescue_date);
+        welcomeText = view.findViewById(R.id.welcomeText);
+        
+        loadParentName();
 
         View calendarView = view.findViewById(R.id.mainCalendarView);
         if (calendarView != null) {
@@ -125,15 +129,14 @@ public class ParentHomeFragment extends Fragment {
         loadWeeklyRescues(view);
 
         lineChart = view.findViewById(R.id.historyButton);
-        lineChart.setScaleEnabled(false);
-        lineChart.getDescription().setEnabled(false);
-        lineChart.getAxisRight().setEnabled(false);
-        setSevenDaySnippet();
-        isSevenDaySnippet = true;
+        if (lineChart != null) {
+            lineChart.setScaleEnabled(false);
+            lineChart.getDescription().setEnabled(false);
+            lineChart.getAxisRight().setEnabled(false);
+            setSevenDaySnippet();
+            isSevenDaySnippet = true;
 
-        View historyBtn = view.findViewById(R.id.historyButton);
-        if (historyBtn != null) {
-            historyBtn.setOnClickListener(v -> {
+            lineChart.setOnClickListener(v -> {
                 if (getContext() != null) {
                     toggleSnippet();
                 }
@@ -160,6 +163,36 @@ public class ParentHomeFragment extends Fragment {
         if (monthYearText != null && currentDisplayMonth != null) {
             monthYearText.setText(currentDisplayMonth.format(DateTimeFormatter.ofPattern("MMMM yyyy")));
         }
+    }
+
+    private void loadParentName() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user == null || welcomeText == null) {
+            return;
+        }
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users").document(user.getUid()).get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    if (documentSnapshot != null && documentSnapshot.exists()) {
+                        String parentName = documentSnapshot.getString("parentName");
+                        if (parentName != null && !parentName.isEmpty()) {
+                            String firstName = parentName.split("\\s+")[0];
+                            welcomeText.setText("Welcome " + firstName);
+                        } else {
+                            welcomeText.setText("Welcome!");
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    if (welcomeText != null) {
+                        welcomeText.setText("Welcome!");
+                    }
+                });
+    }
+
+    public void refreshParentName() {
+        loadParentName();
     }
 
     private void loadCalendarData() {
@@ -629,6 +662,7 @@ public class ParentHomeFragment extends Fragment {
     }
 
     private void setSevenDaySnippet(){
+        if (lineChart == null) return;
         lineChart.getDescription().setEnabled(false);
         lineChart.getAxisRight().setEnabled(false);
 
@@ -663,6 +697,7 @@ public class ParentHomeFragment extends Fragment {
     }
 
     private void setThirtyDaySnippet(){
+        if (lineChart == null) return;
 
         XAxis xAxis = lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -698,4 +733,3 @@ public class ParentHomeFragment extends Fragment {
     }
 
 }
-

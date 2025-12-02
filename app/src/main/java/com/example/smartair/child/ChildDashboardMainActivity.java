@@ -17,7 +17,6 @@ public class ChildDashboardMainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_child_dashboard_main);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
@@ -25,6 +24,23 @@ public class ChildDashboardMainActivity extends AppCompatActivity {
             finish();
             return;
         }
+
+        utils.ChildOnboardingManager.checkAndSetOnboardingStatus(this, new utils.ChildOnboardingManager.ChildOnboardingCheckCallback() {
+            @Override
+            public void onResult(boolean shouldSkipOnboarding) {
+                if (shouldSkipOnboarding) {
+                    initializeDashboard();
+                } else {
+                    Intent intent = new Intent(ChildDashboardMainActivity.this, ChildOnboardingActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
+    }
+
+    private void initializeDashboard() {
+        setContentView(R.layout.activity_child_dashboard_main);
 
         BottomNavigationView bottomNav = findViewById(R.id.navBar);
         bottomNav.setOnItemSelectedListener(item -> {
@@ -48,7 +64,7 @@ public class ChildDashboardMainActivity extends AppCompatActivity {
             return false;
         });
 
-        if (savedInstanceState == null) {
+        if (getSupportFragmentManager().findFragmentById(R.id.fragmentContainer) == null) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragmentContainer, new ChildHomeFragment())
                     .commit();

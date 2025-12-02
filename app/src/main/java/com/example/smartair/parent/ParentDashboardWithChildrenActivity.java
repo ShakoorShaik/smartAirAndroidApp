@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import com.example.smartair.R;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import utils.OnboardingManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentChange;
@@ -25,9 +26,25 @@ public class ParentDashboardWithChildrenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        
+        utils.OnboardingManager.checkAndSetOnboardingStatus(this, new utils.OnboardingManager.OnboardingCheckCallback() {
+            @Override
+            public void onResult(boolean shouldSkipOnboarding) {
+                if (!shouldSkipOnboarding && !utils.OnboardingManager.isOnboardingShown(ParentDashboardWithChildrenActivity.this)) {
+                    Intent intent = new Intent(ParentDashboardWithChildrenActivity.this, OnboardingActivity.class);
+                    startActivity(intent);
+                    finish();
+                    return;
+                }
+                
+                initializeDashboard(savedInstanceState);
+            }
+        });
+    }
+    
+    private void initializeDashboard(Bundle savedInstanceState) {
         setContentView(R.layout.activity_parent_dashboard_with_children);
         listenForAlerts();
-
 
         BottomNavigationView bottomNav = findViewById(R.id.navBar);
         bottomNav.setOnItemSelectedListener(item -> {
