@@ -119,6 +119,8 @@
         android:layout_gravity="start"
         android:layout_marginTop="8dp"
         android:text="Add Child Profile"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView3"
         android:textAllCaps="false"/>
