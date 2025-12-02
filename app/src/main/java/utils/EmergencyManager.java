@@ -29,7 +29,7 @@ public class EmergencyManager {
 
         triageRef.add(triageData);
     }
-    public static void toggleEmergencyFlag(String userId){
+    public static void toggleEmergencyFlag(String userId){      // listener on parent end is listening for the flag to flash
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         DocumentReference docRef = db.collection("users").document(userId);

@@ -12,7 +12,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.smartair.R;
-import com.example.smartair.child.ChildHistoryActivity;
 
 public class ParentHistoryActivity extends AppCompatActivity {
 
