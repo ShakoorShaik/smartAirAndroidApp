@@ -60,6 +60,8 @@ public class ProviderHomePage extends AppCompatActivity{
             }
         });
 
+
+
         LinkNewAcc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

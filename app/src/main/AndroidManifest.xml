@@ -70,9 +70,31 @@
         <activity
             android:name=".ForgetPasswordActivity"
             android:exported="false" /> <!-- Provider Activity Activities -->
+
+
+
+        <activity
+            android:name=".provider.ProviderPEFPage"
+            android:exported="false" />
+        <activity
+            android:name=".provider.ProviderHomePage"
+            android:exported="false" />
+        <activity
+            android:name=".provider.ProviderTriagePage"
+            android:exported="false" />
+        <activity
+            android:name=".provider.ProviderTriggerPage"
+            android:exported="false" />
+        <activity
+            android:name=".provider.ProviderPEFPage"
+            android:exported="false" />
         <activity
             android:name=".provider.ProviderCodeLinking"
-            android:exported="false" /> <!-- Child Dashboard Game Activities -->
+            android:exported="false" />
+
+
+
+        <!-- Child Dashboard Game Activities -->
         <activity
             android:name=".child.ChildDashboardTasks"
             android:exported="false" /> <!-- Inhaler Technique Activities -->
@@ -97,9 +119,8 @@
         <activity
             android:name=".child.inhalertechnique.InhalerTechniqueVideo"
             android:exported="false"></activity>
-        <activity
-            android:name=".provider.ProviderHomePage"
-            android:exported="false" /> <!-- Emergency Activities -->
+
+ <!-- Emergency Activities -->
         <activity
             android:name=".child.emergency.Emergency"
             android:exported="false" >
