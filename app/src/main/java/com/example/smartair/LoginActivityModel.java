@@ -33,12 +33,17 @@ public class LoginActivityModel {
 
             @Override
             public void onFailure(Exception e) {
+                mAuth.signOut();
                 presenter.onAccountTypeFailed(e);
             }
         });
     }
 
     public void DBLogin(String email, String password, LoginActivityPresenter presenter) {
+        if (mAuth.getCurrentUser() != null) {
+            mAuth.signOut();
+        }
+        
         DatabaseManager.accountLogin(email, password, new DatabaseManager.SuccessFailCallback() {
             @Override
             public void onSuccess() {
