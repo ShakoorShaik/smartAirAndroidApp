@@ -6,135 +6,111 @@
     android:layout_height="match_parent"
     android:fillViewport="true">
 
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/relativeLayout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="0dp">
-
-    <TextView
-        android:id="@+id/textView7"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="Inventory"
-        android:textAlignment="center"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/buttonAdd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:importantForAccessibility="no"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        app:tint="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_add"/>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerMeds"
-        android:layout_width="0dp"
-        android:layout_height="260dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginHorizontal="20dp"
-        android:importantForAccessibility="no"
-        android:padding="10dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView7" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardNoMedicines"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginHorizontal="20dp"
-        android:visibility="gone"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="2dp"
-        app:cardBackgroundColor="#F5F5F5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView7">
+        android:layout_marginTop="0dp">
 
         <TextView
-            android:id="@+id/textViewNoMedicines"
-            android:layout_width="match_parent"
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="No medicines in inventory. Click the + button to add one."
-            android:textSize="14sp"
-            android:gravity="center"
-            android:padding="16dp" />
+            android:layout_marginTop="30dp"
+            android:text="Inventory"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.cardview.widget.CardView>
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/buttonAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:importantForAccessibility="no"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            app:tint="#FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@android:drawable/ic_menu_add"/>
 
-    <View
-        android:id="@+id/view"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginTop="20dp"
-        android:background="#A0A0A0"
-        app:layout_constraintTop_toBottomOf="@id/recyclerMeds"
-        tools:layout_editor_absoluteX="20dp" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerMeds"
+            android:layout_width="0dp"
+            android:layout_height="260dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginHorizontal="20dp"
 
-    <Button
-        android:id="@+id/buttonEditPEF"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="10dp"
-        android:text="Edit PEF"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toStartOf="@+id/buttonEditPB"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view"
-        android:textAllCaps="false"
-        />
+            android:importantForAccessibility="no"
+            android:padding="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView7" />
 
-    <Button
-        android:id="@+id/buttonEditPB"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="20dp"
-        android:text="Edit PB"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@+id/buttonEditPEF"
-        app:layout_constraintTop_toTopOf="@+id/buttonEditPEF"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonEditPEF"
-        android:textAllCaps="false"/>
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:background="#A0A0A0"
+            app:layout_constraintTop_toBottomOf="@id/recyclerMeds"
+            tools:layout_editor_absoluteX="20dp" />
 
-    <View
-        android:id="@+id/view2"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#A0A0A0"
-        android:layout_marginTop="20dp"
-        android:layout_marginHorizontal="20dp"
-        app:layout_constraintTop_toBottomOf="@id/buttonEditPB"/>
+        <Button
+            android:id="@+id/buttonEditPEF"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="10dp"
+            android:text="Edit PEF"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toStartOf="@+id/buttonEditPB"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/view"
+            android:textAllCaps="false"
+            />
 
-    <include
-        android:id="@+id/medicineCalendarView"
-        layout="@layout/calendar_month_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view2" />
+        <Button
+            android:id="@+id/buttonEditPB"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="Edit PB"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@+id/buttonEditPEF"
+            app:layout_constraintTop_toBottomOf="@+id/view"
+            android:textAllCaps="false"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <View
+            android:id="@+id/view2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#A0A0A0"
+            android:layout_marginTop="20dp"
+            android:layout_marginHorizontal="20dp"
+            app:layout_constraintTop_toBottomOf="@id/buttonEditPB"/>
+
+        <include
+            android:id="@+id/medicineCalendarView"
+            layout="@layout/calendar_month_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/view2" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>
+
