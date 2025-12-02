@@ -1,4 +1,4 @@
-package com.example.smartair.provider.utils;
+package com.example.smartair.provider;
 
 public class ProviderCurrentParentData {
 

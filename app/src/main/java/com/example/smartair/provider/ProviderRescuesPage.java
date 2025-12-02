@@ -14,11 +14,7 @@ import com.example.smartair.R;
 import com.google.firebase.auth.FirebaseAuth;
 import java.util.List;
 
-public class ProviderPEFPage extends AppCompatActivity {
-
-    /*
-    Home <-> Trigger <-> Symptom <-> Triage <-> Rescue <-> PEF <-> Adherence <-> Home
-     */
+public class ProviderRescuesPage extends AppCompatActivity {
 
     private ProviderDataReading providerData;
     private ProviderWidgetFactory widgetFactory;
@@ -30,7 +26,7 @@ public class ProviderPEFPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_provider_pef);
+        setContentView(R.layout.activity_provider_rescues);
 
         try {
             providerData = new ProviderDataReading(this);
@@ -87,10 +83,10 @@ public class ProviderPEFPage extends AppCompatActivity {
             textInfoDisplay.setText("Searching for date: " + date + "...");
         }
 
-        providerData.searchTimestampByDate("zoneHistory", date, new ProviderDataReading.TimestampSearchCallback() {
+        providerData.searchTimestampByDate("inhaler_log", date, new ProviderDataReading.TimestampSearchCallback() {
             @Override
             public void onSuccess(List<ProviderDataReading.TimestampDocument> documents) {
-                updateDisplayWithTimestampDocuments(documents, "No peak flow data found for date: " + date);
+                updateDisplayWithTimestampDocuments(documents, "No rescue logs found for date: " + date);
             }
 
             @Override
@@ -104,20 +100,20 @@ public class ProviderPEFPage extends AppCompatActivity {
         editTextDate.setText("");
 
         if (scrollContent != null) {
-            loadPEFData();
+            loadRescueData();
         } else {
-            loadPEFDataSimple();
+            loadRescueDataSimple();
         }
     }
 
     private void testPermission() {
-        providerData.checkChildPermission("peakFlow", new ProviderDataReading.PermissionCallback() {
+        providerData.checkChildPermission("rescueLogs", new ProviderDataReading.PermissionCallback() {
             @Override
             public void onPermissionResult(boolean hasPermission) {
                 if (hasPermission) {
-                    loadPEFData();
+                    loadRescueData();
                 } else {
-                    showPermissionText("Permission DENIED\nYou cannot view peak flow data.");
+                    showPermissionText("Permission DENIED\nYou cannot view rescue logs.");
                 }
             }
 
@@ -130,14 +126,14 @@ public class ProviderPEFPage extends AppCompatActivity {
 
     private void testPermissionSimple() {
         TextView textInfoDisplay = findViewById(R.id.textInfoDisplay);
-        providerData.checkChildPermission("peakFlow", new ProviderDataReading.PermissionCallback() {
+        providerData.checkChildPermission("rescueLogs", new ProviderDataReading.PermissionCallback() {
             @Override
             public void onPermissionResult(boolean hasPermission) {
                 if (hasPermission) {
-                    textInfoDisplay.setText("Permission GRANTED\nLoading peak flow data...");
-                    loadPEFDataSimple();
+                    textInfoDisplay.setText("Permission GRANTED\nLoading rescue logs...");
+                    loadRescueDataSimple();
                 } else {
-                    textInfoDisplay.setText("Permission DENIED\nYou cannot view peak flow data.");
+                    textInfoDisplay.setText("Permission DENIED\nYou cannot view rescue logs.");
                 }
             }
 
@@ -148,17 +144,17 @@ public class ProviderPEFPage extends AppCompatActivity {
         });
     }
 
-    private void loadPEFData() {
+    private void loadRescueData() {
         scrollContent.removeAllViews();
 
         TextView loading = new TextView(this);
-        loading.setText("Loading peak flow data...");
+        loading.setText("Loading rescue logs...");
         scrollContent.addView(loading);
 
-        providerData.getTimestampBasedSubcollection("zoneHistory", new ProviderDataReading.TimestampDocumentCallback() {
+        providerData.getTimestampBasedSubcollection("inhaler_log", new ProviderDataReading.TimestampDocumentCallback() {
             @Override
             public void onSuccess(List<ProviderDataReading.TimestampDocument> documents) {
-                updateDisplayWithTimestampDocuments(documents, "No peak flow data available");
+                updateDisplayWithTimestampDocuments(documents, "No rescue logs available");
             }
 
             @Override
@@ -168,18 +164,18 @@ public class ProviderPEFPage extends AppCompatActivity {
         });
     }
 
-    private void loadPEFDataSimple() {
+    private void loadRescueDataSimple() {
         TextView textInfoDisplay = findViewById(R.id.textInfoDisplay);
 
-        providerData.getTimestampBasedSubcollection("zoneHistory", new ProviderDataReading.TimestampDocumentCallback() {
+        providerData.getTimestampBasedSubcollection("inhaler_log", new ProviderDataReading.TimestampDocumentCallback() {
             @Override
             public void onSuccess(List<ProviderDataReading.TimestampDocument> documents) {
-                updateDisplayWithTimestampDocumentsSimple(documents, "No peak flow data available");
+                updateDisplayWithTimestampDocumentsSimple(documents, "No rescue logs available");
             }
 
             @Override
             public void onFailure(String message) {
-                textInfoDisplay.setText("Error loading peak flow data: " + message);
+                textInfoDisplay.setText("Error loading rescue logs: " + message);
             }
         });
     }
@@ -188,7 +184,7 @@ public class ProviderPEFPage extends AppCompatActivity {
         scrollContent.removeAllViews();
 
         if (documents.isEmpty()) {
-            TextView empty = new TextView(ProviderPEFPage.this);
+            TextView empty = new TextView(ProviderRescuesPage.this);
             empty.setText(emptyMessage);
             empty.setTextSize(16);
             scrollContent.addView(empty);
@@ -196,7 +192,7 @@ public class ProviderPEFPage extends AppCompatActivity {
         }
 
         for (ProviderDataReading.TimestampDocument doc : documents) {
-            View widget = widgetFactory.createTimestampWidget(doc.timestamp, doc.data, "zoneHistory", doc.documentId);
+            View widget = widgetFactory.createTimestampWidget(doc.timestamp, doc.data, "inhaler_log", doc.documentId);
             scrollContent.addView(widget);
         }
     }
@@ -209,21 +205,27 @@ public class ProviderPEFPage extends AppCompatActivity {
         }
 
         StringBuilder dataText = new StringBuilder();
-        dataText.append("Peak Flow Data:\n\n");
+        dataText.append("Rescue Logs:\n\n");
 
         for (ProviderDataReading.TimestampDocument doc : documents) {
             String formattedTime = DateHelper.formatTimestampToDateTime(doc.timestamp);
             dataText.append("Time: ").append(formattedTime).append("\n");
 
             if (doc.data != null) {
-                if (doc.data.containsKey("date")) {
-                    dataText.append("Date: ").append(doc.data.get("date")).append("\n");
+                if (doc.data.containsKey("medicationType")) {
+                    dataText.append("Medication: ").append(doc.data.get("medicationType")).append("\n");
                 }
-                if (doc.data.containsKey("pefValue")) {
-                    dataText.append("PEF Value: ").append(doc.data.get("pefValue")).append(" L/min\n");
+                if (doc.data.containsKey("doseCount")) {
+                    dataText.append("Dose Count: ").append(doc.data.get("doseCount")).append("\n");
                 }
-                if (doc.data.containsKey("zone")) {
-                    dataText.append("Zone: ").append(doc.data.get("zone")).append("\n");
+                if (doc.data.containsKey("enteredBy")) {
+                    dataText.append("Entered By: ").append(doc.data.get("enteredBy")).append("\n");
+                }
+                if (doc.data.containsKey("preDoseStatus")) {
+                    dataText.append("Before: ").append(doc.data.get("preDoseStatus")).append("\n");
+                }
+                if (doc.data.containsKey("postDoseStatus")) {
+                    dataText.append("After: ").append(doc.data.get("postDoseStatus")).append("\n");
                 }
             }
             dataText.append("\n");
@@ -252,7 +254,7 @@ public class ProviderPEFPage extends AppCompatActivity {
     private void showError(String message) {
         if (scrollContent != null) {
             scrollContent.removeAllViews();
-            TextView error = new TextView(ProviderPEFPage.this);
+            TextView error = new TextView(ProviderRescuesPage.this);
             error.setText("Error: " + message);
             error.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
             scrollContent.addView(error);
@@ -283,13 +285,13 @@ public class ProviderPEFPage extends AppCompatActivity {
         });
 
         left.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ProviderRescuesPage.class);
+            Intent intent = new Intent(this, ProviderTriagePage.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         });
 
         right.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ProviderAdherencePage.class);
+            Intent intent = new Intent(this, ProviderPEFPage.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
         });

@@ -2,45 +2,332 @@ package com.example.smartair.provider;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
-
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.smartair.LoginActivityView;
 import com.example.smartair.R;
 import com.google.firebase.auth.FirebaseAuth;
+import java.util.List;
 
 public class ProviderTriagePage extends AppCompatActivity {
 
-    private Button returnToHome;
+    /*
+    Home <-> Trigger <-> Symptom <-> Triage <-> Rescue <-> PEF <-> Adherence <-> Home
+     */
 
-    private Button logOut;
+    private EditText editTextDate;
+    private Button searchButton;
+    private TextView textViewDate;
+    private ProviderDataReading providerData;
+    private ProviderWidgetFactory widgetFactory;
+    private LinearLayout scrollContent;
 
-    private Button left;
-
-    private Button right;
-
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider_triage);
 
-        returnToHome = findViewById(R.id.TopLeftButton);
+        try {
+            editTextDate = findViewById(R.id.editTextDate);
+            searchButton = findViewById(R.id.button13);
+            textViewDate = findViewById(R.id.textViewDate);
+
+            textViewDate.setText("Date: " + DateHelper.getTodayDate());
+
+            providerData = new ProviderDataReading(this);
+            widgetFactory = new ProviderWidgetFactory(this);
+
+            scrollContent = findViewById(R.id.scrollContent);
+
+            if (scrollContent == null) {
+                TextView textInfoDisplay = findViewById(R.id.textInfoDisplay);
+                textInfoDisplay.setText("Checking permission...");
+                testPermissionSimple();
+            } else {
+                testPermission();
+            }
+
+            setupNavigation();
+            loadLinkedInfo();
+
+            setupSearchButton();
+
+        } catch (Exception e) {
+            Toast.makeText(this, "Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+    }
+
+    private void setupSearchButton() {
+        searchButton.setOnClickListener(v -> {
+            String date = editTextDate.getText().toString().trim();
+
+            if (!date.isEmpty()) {
+                searchByDate(date);
+            } else {
+                resetToAllData();
+            }
+        });
+    }
+
+    private void searchByDate(String date) {
+        if (scrollContent != null) {
+            scrollContent.removeAllViews();
+
+            TextView loading = new TextView(this);
+            loading.setText("Searching for date: " + date + "...");
+            scrollContent.addView(loading);
+        } else {
+            TextView textInfoDisplay = findViewById(R.id.textInfoDisplay);
+            textInfoDisplay.setText("Searching for date: " + date + "...");
+        }
+
+        providerData.searchTimestampByDate("TriageHistory", date, new ProviderDataReading.TimestampSearchCallback() {
+            @Override
+            public void onSuccess(List<ProviderDataReading.TimestampDocument> documents) {
+                updateDisplayWithTimestampDocuments(documents, "No triage history found for date: " + date);
+            }
+
+            @Override
+            public void onFailure(String message) {
+                showError(message);
+            }
+        });
+    }
+
+    private void resetToAllData() {
+        editTextDate.setText("");
+
+        if (scrollContent != null) {
+            loadTriageData();
+        } else {
+            loadTriageDataSimple();
+        }
+    }
+
+    private void testPermission() {
+        providerData.checkChildPermission("triageIncident", new ProviderDataReading.PermissionCallback() {
+            @Override
+            public void onPermissionResult(boolean hasPermission) {
+                if (hasPermission) {
+                    loadTriageData();
+                } else {
+                    showPermissionText("Permission DENIED\nYou cannot view triage history.");
+                }
+            }
+
+            @Override
+            public void onError(String message) {
+                showPermissionText("Error: " + message);
+            }
+        });
+    }
+
+    private void testPermissionSimple() {
+        TextView textInfoDisplay = findViewById(R.id.textInfoDisplay);
+        providerData.checkChildPermission("triageIncident", new ProviderDataReading.PermissionCallback() {
+            @Override
+            public void onPermissionResult(boolean hasPermission) {
+                if (hasPermission) {
+                    textInfoDisplay.setText("Permission GRANTED\nLoading triage history...");
+                    loadTriageDataSimple();
+                } else {
+                    textInfoDisplay.setText("Permission DENIED\nYou cannot view triage history.");
+                }
+            }
+
+            @Override
+            public void onError(String message) {
+                textInfoDisplay.setText("Error: " + message);
+            }
+        });
+    }
+
+    private void loadTriageData() {
+        scrollContent.removeAllViews();
+
+        TextView loading = new TextView(this);
+        loading.setText("Loading triage history...");
+        scrollContent.addView(loading);
+
+        providerData.getTimestampBasedSubcollection("TriageHistory", new ProviderDataReading.TimestampDocumentCallback() {
+            @Override
+            public void onSuccess(List<ProviderDataReading.TimestampDocument> documents) {
+                updateDisplayWithTimestampDocuments(documents, "No triage history available");
+            }
+
+            @Override
+            public void onFailure(String message) {
+                showError(message);
+            }
+
+        });
+    }
+
+    private void loadTriageDataSimple() {
+        TextView textInfoDisplay = findViewById(R.id.textInfoDisplay);
+
+        providerData.getTimestampBasedSubcollection("TriageHistory", new ProviderDataReading.TimestampDocumentCallback() {
+            @Override
+            public void onSuccess(List<ProviderDataReading.TimestampDocument> documents) {
+                updateDisplayWithTimestampDocumentsSimple(documents, "No triage history available");
+            }
+
+            @Override
+            public void onFailure(String message) {
+                textInfoDisplay.setText("Error loading triage history: " + message);
+            }
+        });
+
+    }
+
+    private void updateDisplayWithTimestampDocuments(List<ProviderDataReading.TimestampDocument> documents, String emptyMessage) {
+        scrollContent.removeAllViews();
+
+        if (documents.isEmpty()) {
+            TextView empty = new TextView(ProviderTriagePage.this);
+            empty.setText(emptyMessage);
+            empty.setTextSize(16);
+            scrollContent.addView(empty);
+            return;
+        }
+
+
+        for (ProviderDataReading.TimestampDocument doc : documents) {
+            View widget = widgetFactory.createTimestampWidget(doc.timestamp, doc.data, "TriageHistory", doc.documentId);
+            scrollContent.addView(widget);
+        }
+    }
+
+    private void updateDisplayWithTimestampDocumentsSimple(List<ProviderDataReading.TimestampDocument> documents, String emptyMessage) {
+        TextView textInfoDisplay = findViewById(R.id.textInfoDisplay);
+        if (documents.isEmpty()) {
+            textInfoDisplay.setText(emptyMessage);
+            return;
+        }
+
+
+        StringBuilder dataText = new StringBuilder();
+        dataText.append("Triage History:\n\n");
+
+        for (ProviderDataReading.TimestampDocument doc : documents) {
+            String formattedTime = DateHelper.formatTimestampToDateTime(doc.timestamp);
+            dataText.append("Time: ").append(formattedTime).append("\n");
+
+            if (doc.data != null) {
+                int symptomCount = 0;
+                for (String key : doc.data.keySet()) {
+                    if (!key.equals("timestamp") && !key.equals("guidance")) {
+                        Object value = doc.data.get(key);
+                        if (value instanceof Boolean && (Boolean) value) {
+                            symptomCount++;
+                        }
+                    }
+                }
+                dataText.append("Symptoms reported: ").append(symptomCount).append("\n");
+
+                if (doc.data.containsKey("guidance")) {
+                    Object guidance = doc.data.get("guidance");
+                    if (guidance instanceof Boolean && (Boolean) guidance) {
+                        dataText.append("Guidance: Required\n");
+                    }
+                }
+            }
+            dataText.append("\n");
+        }
+
+
+        textInfoDisplay.setText(dataText.toString());
+    }
+
+    private void showPermissionText(String message) {
+        if (scrollContent != null) {
+            scrollContent.removeAllViews();
+
+            TextView text = new TextView(this);
+            text.setText(message);
+            text.setTextSize(16);
+            text.setPadding(0, 50, 0, 0);
+            text.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+
+            scrollContent.addView(text);
+        } else {
+            TextView textInfoDisplay = findViewById(R.id.textInfoDisplay);
+            textInfoDisplay.setText(message);
+        }
+
+    }
+
+    private void showError(String message) {
+        if (scrollContent != null) {
+            scrollContent.removeAllViews();
+            TextView error = new TextView(ProviderTriagePage.this);
+            error.setText("Error: " + message);
+            error.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+            scrollContent.addView(error);
+        } else {
+            TextView textInfoDisplay = findViewById(R.id.textInfoDisplay);
+            textInfoDisplay.setText("Error: " + message);
+        }
+    }
+
+
+    private void setupNavigation() {
+        Button returnToHome = findViewById(R.id.TopLeftButton);
+        Button logOut = findViewById(R.id.TopRightButton);
+        Button left = findViewById(R.id.BottomLeftButton);
+        Button right = findViewById(R.id.BottomRightButton);
+
         returnToHome.setOnClickListener(v -> {
-            Intent intent = new Intent(ProviderTriagePage.this, ProviderHomePage.class);
+            Intent intent = new Intent(this, ProviderHomePage.class);
             startActivity(intent);
             finish();
         });
 
-        logOut = findViewById(R.id.TopRightButton);
         logOut.setOnClickListener(v -> {
             FirebaseAuth.getInstance().signOut();
-            Intent intent = new Intent(ProviderTriagePage.this, LoginActivityView.class);
+            Intent intent = new Intent(this, LoginActivityView.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
             finish();
         });
 
-        left = findViewById(R.id.BottomLeftButton);
-        right = findViewById(R.id.BottomRightButton);
+        left.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ProviderSymptomPage.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
+
+        right.setOnClickListener(v -> {
+            Intent intent = new Intent(this, ProviderRescuesPage.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+        });
+    }
+
+
+    private void loadLinkedInfo() {
+        TextView linkedText = findViewById(R.id.linkedText);
+        TextView currentChildText = findViewById(R.id.linkedText1);
+
+        providerData.getParentUid(new ProviderDataReading.ParentUidCallback() {
+            @Override
+            public void onSuccess(String parentUid, String parentEmail) {
+                linkedText.setText("Linked with: " + parentEmail);
+            }
+
+            @Override
+            public void onFailure(String message) {
+                linkedText.setText("Not linked to parent");
+            }
+        });
+
+        String currentChildName = providerData.getCurrentChildName();
+        currentChildText.setText("Viewing: " + currentChildName);
     }
 }

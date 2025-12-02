@@ -17,9 +17,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.smartair.child.ChildDashboardMainActivity;
 import com.example.smartair.parent.ParentDashboardWithChildrenActivity;
-import com.example.smartair.provider.ProviderCodeLinking;
+import com.example.smartair.provider.utils.ProviderCodeLinking;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class LoginActivityView extends AppCompatActivity {
 

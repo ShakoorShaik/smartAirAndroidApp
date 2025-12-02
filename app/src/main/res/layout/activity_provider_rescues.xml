@@ -66,21 +66,13 @@
 
     <EditText
         android:id="@+id/editTextDate"
-        android:layout_width="match_parent"
+        android:layout_width="314dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:hint="Enter date (YYYY-MM-DD)"
-        android:inputType="text"
-        android:gravity="center" />
-
-    <EditText
-        android:id="@+id/editTextTrigger"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:hint="Enter trigger type (or leave empty for all)"
-        android:inputType="text"
-        android:gravity="center" />
+        android:inputType="date" />
 
     <Button
         android:id="@+id/button13"
@@ -145,7 +137,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Triggers"
+            android:text="Rescue Log"
             android:textSize="22sp"
             android:textStyle="italic" />
 
