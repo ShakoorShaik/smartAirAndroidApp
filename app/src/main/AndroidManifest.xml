@@ -95,6 +95,15 @@
         <activity
             android:name=".provider.ProviderHomePage"
             android:exported="false" />
+
+        <activity
+            android:name=".provider.ProviderAdherencePage"
+            android:exported="false" />
+
+        <activity
+            android:name=".provider.ProviderRescuesPage"
+            android:exported="false" />
+
         <activity
             android:name=".provider.ProviderTriagePage"
             android:exported="false" />
@@ -102,10 +111,10 @@
             android:name=".provider.ProviderTriggerPage"
             android:exported="false" />
         <activity
-            android:name=".provider.ProviderPEFPage"
+            android:name=".provider.ProviderSymptomPage"
             android:exported="false" />
         <activity
-            android:name=".provider.ProviderCodeLinking"
+            android:name=".provider.utils.ProviderCodeLinking"
             android:exported="false" />
 
 

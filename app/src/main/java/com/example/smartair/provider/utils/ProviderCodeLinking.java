@@ -1,4 +1,4 @@
-package com.example.smartair.provider;
+package com.example.smartair.provider.utils;
 
 
 import android.content.Intent;
@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartair.LoginActivityView;
 import com.example.smartair.R;
+import com.example.smartair.provider.ProviderHomePage;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 
