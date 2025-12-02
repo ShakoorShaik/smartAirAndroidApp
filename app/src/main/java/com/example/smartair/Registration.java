@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -49,11 +50,27 @@ public class Registration extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+    }
 
-        ParticleSystem particleSystem = new ParticleSystem(this, 100, R.drawable.ambient_particle, 8000);
-        particleSystem.setSpeedRange(0.05f, 0.1f);
-        particleSystem.setAcceleration(0.00005f, 180); // Slow downward acceleration
-        particleSystem.emitWithGravity(findViewById(R.id.main), Gravity.CENTER, 10); // Emit 10 particles per second
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        /*
+        if (hasFocus) {
+            ViewGroup mainView = (ViewGroup) findViewById(R.id.main);
+            ParticleSystem particleSystem = new ParticleSystem(this, 100, R.drawable.ambient_particle, 8000);
+            particleSystem.setSpeedRange(0.05f, 0.1f);
+            particleSystem.setAcceleration(0.00005f, 180);
+            particleSystem.emitWithGravity(mainView, Gravity.CENTER, 10);
+
+            mainView.post(() -> {
+                for (int i = 1; i < mainView.getChildCount(); i++) { // Skip index 0 if needed
+                    mainView.getChildAt(i).bringToFront();
+                }
+                mainView.requestLayout();
+            });
+        }
+        */
     }
 
     @Override
