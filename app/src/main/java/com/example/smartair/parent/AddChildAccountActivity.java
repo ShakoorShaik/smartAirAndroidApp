@@ -11,7 +11,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
-import com.example.smartair.Login;
+import com.example.smartair.LoginActivityView;
 import com.example.smartair.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -144,7 +144,7 @@ public class AddChildAccountActivity extends AppCompatActivity {
                                                 progressBar.setVisibility(View.GONE);
                                                 buttonSaveChild.setEnabled(true);
                                                 Toast.makeText(AddChildAccountActivity.this, "Child account created and linked successfully. Please log in again.", Toast.LENGTH_LONG).show();
-                                                Intent intent = new Intent(AddChildAccountActivity.this, Login.class);
+                                                Intent intent = new Intent(AddChildAccountActivity.this, LoginActivityView.class);
                                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                                 startActivity(intent);
                                                 finish();

@@ -2,25 +2,20 @@ package com.example.smartair.child;
 
 import static android.app.PendingIntent.getActivity;
 import static android.content.ContentValues.TAG;
-import static utils.ZoneManager.getTodayZone;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
 
-import com.example.smartair.Login;
+import com.example.smartair.LoginActivityView;
 import com.example.smartair.R;
 import com.example.smartair.child.checkin.ChildDailyCheckIn;
-import com.example.smartair.child.emergency.Emergency;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,7 +29,6 @@ import java.util.Locale;
 
 import utils.ChildEmergency;
 import utils.ChildIdManager;
-import utils.PEFManager;
 import utils.ZoneManager;
 
 public class ChildDashboardHome extends AppCompatActivity {
@@ -50,7 +44,7 @@ public class ChildDashboardHome extends AppCompatActivity {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
-            startActivity(new Intent(ChildDashboardHome.this, Login.class));
+            startActivity(new Intent(ChildDashboardHome.this, LoginActivityView.class));
             finish();
             return;
         }
@@ -107,14 +101,7 @@ public class ChildDashboardHome extends AppCompatActivity {
 
         loadZoneInfo();
 
-        Button dailyCheckIn = findViewById(R.id.button7);
 
-        dailyCheckIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(ChildDashboardHome.this, ChildDailyCheckIn.class));
-            }
-        });
 
     }
 

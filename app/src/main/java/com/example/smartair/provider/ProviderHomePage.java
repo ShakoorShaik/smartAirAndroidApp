@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.smartair.Login;
+import com.example.smartair.LoginActivityView;
 import com.example.smartair.R;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -53,14 +53,12 @@ public class ProviderHomePage extends AppCompatActivity{
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(ProviderHomePage.this, Login.class);
+                Intent intent = new Intent(ProviderHomePage.this, LoginActivityView.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 finish();
             }
         });
-
-
 
         LinkNewAcc.setOnClickListener(new View.OnClickListener() {
             @Override

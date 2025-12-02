@@ -15,12 +15,6 @@
         android:textSize="24sp"
         android:layout_marginTop="30dp" />
 
-    <Button
-        android:id="@+id/buttonLogout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/logout"
-        android:layout_marginBottom="10dp"/>
 
     <Button
         android:id="@+id/ChildPrivacy"
@@ -39,7 +33,15 @@
         android:id="@+id/buttonRescue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Configure Child Rescue Attempt Threshold" />
+        android:text="Configure Child Rescue Attempt Threshold"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/buttonLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/logout"
+        android:textAllCaps="false"/>
 
     <Button
         android:id="@+id/buttonExportHistory"

@@ -1,6 +1,7 @@
 package com.example.smartair.parent;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
@@ -64,7 +65,7 @@ public class SetChildThresholds extends AppCompatActivity {
         });
 
         buttonNext.setOnClickListener(v -> {
-            if (!(thresholdController.getText().isEmpty() || thresholdRescue.getText().isEmpty() || thresholdTechnique.getText().isEmpty())) {
+            if (!(TextUtils.isEmpty(thresholdController.getText()) || TextUtils.isEmpty(thresholdRescue.getText()) || TextUtils.isEmpty(thresholdTechnique.getText()))) {
                 DatabaseManager.writeData("thresholdController", thresholdController.getText().toString(), new DatabaseManager.SuccessFailCallback() {
                     @Override
                     public void onSuccess() {

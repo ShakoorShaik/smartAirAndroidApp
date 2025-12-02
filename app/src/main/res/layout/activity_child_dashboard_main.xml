@@ -24,7 +24,7 @@
         app:menu="@menu/child_nav_bar"
         app:labelVisibilityMode="unlabeled"
         app:itemIconSize="32dp"
-        app:itemIconTint="@color/child_nav_icon_color"
-        tools:ignore="MissingConstraints"/>
+        tools:ignore="MissingConstraints"
+        android:background="@color/lightest_gray"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

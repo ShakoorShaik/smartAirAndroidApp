@@ -42,7 +42,8 @@
         app:layout_constraintHorizontal_weight="1"
         app:layout_constraintStart_toEndOf="@+id/linkedChildrenText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/childrenText"/>
+        app:layout_constraintTop_toBottomOf="@id/childrenText"
+        android:textAllCaps="false"/>
 
     <View
         android:id="@+id/separator1"
@@ -102,25 +103,27 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
         android:text="Account Actions"
         android:textSize="20sp"
         android:textStyle="bold"
-        android:gravity="center"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/separator2"
-        android:layout_marginTop="20dp"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/separator2" />
 
     <Button
         android:id="@+id/buttonAddChildProfile"
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:layout_gravity="start"
+        android:layout_marginTop="8dp"
         android:text="Add Child Profile"
-        android:layout_marginTop="20dp"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView3"/>
+        app:layout_constraintTop_toBottomOf="@id/textView3"
+        android:textAllCaps="false"/>
 
     <Button
         android:id="@+id/buttonAddChild"
@@ -131,7 +134,8 @@
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonAddChildProfile" />
+        app:layout_constraintTop_toBottomOf="@id/buttonAddChildProfile"
+        android:textAllCaps="false"/>
 
     <Button
         android:id="@+id/button2"
@@ -141,7 +145,18 @@
         android:layout_marginTop="10dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/buttonAddChild"/>
+        app:layout_constraintTop_toBottomOf="@id/buttonAddChild"
+        android:textAllCaps="false"/>
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="History Browser"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/button2"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
