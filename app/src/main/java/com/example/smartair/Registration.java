@@ -3,6 +3,7 @@ package com.example.smartair;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -19,6 +20,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 
 import com.example.smartair.parent.ParentDashboardWithChildrenActivity;
+
+import com.plattysoft.leonids.ParticleSystem;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,6 +49,11 @@ public class Registration extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+
+        ParticleSystem particleSystem = new ParticleSystem(this, 100, R.drawable.ambient_particle, 8000);
+        particleSystem.setSpeedRange(0.05f, 0.1f);
+        particleSystem.setAcceleration(0.00005f, 180); // Slow downward acceleration
+        particleSystem.emitWithGravity(findViewById(R.id.main), Gravity.CENTER, 10); // Emit 10 particles per second
     }
 
     @Override
@@ -138,5 +146,7 @@ public class Registration extends AppCompatActivity {
             });
 
         });
+
+
     }
 }
