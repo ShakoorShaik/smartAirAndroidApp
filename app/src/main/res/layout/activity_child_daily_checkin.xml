@@ -111,7 +111,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="MI BOMBACLAT"
+                android:text="More than 2 Times"
+                android:gravity="center"
                 android:textStyle="bold"
                 android:textSize="13.5dp">
             </TextView>
