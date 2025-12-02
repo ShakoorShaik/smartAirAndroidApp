@@ -5,7 +5,7 @@ public class ProviderCurrentChildData {
 
     protected String childName;
 
-    protected String currentChildUid; //uid of current child
+    protected String childUid; //uid of current child
 
     //viewable toggles
     protected Boolean pefViewable = false;
@@ -18,5 +18,11 @@ public class ProviderCurrentChildData {
 
     protected Boolean adherenceViewable = false;
 
+    public ProviderCurrentChildData() {}
+
+    public ProviderCurrentChildData(String uid, String name) {
+        this.childUid = uid;
+        this.childName = name;
+    }
 
 }

@@ -8,6 +8,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ProviderDataReading {
@@ -109,6 +110,13 @@ public class ProviderDataReading {
                     }
                 });
     }
+
+    public interface ChildrenListCallback {
+        void onSuccess(List<ProviderCurrentChildData> children);
+        void onFailure(String message);
+    }
+
+
 
 
 }

@@ -6,6 +6,7 @@ public class ProviderCurrentParentData {
 
     protected  String parentEmail;
 
+
     public ProviderCurrentParentData() {}
 
     public ProviderCurrentParentData(String parentUid, String parentEmail) {

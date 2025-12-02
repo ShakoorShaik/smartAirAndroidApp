@@ -5,6 +5,12 @@
     android:orientation="vertical"
     android:padding="20dp">
 
+    <Button
+        android:id="@+id/Return"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="return" />
+
     <TextView
         android:id="@+id/titleText"
         android:layout_width="wrap_content"
@@ -15,6 +21,19 @@
         android:textSize="30sp"
         android:gravity="center"
         android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Select Child:"
+        android:textSize="18sp"
+        android:layout_marginBottom="8dp" />
+
+    <Spinner
+        android:id="@+id/spinnerChildSelector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp" />
 
     <View
         android:layout_width="match_parent"
@@ -38,6 +57,27 @@
 
         <Switch
             android:id="@+id/switchAdherence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingVertical="6dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="Share Rescue Logs"
+            android:textSize="16sp" />
+
+        <Switch
+            android:id="@+id/switchRescueLogs"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -121,7 +161,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"

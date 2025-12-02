@@ -59,13 +59,8 @@ public class ParentMedicineActivity extends AppCompatActivity {
         editPEF.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
             }
         });
-
-
-
-
 
 
     }

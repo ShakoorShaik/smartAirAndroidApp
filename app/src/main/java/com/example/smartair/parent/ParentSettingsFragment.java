@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.smartair.Login;
 import com.example.smartair.R;
+import com.example.smartair.parent.sharewithprovider.ParentConfigureProviderVisibility;
 import com.example.smartair.parent.sharewithprovider.ParentProviderViewables;
 import com.example.smartair.parent.sharewithprovider.ParentViewableDataWriting;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,17 +25,6 @@ import utils.ParentRescue;
 
 public class ParentSettingsFragment extends Fragment {
 
-    private Switch rescueLogs;
-    private Switch controllerSummary;
-    private Switch symptomLog;
-    private Switch triggerLog;
-    private Switch peakFlow;
-    private Switch triageIncident;
-    private Switch summaryChart;
-
-    private Button saveSettings;
-
-    private ParentProviderViewables settingData = new ParentProviderViewables();
 
     public ParentSettingsFragment() {
     }
@@ -54,6 +44,16 @@ public class ParentSettingsFragment extends Fragment {
         Button buttonLogout = view.findViewById(R.id.buttonLogout);
         Button buttonThresholds = view.findViewById(R.id.buttonThresholds);
         Button buttonRescue = view.findViewById(R.id.buttonRescue);
+        Button childPrivacy = view.findViewById(R.id.ChildPrivacy);
+
+        childPrivacy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ParentConfigureProviderVisibility.class);
+                startActivity(intent);
+            }
+        });
+
         buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,97 +94,6 @@ public class ParentSettingsFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ParentAdherenceScheduleActivity.class);
                 startActivity(intent);
-            }
-        });
-        //-------------------------------------------------
-        // Share provider switches
-        //-------------------------------------------------
-        rescueLogs = view.findViewById(R.id.RescueLog);
-        rescueLogs.setOnCheckedChangeListener((rescueLogs, isChecked) -> {
-            if (isChecked) {
-                settingData.SetRescues(true);
-            } else {
-                settingData.SetRescues(false);
-            }
-        });
-
-
-        controllerSummary = view.findViewById(R.id.ControllerAdherenceSummary);
-        controllerSummary.setOnCheckedChangeListener((controllerSummary,isChecked) ->{
-            if (isChecked) {
-                settingData.SetSummary(true);
-            } else {
-                settingData.SetSummary(false);
-            }
-        });
-
-
-        symptomLog = view.findViewById(R.id.SymptompLog);
-        symptomLog.setOnCheckedChangeListener((symptomLog, isChecked) ->{
-            if (isChecked) {
-                settingData.SetSymptom(true);
-            } else {
-                settingData.SetSymptom(false);
-            }
-        });
-
-
-        triggerLog = view.findViewById(R.id.TriggerLog);
-        triggerLog.setOnCheckedChangeListener((triggerLog,isChecked)-> {
-            if (isChecked) {
-                settingData.SetTrigger(true);
-            } else {
-                settingData.SetTrigger(false);
-            }
-        });
-
-
-        peakFlow = view.findViewById(R.id.PeakFlow);
-        peakFlow.setOnCheckedChangeListener((peakFlow,isChecked) -> {
-            if (isChecked) {
-                settingData.SetPeakFlow(true);
-            } else {
-                settingData.SetPeakFlow(false);
-            }
-        });
-
-        triageIncident = view.findViewById(R.id.TriageIncident);
-        triageIncident.setOnCheckedChangeListener((triageIncident,isChecked)-> {
-            if (isChecked) {
-                settingData.SetTriage(true);
-            } else {
-                settingData.SetTriage(false);
-            }
-        });
-
-
-        summaryChart = view.findViewById(R.id.SummaryChart);
-        summaryChart.setOnCheckedChangeListener((summaryChart,isChecked) -> {
-            if (isChecked) {
-                settingData.SetSummary(true);
-            } else {
-                settingData.SetSummary(false);
-            }
-        });
-
-        //-------------------------------------------------
-        // Save Button
-        //-------------------------------------------------
-
-        saveSettings = view.findViewById(R.id.button8);
-        saveSettings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ParentViewableDataWriting.SaveSetting(settingData, new DatabaseManager.SuccessFailCallback() {
-                    @Override
-                    public void onSuccess() {
-                        Toast.makeText(getContext(), "Settings Saved Successfully", Toast.LENGTH_SHORT).show();
-                    }
-                    @Override
-                    public void onFailure(Exception e) {
-                        Toast.makeText(getContext(), "Settings Failed to Save: " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
             }
         });
 
