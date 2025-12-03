@@ -69,6 +69,7 @@
             android:layout_marginEnd="10dp"
             android:text="Edit PEF"
             android:textSize="20sp"
+            android:background="@drawable/button_card"
             app:layout_constraintEnd_toStartOf="@+id/buttonEditPB"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="parent"
