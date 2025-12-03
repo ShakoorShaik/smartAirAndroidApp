@@ -66,7 +66,7 @@ public class ProviderCodeLinking extends AppCompatActivity {
         });
 
         info.setOnClickListener(v -> {
-            Intent intent = new
+            Intent intent = new Intent();
 
         });
 
