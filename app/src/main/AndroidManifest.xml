@@ -105,6 +105,22 @@
             android:exported="false" />
 
         <activity
+            android:name=".provider.onboarding.Provider_info_view1"
+            android:exported="false" />
+
+        <activity
+            android:name=".provider.onboarding.Provider_info_view2"
+            android:exported="false" />
+
+        <activity
+            android:name=".provider.onboarding.Provider_info_view3"
+            android:exported="false" />
+
+        <activity
+            android:name=".provider.onboarding.Provider_info_view4"
+            android:exported="false" />
+
+        <activity
             android:name=".provider.ProviderTriagePage"
             android:exported="false" />
         <activity

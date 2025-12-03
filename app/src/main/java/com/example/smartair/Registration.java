@@ -22,7 +22,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.smartair.parent.ParentDashboardWithChildrenActivity;
 
-import com.plattysoft.leonids.ParticleSystem;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -134,6 +133,8 @@ public class Registration extends AppCompatActivity {
                     Intent intent;
                     if ("Parent".equals(selectedAccountType)) {
                         intent = new Intent(getApplicationContext(), com.example.smartair.parent.OnboardingActivity.class);
+                    } else if ("Provider".equals(selectedAccountType)) {
+                        intent = new Intent(getApplicationContext(), com.example.smartair.provider.onboarding.Provider_info_view1.class);
                     } else {
                         intent = new Intent(getApplicationContext(), LoginActivityView.class);
                     }
