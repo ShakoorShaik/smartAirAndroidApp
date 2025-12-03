@@ -67,7 +67,6 @@ public class ParentConfigureProviderVisibility extends AppCompatActivity {
         switchTriggers = findViewById(R.id.switchTriggers);
         switchPEF = findViewById(R.id.switchPEF);
         switchTriage = findViewById(R.id.switchTriage);
-        switchCharts = findViewById(R.id.switchCharts);
         btnSaveSettings = findViewById(R.id.btnSaveSettings);
         returnPage = findViewById(R.id.Return);
     }
@@ -189,7 +188,6 @@ public class ParentConfigureProviderVisibility extends AppCompatActivity {
         switchTriggers.setChecked(settings.isTriggerLog());
         switchPEF.setChecked(settings.isPeakFlow());
         switchTriage.setChecked(settings.isTriageIncident());
-        switchCharts.setChecked(settings.isSummaryChart());
     }
 
     private void resetSwitches() {
@@ -199,7 +197,6 @@ public class ParentConfigureProviderVisibility extends AppCompatActivity {
         switchTriggers.setChecked(false);
         switchPEF.setChecked(false);
         switchTriage.setChecked(false);
-        switchCharts.setChecked(false);
     }
 
     private void saveSettingsToFirebase() {
@@ -216,7 +213,6 @@ public class ParentConfigureProviderVisibility extends AppCompatActivity {
         settings.SetTrigger(switchTriggers.isChecked());
         settings.SetPeakFlow(switchPEF.isChecked());
         settings.SetTriage(switchTriage.isChecked());
-        settings.SetSummary(switchCharts.isChecked());
 
         dataWriter.saveChildSettings(selectedChildUid, settings,
                 new ParentViewableDataWriting.SettingsSaveCallback() {
