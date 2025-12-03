@@ -10,6 +10,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ZoneHistoryManager {
@@ -57,7 +58,6 @@ public class ZoneHistoryManager {
                                     redZoneDates.put(date, true);
                                 }
                             } catch (Exception e) {
-                                // Skip invalid entries
                             }
                         }
                         callback.onSuccess(redZoneDates);
@@ -66,6 +66,80 @@ public class ZoneHistoryManager {
                     }
                 })
                 .addOnFailureListener(callback::onFailure);
+    }
+
+    public static void loadRedZoneDatesForAllChildren(Context context, RedZoneDatesCallback callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user == null) {
+            callback.onFailure(new Exception("User not logged in"));
+            return;
+        }
+
+        ChildAccountManager.getLinkedChildren(new ChildAccountManager.ChildrenListCallback() {
+            @Override
+            public void onSuccess(List<Map<String, Object>> children) {
+                if (children == null || children.isEmpty()) {
+                    callback.onSuccess(new HashMap<>());
+                    return;
+                }
+
+                Map<LocalDate, Boolean> redZoneDates = new HashMap<>();
+                final int[] completedCount = {0};
+                final int totalChildren = children.size();
+
+                if (totalChildren == 0) {
+                    callback.onSuccess(redZoneDates);
+                    return;
+                }
+
+                for (Map<String, Object> child : children) {
+                    String childUid = (String) child.get("uid");
+                    if (childUid == null || childUid.isEmpty()) {
+                        completedCount[0]++;
+                        if (completedCount[0] == totalChildren) {
+                            callback.onSuccess(redZoneDates);
+                        }
+                        continue;
+                    }
+
+                    db.collection("users").document(childUid)
+                            .collection("zoneHistory")
+                            .whereEqualTo("zone", "RED")
+                            .get()
+                            .addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    for (QueryDocumentSnapshot document : task.getResult()) {
+                                        try {
+                                            String dateStr = document.getString("date");
+                                            if (dateStr != null) {
+                                                LocalDate date = LocalDate.parse(dateStr, DateTimeFormatter.ISO_LOCAL_DATE);
+                                                redZoneDates.put(date, true);
+                                            }
+                                        } catch (Exception e) {
+                                        }
+                                    }
+                                }
+                                completedCount[0]++;
+                                if (completedCount[0] == totalChildren) {
+                                    callback.onSuccess(redZoneDates);
+                                }
+                            })
+                            .addOnFailureListener(e -> {
+                                completedCount[0]++;
+                                if (completedCount[0] == totalChildren) {
+                                    callback.onSuccess(redZoneDates);
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                callback.onFailure(e);
+            }
+        });
     }
 
     public interface ZoneHistoryDataCallback {

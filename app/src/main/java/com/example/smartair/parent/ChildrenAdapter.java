@@ -54,6 +54,8 @@ public class ChildrenAdapter extends RecyclerView.Adapter<ChildrenAdapter.ChildV
         String childUid = (String) child.get("uid");
         Object linkedAtObj = child.get("linkedAt");
 
+        holder.currentChildUid = childUid;
+
         holder.textViewChildName.setText(name != null ? name : "Unknown");
 
         if (linkedAtObj != null) {
@@ -65,6 +67,11 @@ public class ChildrenAdapter extends RecyclerView.Adapter<ChildrenAdapter.ChildV
             holder.textViewLinkedDate.setText("Linked: Unknown");
         }
 
+        holder.textViewPEF.setText("PEF: --");
+        holder.textViewPB.setText("PB: --");
+        holder.textViewZone.setText("Zone: --");
+        holder.textViewZone.setTextColor(0xFF757575);
+
         if (childUid != null) {
             String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
                     .format(Calendar.getInstance().getTime());
@@ -72,58 +79,56 @@ public class ChildrenAdapter extends RecyclerView.Adapter<ChildrenAdapter.ChildV
             PEFManager.getPEFByDate(childUid, today, new PEFManager.PEFCallback() {
                 @Override
                 public void onSuccess(Integer pefValue) {
-                    if (pefValue != null && pefValue > 0) {
-                        holder.textViewPEF.setText("PEF: " + pefValue + " L/min");
-                        updateZoneForChild(holder, childUid, pefValue);
-                    } else {
-                        holder.textViewPEF.setText("PEF: --");
-                        holder.textViewZone.setText("Zone: --");
-                        holder.textViewZone.setTextColor(0xFF757575);
+                    if (holder.currentChildUid != null && holder.currentChildUid.equals(childUid)) {
+                        if (pefValue != null && pefValue > 0) {
+                            holder.textViewPEF.setText("PEF: " + pefValue + " L/min");
+                            holder.currentPEF = pefValue;
+                            updateZoneForChild(holder, childUid, pefValue);
+                        } else {
+                            holder.textViewPEF.setText("PEF: --");
+                            holder.currentPEF = null;
+                        }
                     }
                 }
 
                 @Override
                 public void onFailure(Exception e) {
-                    holder.textViewPEF.setText("PEF: --");
-                    holder.textViewZone.setText("Zone: --");
-                    holder.textViewZone.setTextColor(0xFF757575);
+                    if (holder.currentChildUid != null && holder.currentChildUid.equals(childUid)) {
+                        holder.textViewPEF.setText("PEF: --");
+                        holder.currentPEF = null;
+                    }
                 }
             });
 
             PBManager.getPB(childUid, new PBManager.PBCallback() {
                 @Override
                 public void onSuccess(Integer pbValue) {
-                    if (pbValue != null) {
-                        holder.textViewPB.setText("PB: " + pbValue + " L/min");
-                        String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-                                .format(Calendar.getInstance().getTime());
-                        PEFManager.getPEFByDate(childUid, today, new PEFManager.PEFCallback() {
-                            @Override
-                            public void onSuccess(Integer pefValue) {
-                                if (pefValue != null && pefValue > 0 && pbValue > 0) {
-                                    updateZoneForChild(holder, childUid, pefValue);
-                                }
+                    if (holder.currentChildUid != null && holder.currentChildUid.equals(childUid)) {
+                        if (pbValue != null && pbValue > 0) {
+                            holder.textViewPB.setText("PB: " + pbValue + " L/min");
+                            holder.currentPB = pbValue;
+                            if (holder.currentPEF != null && holder.currentPEF > 0) {
+                                updateZoneForChild(holder, childUid, holder.currentPEF);
                             }
-
-                            @Override
-                            public void onFailure(Exception e) {
-                            }
-                        });
-                    } else {
-                        holder.textViewPB.setText("PB: --");
+                        } else {
+                            holder.textViewPB.setText("PB: --");
+                            holder.currentPB = null;
+                        }
                     }
                 }
 
                 @Override
                 public void onFailure(Exception e) {
-                    holder.textViewPB.setText("PB: --");
+                    if (holder.currentChildUid != null && holder.currentChildUid.equals(childUid)) {
+                        holder.textViewPB.setText("PB: --");
+                        holder.currentPB = null;
+                    }
                 }
             });
         } else {
-            holder.textViewPEF.setText("PEF: --");
-            holder.textViewPB.setText("PB: --");
-            holder.textViewZone.setText("Zone: --");
-            holder.textViewZone.setTextColor(0xFF757575);
+            holder.currentChildUid = null;
+            holder.currentPEF = null;
+            holder.currentPB = null;
         }
 
         holder.buttonUnlink.setOnClickListener(v -> {
@@ -145,45 +150,80 @@ public class ChildrenAdapter extends RecyclerView.Adapter<ChildrenAdapter.ChildV
     }
 
     private void updateZoneForChild(ChildViewHolder holder, String childUid, int pefValue) {
-        PBManager.getPB(childUid, new PBManager.PBCallback() {
-            @Override
-            public void onSuccess(Integer pbValue) {
-                if (pbValue != null && pbValue > 0) {
-                    ZoneManager.Zone zone = ZoneManager.calculateZone(pefValue, pbValue);
-                    int percentage = (int) (((double) pefValue / pbValue) * 100);
-                    String zoneName = zone.toString().substring(0, 1).toUpperCase()
-                            + zone.toString().substring(1).toLowerCase();
-                    String zoneText = String.format("Zone: %s %d%%", zoneName, percentage);
-                    holder.textViewZone.setText(zoneText);
+        if (holder.currentChildUid == null || !holder.currentChildUid.equals(childUid)) {
+            return;
+        }
 
-                    int zoneColor;
-                    switch (zone) {
-                        case GREEN:
-                            zoneColor = 0xFF4CAF50;
-                            break;
-                        case YELLOW:
-                            zoneColor = 0xFFFFC107;
-                            break;
-                        case RED:
-                            zoneColor = 0xFFF44336;
-                            break;
-                        default:
-                            zoneColor = 0xFF757575;
-                            break;
+        if (holder.currentPB != null && holder.currentPB > 0) {
+            ZoneManager.Zone zone = ZoneManager.calculateZone(pefValue, holder.currentPB);
+            int percentage = (int) (((double) pefValue / holder.currentPB) * 100);
+            String zoneName = zone.toString().substring(0, 1).toUpperCase()
+                    + zone.toString().substring(1).toLowerCase();
+            String zoneText = String.format("Zone: %s %d%%", zoneName, percentage);
+            holder.textViewZone.setText(zoneText);
+
+            int zoneColor;
+            switch (zone) {
+                case GREEN:
+                    zoneColor = 0xFF4CAF50;
+                    break;
+                case YELLOW:
+                    zoneColor = 0xFFFFC107;
+                    break;
+                case RED:
+                    zoneColor = 0xFFF44336;
+                    break;
+                default:
+                    zoneColor = 0xFF757575;
+                    break;
+            }
+            holder.textViewZone.setTextColor(zoneColor);
+        } else {
+            PBManager.getPB(childUid, new PBManager.PBCallback() {
+                @Override
+                public void onSuccess(Integer pbValue) {
+                    if (holder.currentChildUid != null && holder.currentChildUid.equals(childUid)) {
+                        if (pbValue != null && pbValue > 0) {
+                            holder.currentPB = pbValue;
+                            ZoneManager.Zone zone = ZoneManager.calculateZone(pefValue, pbValue);
+                            int percentage = (int) (((double) pefValue / pbValue) * 100);
+                            String zoneName = zone.toString().substring(0, 1).toUpperCase()
+                                    + zone.toString().substring(1).toLowerCase();
+                            String zoneText = String.format("Zone: %s %d%%", zoneName, percentage);
+                            holder.textViewZone.setText(zoneText);
+
+                            int zoneColor;
+                            switch (zone) {
+                                case GREEN:
+                                    zoneColor = 0xFF4CAF50;
+                                    break;
+                                case YELLOW:
+                                    zoneColor = 0xFFFFC107;
+                                    break;
+                                case RED:
+                                    zoneColor = 0xFFF44336;
+                                    break;
+                                default:
+                                    zoneColor = 0xFF757575;
+                                    break;
+                            }
+                            holder.textViewZone.setTextColor(zoneColor);
+                        } else {
+                            holder.textViewZone.setText("Zone: --");
+                            holder.textViewZone.setTextColor(0xFF757575);
+                        }
                     }
-                    holder.textViewZone.setTextColor(zoneColor);
-                } else {
-                    holder.textViewZone.setText("Zone: --");
-                    holder.textViewZone.setTextColor(0xFF757575);
                 }
-            }
 
-            @Override
-            public void onFailure(Exception e) {
-                holder.textViewZone.setText("Zone: --");
-                holder.textViewZone.setTextColor(0xFF757575);
-            }
-        });
+                @Override
+                public void onFailure(Exception e) {
+                    if (holder.currentChildUid != null && holder.currentChildUid.equals(childUid)) {
+                        holder.textViewZone.setText("Zone: --");
+                        holder.textViewZone.setTextColor(0xFF757575);
+                    }
+                }
+            });
+        }
     }
 
     public static class ChildViewHolder extends RecyclerView.ViewHolder {
@@ -194,6 +234,10 @@ public class ChildrenAdapter extends RecyclerView.Adapter<ChildrenAdapter.ChildV
         TextView textViewZone;
         Button buttonUnlink;
         Button buttonGoToChild;
+        
+        String currentChildUid;
+        Integer currentPEF;
+        Integer currentPB;
 
         public ChildViewHolder(@NonNull View itemView) {
             super(itemView);
