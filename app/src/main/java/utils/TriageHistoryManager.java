@@ -132,7 +132,7 @@ public class TriageHistoryManager {
                     java.util.List<java.util.Map<String, Object>> triageData = new java.util.ArrayList<>();
                     for (com.google.firebase.firestore.QueryDocumentSnapshot document : queryDocumentSnapshots) {
                         java.util.Map<String, Object> data = new java.util.HashMap<>();
-                        data.put("timestamp", document.getLong("timestamp"));
+                        data.put("timestamp", document.getTimestamp("timestamp"));
                         data.put("severity", document.getString("severity"));
                         data.put("breathing", document.get("breathing"));
                         data.put("talking", document.get("talking"));
