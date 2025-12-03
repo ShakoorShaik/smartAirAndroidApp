@@ -22,6 +22,8 @@ public class ProviderCodeLinking extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_provider_dashboard);
 
+
+        Button info = findViewById(R.id.infoButton);
         Button Logout = findViewById(R.id.buttonLogout1);
         Button Link = findViewById(R.id.button4);
 
@@ -62,5 +64,11 @@ public class ProviderCodeLinking extends AppCompatActivity {
                 }
             });
         });
+
+        info.setOnClickListener(v -> {
+            Intent intent = new
+
+        });
+
     }
 }
