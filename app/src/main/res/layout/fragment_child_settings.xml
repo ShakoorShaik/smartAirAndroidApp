@@ -31,10 +31,10 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:text="!"
-        android:background="@drawable/circle_button"
+        android:background="@drawable/emergency_button"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="85dp"
         android:layout_marginEnd="20dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package com.example.smartair.child;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,6 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
+import utils.BadgeStreakManager;
 import utils.ChildEmergency;
 import utils.ChildIdManager;
 import utils.ZoneManager;
@@ -37,6 +39,7 @@ public class ChildHomeFragment extends Fragment {
     private CardView todayZone;
     private TextView zonePercentage;
 
+    private String userID;
     private Button dailyCheckIn;
 
     @Nullable
@@ -48,6 +51,19 @@ public class ChildHomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        Activity curActivity = this.getActivity();
+        if (curActivity != null) {
+            ChildIdManager manager = new ChildIdManager(curActivity);
+            String curr_child_id = manager.getChildId();
+            if (!curr_child_id.equals("NA")) {
+                userID = curr_child_id;
+            } else {
+                userID = user.getUid();
+            }
+        }
 
         Button buttonEmergency = view.findViewById(R.id.emergencyButton);
         Button logInhalerButton = view.findViewById(R.id.button5);
@@ -72,7 +88,32 @@ public class ChildHomeFragment extends Fragment {
             }
         });
 
-        loadZoneInfo();
+        TextView InhalerStreak = view.findViewById(R.id.inhalerStreak);
+        TextView ControllerStreak = view.findViewById(R.id.controllerStreak);
+
+        BadgeStreakManager.getCurrentInhalerTechniqueStreak(userID, new BadgeStreakManager.BSMCallback() {
+            @Override
+            public void onSuccess(Integer count) {
+                InhalerStreak.setText(count.toString());
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        });
+
+        BadgeStreakManager.getCurrentControllerStreak(userID, new BadgeStreakManager.BSMCallback() {
+            @Override
+            public void onSuccess(Integer count) {
+                ControllerStreak.setText(count.toString());
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        });
 
         dailyCheckIn = view.findViewById(R.id.button7);
         dailyCheckIn.setOnClickListener(new View.OnClickListener() {

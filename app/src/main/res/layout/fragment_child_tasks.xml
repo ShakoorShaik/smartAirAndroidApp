@@ -12,31 +12,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="25dp"
-            android:layout_marginStart="10dp">
-            <ImageView
-                android:id="@+id/badge"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:visibility="gone" />
-            <ImageView
-                android:id="@+id/badge1"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:visibility="gone" />
-            <ImageView
-                android:id="@+id/badge2"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:visibility="gone" />
-        </LinearLayout>
         <Space
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -77,7 +52,7 @@
         android:id="@+id/techniqueHelperButton"
         android:text="Inhaler Technique"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:layout_marginTop="30dp"
         android:layout_marginHorizontal="20dp"
         app:layout_constraintTop_toBottomOf="@id/tasksText"
@@ -89,7 +64,7 @@
         android:id="@+id/recordTriggerButton"
         android:text="Record a Trigger"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:layout_marginTop="20dp"
         android:layout_marginHorizontal="20dp"
         app:layout_constraintTop_toBottomOf="@id/techniqueHelperButton"
@@ -101,7 +76,7 @@
         android:id="@+id/historyTriggerButton"
         android:text="Trigger history"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:layout_marginTop="20dp"
         android:layout_marginHorizontal="20dp"
         app:layout_constraintTop_toBottomOf="@id/recordTriggerButton"
@@ -113,7 +88,7 @@
         android:id="@+id/symptomRecordButton"
         android:text="Record a Symptom"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="80dp"
         android:layout_marginTop="20dp"
         android:layout_marginHorizontal="20dp"
         app:layout_constraintTop_toBottomOf="@id/historyTriggerButton"
@@ -121,15 +96,68 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:textAllCaps="false"/>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="340dp"
+        android:layout_height="240dp"
+        android:layout_marginTop="20dp"
+        android:paddingTop="30dp"
+        android:background="@color/lightest_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/symptomRecordButton">
+
+        <TextView
+            android:id="@+id/badgesText"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="Obtained Badges"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center"/>
+
+        <ImageView
+            android:id="@+id/badge"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/badgesText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/badge2"
+            app:layout_constraintHorizontal_weight="1"/>
+
+        <ImageView
+            android:id="@+id/badge2"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/badgesText"
+            app:layout_constraintStart_toEndOf="@id/badge"
+            app:layout_constraintEnd_toStartOf="@id/badge1"
+            app:layout_constraintHorizontal_weight="1"/>
+
+        <ImageView
+            android:id="@+id/badge1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@id/badgesText"
+            app:layout_constraintStart_toEndOf="@id/badge2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     <Button
         android:id="@+id/emergencyButton"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:text="!"
-        android:background="@drawable/circle_button"
+        android:background="@drawable/emergency_button"
+        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="85dp"
         android:layout_marginEnd="20dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
