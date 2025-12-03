@@ -14,6 +14,9 @@
     <style name="RoundedMaterialButton" parent="Widget.MaterialComponents.Button">
         <item name="shapeAppearance">@style/RoundedShape</item>
         <item name="elevation">100dp</item>
+        <item name="android:backgroundTint">@null</item>
+        <item name="android:background">@drawable/button_card</item>
+        <item name="backgroundTint">@null</item>
     </style>
 
     <style name="RoundedShape" parent="">
