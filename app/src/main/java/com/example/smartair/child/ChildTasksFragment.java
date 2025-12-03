@@ -36,7 +36,6 @@ public class ChildTasksFragment extends Fragment {
     private ImageView StreakController;
     private Button buttonTechniqueHelper;
     private Button buttonRecordTrigger;
-    private Button buttonTriggerHistory;
     private Button buttonRecordSymptom;
     private Button buttonEmergency;
     String userID;
@@ -81,7 +80,6 @@ public class ChildTasksFragment extends Fragment {
 
         buttonTechniqueHelper = view.findViewById(R.id.techniqueHelperButton);
         buttonRecordTrigger = view.findViewById(R.id.recordTriggerButton);
-        buttonTriggerHistory = view.findViewById(R.id.historyTriggerButton);
         buttonRecordSymptom = view.findViewById(R.id.symptomRecordButton);
         buttonEmergency = view.findViewById(R.id.emergencyButton);
 
@@ -92,10 +90,6 @@ public class ChildTasksFragment extends Fragment {
 
         buttonRecordTrigger.setOnClickListener(v -> {
             startActivity((new Intent(getActivity(), LogTriggerActivity.class)));
-        });
-
-        buttonTriggerHistory.setOnClickListener(v -> {
-            Toast.makeText(getActivity(), "TODO NOT FUNCTIONAL", Toast.LENGTH_LONG).show();
         });
 
         buttonRecordSymptom.setOnClickListener(v -> {
