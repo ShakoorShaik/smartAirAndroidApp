@@ -23,33 +23,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:layout_marginBottom="8dp">
 
             <ImageView
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:src="@drawable/settings"
-                android:layout_marginEnd="12dp"
                 app:tint="@color/main_blue" />
+
+            <Space
+                android:layout_width="10dp"
+                android:layout_height="0dp" />
 
             <TextView
                 android:id="@+id/settingsText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Settings"
-                android:textSize="28sp"
-                android:textStyle="bold"
-                android:textColor="#212121" />
-        </LinearLayout>
+                android:textColor="#212121"
+                android:textSize="28sp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Manage your account and preferences"
-            android:textSize="14sp"
-            android:textColor="#757575"
-            android:layout_marginStart="44dp" />
+            <Space
+                android:layout_width="20dp"
+                android:layout_height="0dp" />
+
+        </LinearLayout>
     </LinearLayout>
 
     <androidx.cardview.widget.CardView
