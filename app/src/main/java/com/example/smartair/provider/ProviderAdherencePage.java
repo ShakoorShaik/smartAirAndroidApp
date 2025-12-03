@@ -35,8 +35,7 @@ public class ProviderAdherencePage extends AppCompatActivity {
         tvLastUpdated = findViewById(R.id.tvLastUpdated);
 
         setupButtonListeners();
-
-        // Load data
+        
         ProviderDataReading providerData = new ProviderDataReading(this);
 
         TextView linkedText = findViewById(R.id.linkedText);
