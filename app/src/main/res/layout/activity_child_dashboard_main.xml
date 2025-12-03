@@ -16,15 +16,16 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navBar"
-        android:layout_width="match_parent"
-        android:layout_height="65dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:menu="@menu/child_nav_bar"
-        app:labelVisibilityMode="unlabeled"
+        android:layout_width="409dp"
+        android:layout_height="72dp"
+        android:background="@color/lightest_gray"
         app:itemIconSize="32dp"
-        tools:ignore="MissingConstraints"
-        android:background="@color/lightest_gray"/>
+        app:labelVisibilityMode="unlabeled"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:menu="@menu/child_nav_bar"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -347,15 +347,37 @@ public class ParentExportHistoryActivity extends AppCompatActivity {
 
         DatePickerDialog dialog = new DatePickerDialog(this, (DatePicker view, int y, int m, int d) -> {
             Calendar c = Calendar.getInstance();
+
+            Calendar endThreshold = Calendar.getInstance();
+            Calendar startThreshold = Calendar.getInstance();
+            endThreshold.add(Calendar.MONTH, -3);
+            startThreshold.add(Calendar.MONTH, -6);
+            long endThresholdInMillis = endThreshold.getTimeInMillis();
+            long startThresholdInMillis = startThreshold.getTimeInMillis();
+
             c.set(y, m, d);
             if (isStart) {
-                c.set(Calendar.HOUR_OF_DAY, 0);
-                c.set(Calendar.MINUTE, 0);
-                filterStartDate = c.getTime();
+                if (c.getTimeInMillis() >= startThresholdInMillis) {
+                    c.set(Calendar.HOUR_OF_DAY, 0);
+                    c.set(Calendar.MINUTE, 0);
+                    filterStartDate = c.getTime();
+                } else {
+                    Toast.makeText(this, "Start date must be at least 6 months ago.",
+                            Toast.LENGTH_SHORT).show();
+                }
             } else {
-                c.set(Calendar.HOUR_OF_DAY, 23);
-                c.set(Calendar.MINUTE, 59);
-                filterEndDate = c.getTime();
+                if (c.getTimeInMillis() <= endThresholdInMillis) {
+                    c.set(Calendar.HOUR_OF_DAY, 23);
+                    c.set(Calendar.MINUTE, 59);
+
+                    filterEndDate = c.getTime();
+                } else {
+                    Toast.makeText(this, "End date must be at least 3 months ago.",
+                            Toast.LENGTH_SHORT).show();
+                }
+
+
+
             }
             updateDateRangeLabel();
         }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH));
