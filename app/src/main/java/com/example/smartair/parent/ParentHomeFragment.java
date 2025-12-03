@@ -199,7 +199,7 @@ public class ParentHomeFragment extends Fragment {
         MedicineManager.loadMedicines(new MedicineManager.MedicineListCallback() {
             @Override
             public void onSuccess(List<Medicine> medicines) {
-                ZoneHistoryManager.loadRedZoneDates(getContext(), new ZoneHistoryManager.RedZoneDatesCallback() {
+                ZoneHistoryManager.loadRedZoneDatesForAllChildren(getContext(), new ZoneHistoryManager.RedZoneDatesCallback() {
                     @Override
                     public void onSuccess(Map<LocalDate, Boolean> redZoneMap) {
                         TriageHistoryManager.loadTriageDates(getContext(), new TriageHistoryManager.TriageDatesCallback() {
@@ -300,7 +300,7 @@ public class ParentHomeFragment extends Fragment {
 
             @Override
             public void onFailure(Exception e) {
-                ZoneHistoryManager.loadRedZoneDates(getContext(), new ZoneHistoryManager.RedZoneDatesCallback() {
+                ZoneHistoryManager.loadRedZoneDatesForAllChildren(getContext(), new ZoneHistoryManager.RedZoneDatesCallback() {
                     @Override
                     public void onSuccess(Map<LocalDate, Boolean> redZoneMap) {
                         TriageHistoryManager.loadTriageDates(getContext(), new TriageHistoryManager.TriageDatesCallback() {

@@ -41,6 +41,7 @@ public class OnboardingFragment extends Fragment {
         TextView textTitle = view.findViewById(R.id.textOnboardingTitle);
         TextView textDescription = view.findViewById(R.id.textOnboardingDescription);
         View colorAccent = view.findViewById(R.id.viewColorAccent);
+        View layoutRescueControllerDiagram = view.findViewById(R.id.layoutRescueControllerDiagram);
 
         Bundle args = getArguments();
         if (args != null) {
@@ -53,6 +54,13 @@ public class OnboardingFragment extends Fragment {
             
             textTitle.setText(title);
             textDescription.setText(description);
+            
+            // Show diagram only for Key Features page
+            if ("Key Features".equals(title)) {
+                layoutRescueControllerDiagram.setVisibility(View.VISIBLE);
+            } else {
+                layoutRescueControllerDiagram.setVisibility(View.GONE);
+            }
             
             try {
                 int color = Color.parseColor(colorStr);
