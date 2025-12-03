@@ -34,10 +34,10 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:text="!"
-        android:background="@drawable/circle_button"
+        android:background="@drawable/emergency_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginBottom="85dp"
+        android:layout_marginBottom="20dp"
         android:layout_marginEnd="20dp" />
 
     <Button
@@ -122,6 +122,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@id/controllerText"
             app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintTop_toTopOf="parent"
             android:textSize="16sp"
             android:textStyle="bold"
             android:gravity="center"/>
@@ -133,6 +134,7 @@
             android:text="Controller Medicine Streak"
             app:layout_constraintStart_toEndOf="@id/inhalerText"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintHorizontal_weight="1"
             android:textSize="16sp"
             android:textStyle="bold"
