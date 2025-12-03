@@ -20,6 +20,8 @@ public class ProviderHomePage extends AppCompatActivity {
 
     private ProviderDataReading providerData;
     private TextView linkedText;
+
+    private TextView todayDate;
     private TextView currentChildText;
     private LinearLayout childrenContainer;
 
@@ -32,6 +34,10 @@ public class ProviderHomePage extends AppCompatActivity {
         linkedText = findViewById(R.id.linkedText);
         currentChildText = findViewById(R.id.textView11);
         childrenContainer = findViewById(R.id.childrenListContainer);
+
+        todayDate = findViewById(R.id.textViewDate);
+
+        todayDate.setText("Date: " + DateHelper.getTodayDate());
 
         loadParentData();
         updateCurrentChildDisplay();

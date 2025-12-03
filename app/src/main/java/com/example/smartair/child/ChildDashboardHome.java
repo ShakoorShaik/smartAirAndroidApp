@@ -49,6 +49,12 @@ public class ChildDashboardHome extends AppCompatActivity {
             return;
         }
 
+        ChildIdManager manager = new ChildIdManager(this);
+        String storedChildId = manager.getChildId();
+        if (!storedChildId.equals("NA") && !storedChildId.equals(user.getUid())) {
+            manager.clearChildId();
+        }
+
         BottomNavigationView bottomNav = findViewById(R.id.navBar);
         bottomNav.setSelectedItemId(R.id.bottom_home);
         bottomNav.setOnItemSelectedListener(item -> {
@@ -139,8 +145,13 @@ public class ChildDashboardHome extends AppCompatActivity {
             Log.d(TAG, "No current user, displaying default zone");
             displayDefaultZone();
             return;
-        } else if (curr_child_id.equals("NA")) {
+        }
+        
+        if (curr_child_id.equals("NA") || !curr_child_id.equals(curr_user.getUid())) {
             curr_child_id = curr_user.getUid();
+            if (!curr_child_id.equals("NA")) {
+                manager.clearChildId();
+            }
         }
 
         Log.d(TAG, "Loading zone info for child: " + curr_child_id);

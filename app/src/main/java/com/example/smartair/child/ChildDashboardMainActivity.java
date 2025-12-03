@@ -25,6 +25,12 @@ public class ChildDashboardMainActivity extends AppCompatActivity {
             return;
         }
 
+        utils.ChildIdManager manager = new utils.ChildIdManager(this);
+        String storedChildId = manager.getChildId();
+        if (!storedChildId.equals("NA") && !storedChildId.equals(user.getUid())) {
+            manager.clearChildId();
+        }
+
         utils.ChildOnboardingManager.checkAndSetOnboardingStatus(this, new utils.ChildOnboardingManager.ChildOnboardingCheckCallback() {
             @Override
             public void onResult(boolean shouldSkipOnboarding) {

@@ -55,14 +55,19 @@ public class ChildHomeFragment extends Fragment {
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
         Activity curActivity = this.getActivity();
-        if (curActivity != null) {
+        if (curActivity != null && user != null) {
             ChildIdManager manager = new ChildIdManager(curActivity);
             String curr_child_id = manager.getChildId();
-            if (!curr_child_id.equals("NA")) {
+            if (!curr_child_id.equals("NA") && curr_child_id.equals(user.getUid())) {
                 userID = curr_child_id;
             } else {
                 userID = user.getUid();
+                if (!curr_child_id.equals("NA")) {
+                    manager.clearChildId();
+                }
             }
+        } else if (user != null) {
+            userID = user.getUid();
         }
 
         Button buttonEmergency = view.findViewById(R.id.emergencyButton);
@@ -150,8 +155,13 @@ public class ChildHomeFragment extends Fragment {
             Log.d(TAG, "No current user, displaying default zone");
             displayDefaultZone();
             return;
-        } else if (curr_child_id.equals("NA")) {
+        }
+        
+        if (curr_child_id.equals("NA") || !curr_child_id.equals(curr_user.getUid())) {
             curr_child_id = curr_user.getUid();
+            if (!curr_child_id.equals("NA")) {
+                manager.clearChildId();
+            }
         }
 
         Log.d(TAG, "Loading zone info for child: " + curr_child_id);
