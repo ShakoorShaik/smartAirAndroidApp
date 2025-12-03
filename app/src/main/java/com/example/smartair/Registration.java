@@ -3,7 +3,9 @@ package com.example.smartair;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -19,6 +21,8 @@ import androidx.core.view.WindowInsetsCompat;
 
 
 import com.example.smartair.parent.ParentDashboardWithChildrenActivity;
+
+import com.plattysoft.leonids.ParticleSystem;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,6 +50,27 @@ public class Registration extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        /*
+        if (hasFocus) {
+            ViewGroup mainView = (ViewGroup) findViewById(R.id.main);
+            ParticleSystem particleSystem = new ParticleSystem(this, 100, R.drawable.ambient_particle, 8000);
+            particleSystem.setSpeedRange(0.05f, 0.1f);
+            particleSystem.setAcceleration(0.00005f, 180);
+            particleSystem.emitWithGravity(mainView, Gravity.CENTER, 10);
+
+            mainView.post(() -> {
+                for (int i = 1; i < mainView.getChildCount(); i++) { // Skip index 0 if needed
+                    mainView.getChildAt(i).bringToFront();
+                }
+                mainView.requestLayout();
+            });
+        }
+        */
     }
 
     @Override
@@ -108,7 +133,7 @@ public class Registration extends AppCompatActivity {
                     String selectedAccountType = spinnerAccountType.getSelectedItem().toString();
                     Intent intent;
                     if ("Parent".equals(selectedAccountType)) {
-                        intent = new Intent(getApplicationContext(), ParentDashboardWithChildrenActivity.class);
+                        intent = new Intent(getApplicationContext(), com.example.smartair.parent.OnboardingActivity.class);
                     } else {
                         intent = new Intent(getApplicationContext(), LoginActivityView.class);
                     }
@@ -138,5 +163,7 @@ public class Registration extends AppCompatActivity {
             });
 
         });
+
+
     }
 }

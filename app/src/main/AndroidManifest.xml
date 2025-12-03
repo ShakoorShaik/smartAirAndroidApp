@@ -17,7 +17,7 @@
             android:name=".parent.ParentHistoryActivity"
             android:exported="false" />
         <activity
-            android:name=".child.ChildHistoryActivity"
+            android:name=".child.ChildHistory.ChildHistoryActivity"
             android:exported="true" /> <!-- Main Activity -->
         <activity
             android:name=".MainActivity"
@@ -38,6 +38,14 @@
         <activity
             android:name=".parent.ParentDashboardWithChildrenActivity"
             android:exported="false" />
+        <activity
+            android:name=".parent.OnboardingActivity"
+            android:exported="false"
+            android:theme="@style/Theme.SmartAirParent" />
+        <activity
+            android:name=".child.ChildOnboardingActivity"
+            android:exported="false"
+            android:theme="@style/Theme.SmartAirParent" />
         <activity
             android:name=".parent.AddChildAccountActivity"
             android:exported="false" />

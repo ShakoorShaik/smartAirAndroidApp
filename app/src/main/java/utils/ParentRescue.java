@@ -41,7 +41,7 @@ public class ParentRescue {
                     Boolean flag = dc.getDocument().getBoolean("rescueFlag");
                     String name = dc.getDocument().getString("name");
                     if (flag == Boolean.FALSE){
-                        countRescueAttempts(ChildUid, new PRCallback() {
+                        countRescueAttemptsThreeHours(ChildUid, new PRCallback() {
                             @Override
                             public void onSuccess(Integer number) {
                                 Integer rescueCount = number;
@@ -82,7 +82,7 @@ public class ParentRescue {
         });
     }
 
-    public static void countRescueAttempts(String childUid, PRCallback callback){
+    public static void countRescueAttemptsThreeHours(String childUid, PRCallback callback){
         long threeHours = 3L * 60L * 60L * 1000L;
         Timestamp threeHoursTimestamp = new Timestamp(new Date(System.currentTimeMillis() - threeHours));
         FirebaseFirestore db = FirebaseFirestore.getInstance();

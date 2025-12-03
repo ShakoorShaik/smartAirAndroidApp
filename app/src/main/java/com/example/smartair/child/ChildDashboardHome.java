@@ -15,7 +15,7 @@ import androidx.cardview.widget.CardView;
 
 import com.example.smartair.LoginActivityView;
 import com.example.smartair.R;
-import com.example.smartair.child.checkin.ChildDailyCheckIn;
+import com.example.smartair.child.ChildHistory.ChildHistoryActivity;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;

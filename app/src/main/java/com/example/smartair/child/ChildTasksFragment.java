@@ -112,12 +112,12 @@ public class ChildTasksFragment extends Fragment {
         final int[] inhalerTechniqueThreshold = new int[1];
         BadgeStreakManager.getInhalerTechniqueNumber(userID, new BadgeStreakManager.BSMCallback() {
             @Override
-            public void onSuccess(Integer streak) {
-                inhalerTechniqueNumber[0] = streak;
+            public void onSuccess(Integer count) {
+                inhalerTechniqueNumber[0] = count;
                 BadgeStreakManager.getParentInhalerTechniqueThreshold(userID, new BadgeStreakManager.BSMCallback() {
                     @Override
-                    public void onSuccess(Integer streak) {
-                        inhalerTechniqueThreshold[0] = streak;
+                    public void onSuccess(Integer count) {
+                        inhalerTechniqueThreshold[0] = count;
                         if (inhalerTechniqueNumber[0] > inhalerTechniqueThreshold[0]){
                             BadgeInhalerTechnique.setVisibility(View.VISIBLE);
                             BadgeInhalerTechnique.setOnClickListener((v -> {
@@ -143,14 +143,14 @@ public class ChildTasksFragment extends Fragment {
         BadgeControllerConsequtively.setImageResource(R.drawable.gold_badge);
         final int[] controllerNumber = new int[1];
         final int[] controllerNumberThreshold = new int[1];
-        BadgeStreakManager.getControllerNumber(userID, new BadgeStreakManager.BSMCallback() {
+        BadgeStreakManager.getLongestControllerStreak(userID, new BadgeStreakManager.BSMCallback() {
             @Override
-            public void onSuccess(Integer streak) {
-                controllerNumber[0] = streak;
+            public void onSuccess(Integer count) {
+                controllerNumber[0] = count;
                 BadgeStreakManager.getParentControllerNumberThreshold(userID, new BadgeStreakManager.BSMCallback() {
                     @Override
-                    public void onSuccess(Integer streak) {
-                        controllerNumberThreshold[0] = streak;
+                    public void onSuccess(Integer count) {
+                        controllerNumberThreshold[0] = count;
                         if (controllerNumber[0] >= controllerNumberThreshold[0]){
                             BadgeControllerConsequtively.setVisibility(View.VISIBLE);
                             BadgeControllerConsequtively.setOnClickListener((v -> {
@@ -176,14 +176,14 @@ public class ChildTasksFragment extends Fragment {
         BadgeRescueMonth.setImageResource(R.drawable.silver_badge);
         final int[] rescueNumber = new int[1];
         final int[] rescueNumberThreshold = new int[1];
-        BadgeStreakManager.getRescueNumber(userID, new BadgeStreakManager.BSMCallback() {
+        BadgeStreakManager.getRescueNumberPastThirtyDays(userID, new BadgeStreakManager.BSMCallback() {
             @Override
-            public void onSuccess(Integer streak) {
-                rescueNumber[0] = streak;
+            public void onSuccess(Integer count) {
+                rescueNumber[0] = count;
                 BadgeStreakManager.getParentRescueNumberThreshold(userID, new BadgeStreakManager.BSMCallback() {
                     @Override
-                    public void onSuccess(Integer streak) {
-                        rescueNumberThreshold[0] = streak;
+                    public void onSuccess(Integer count) {
+                        rescueNumberThreshold[0] = count;
                         if (rescueNumber[0] <= rescueNumberThreshold[0]){
                             BadgeRescueMonth.setVisibility(View.VISIBLE);
                             BadgeRescueMonth.setOnClickListener((v -> {
@@ -208,11 +208,11 @@ public class ChildTasksFragment extends Fragment {
     private void initialiseTechniqueStreak() {
         StreakTechnique.setImageResource(R.drawable.fire);
         StreakTechnique.setVisibility(View.VISIBLE);
-        BadgeStreakManager.getInhalerTechniqueStreak(userID, new BadgeStreakManager.BSMCallback() {
+        BadgeStreakManager.getCurrentInhalerTechniqueStreak(userID, new BadgeStreakManager.BSMCallback() {
             @Override
-            public void onSuccess(Integer streak) {
+            public void onSuccess(Integer count) {
                 StreakTechnique.setOnClickListener((v -> {
-                    Toast.makeText(getActivity(), "Your current correct technique practice streak is " + streak + "!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Your current correct technique practice streak is " + count + "!", Toast.LENGTH_LONG).show();
                 }));
             }
 
@@ -225,11 +225,11 @@ public class ChildTasksFragment extends Fragment {
     private void initialiseControllerStreak() {
         StreakController.setImageResource(R.drawable.fire);
         StreakController.setVisibility(View.VISIBLE);
-        BadgeStreakManager.getControllerStreak(userID, new BadgeStreakManager.BSMCallback() {
+        BadgeStreakManager.getCurrentControllerStreak(userID, new BadgeStreakManager.BSMCallback() {
             @Override
-            public void onSuccess(Integer streak) {
+            public void onSuccess(Integer count) {
                 StreakController.setOnClickListener((v -> {
-                    Toast.makeText(getActivity(), "Your current controller use streak is " + streak + "!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Your current controller use streak is " + count + "!", Toast.LENGTH_LONG).show();
                 }));
             }
 

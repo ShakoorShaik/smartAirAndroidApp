@@ -1,12 +1,9 @@
 package utils;
 
-import android.util.Log;
-
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -15,7 +12,7 @@ import java.util.List;
 public class BadgeStreakManager {
 
     public interface BSMCallback {
-        void onSuccess(Integer streak);
+        void onSuccess(Integer count);
         void onFailure(Exception e);
     }
 
@@ -42,7 +39,7 @@ public class BadgeStreakManager {
         getThreshold(childUid, "thresholdRescue", 4, callback);
     }
 
-    public static void getRescueNumber(String childUid, BSMCallback callback){
+    public static void getRescueNumberPastThirtyDays(String childUid, BSMCallback callback){
         long thirtyDays = 30L * 24L * 60L * 60L * 1000L;
         Timestamp thirtyDaysAgo = new Timestamp(new Date(System.currentTimeMillis() - thirtyDays));
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -56,7 +53,7 @@ public class BadgeStreakManager {
                         int streak = task.getResult().size();
                         callback.onSuccess(streak);
                     } else {
-                        callback.onSuccess(-1);
+                        callback.onSuccess(0);
                     }
                 })
                 .addOnFailureListener(callback::onFailure);
@@ -66,7 +63,7 @@ public class BadgeStreakManager {
         getThreshold(childUid, "thresholdController", 7, callback);
     }
 
-    public static void getControllerNumber(String childUid, BSMCallback callback){
+    public static void getLongestControllerStreak(String childUid, BSMCallback callback){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users").document(childUid)
                 .collection("inhaler_log")
@@ -85,7 +82,7 @@ public class BadgeStreakManager {
                 .addOnFailureListener(callback::onFailure);
     }
 
-    public static void getControllerStreak(String childUid, BSMCallback callback){
+    public static void getCurrentControllerStreak(String childUid, BSMCallback callback){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users").document(childUid)
                 .collection("inhaler_log")
@@ -104,7 +101,7 @@ public class BadgeStreakManager {
                 .addOnFailureListener(callback::onFailure);
     }
 
-    public static void getInhalerTechniqueStreak(String childUid, BSMCallback callback){
+    public static void getCurrentInhalerTechniqueStreak(String childUid, BSMCallback callback){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users").document(childUid)
                 .collection("InhalerTechniquePracticeHistory")
@@ -249,7 +246,7 @@ public class BadgeStreakManager {
                         }
                     });
                 }
-                else {
+                else { //also the case where we are not logged in
                     db.collection("users").document(data).get()
                             .addOnCompleteListener(task -> {
                                 if (task.isSuccessful()) {

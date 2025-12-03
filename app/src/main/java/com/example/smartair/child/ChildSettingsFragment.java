@@ -31,11 +31,6 @@ public class ChildSettingsFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            TextView textView = view.findViewById(R.id.WelcomeMsg);
-            textView.setText(user.getEmail());
-        }
 
         Button button_logout = view.findViewById(R.id.button_logout_child);
         Button buttonEmergency = view.findViewById(R.id.emergencyButton);

@@ -52,13 +52,13 @@ public class LoginActivityPresenter {
         email = emailInput != null ? emailInput.toString().trim() : "";
         password = passInput != null ? passInput.toString() : "";
 
-        if (TextUtils.isEmpty(email))
+        if (email.isEmpty())
         {
             sendMsg("Enter Email");
             return;
         }
 
-        if(TextUtils.isEmpty(password))
+        if(password.isEmpty())
         {
            sendMsg("Enter Password");
             return;
