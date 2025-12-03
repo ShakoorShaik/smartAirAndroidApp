@@ -577,6 +577,7 @@ public class ParentHomeFragment extends Fragment {
         View view = getView();
         if (view != null) {
             loadZoneInfo(view);
+            loadCalendarData();
         }
     }
 

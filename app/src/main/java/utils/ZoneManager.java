@@ -81,6 +81,11 @@ public class ZoneManager {
             return;
         }
 
+        if (childUid == null || childUid.isEmpty()) {
+            callback.onFailure(new Exception("Invalid child UID"));
+            return;
+        }
+
         Map<String, Object> zoneLog = new HashMap<>();
         zoneLog.put("childUid", childUid);
         zoneLog.put("zone", zone.name());
@@ -88,20 +93,8 @@ public class ZoneManager {
         zoneLog.put("date", date);
         zoneLog.put("timestamp", System.currentTimeMillis());
 
-        String targetUid;
-        if (context != null) {
-            ChildIdManager manager = new ChildIdManager(context);
-            String curr_child_id = manager.getChildId();
-            if (!curr_child_id.equals("NA")) {
-                targetUid = curr_child_id;
-            } else {
-                targetUid = user.getUid();
-            }
-        } else {
-            targetUid = user.getUid();
-        }
 
-        db.collection("users").document(targetUid)
+        db.collection("users").document(childUid)
                 .collection("zoneHistory")
                 .add(zoneLog)
                 .addOnSuccessListener(documentReference -> callback.onSuccess())
