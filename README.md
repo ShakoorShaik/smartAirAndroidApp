@@ -4,8 +4,6 @@ SmartAir is a comprehensive asthma management platform for children, parents, an
 
 ## Demo
 
-> **▶ [Watch the Full Demo Video]**
-
 https://github.com/user-attachments/assets/5dccf876-4035-4406-8a99-d6700c6d609d
 
 ---
