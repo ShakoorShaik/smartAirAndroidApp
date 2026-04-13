@@ -70,7 +70,7 @@ The app supports three distinct user roles — **Child**, **Parent**, and **Prov
 
 ## Architecture
 
-<img width="4346" height="3899" alt="Image" src="https://github.com/user-attachments/assets/2e3b1e2b-e726-468e-8b03-6f97a21bca60" />
+<img width="3671" height="3893" alt="Image" src="https://github.com/user-attachments/assets/be364239-a330-45ec-8d2b-5678b4ad2c8f" />
 
 The app uses a hybrid architecture:
 
