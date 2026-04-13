@@ -70,6 +70,8 @@ The app supports three distinct user roles — **Child**, **Parent**, and **Prov
 
 ## Architecture
 
+<img width="4346" height="3899" alt="Image" src="https://github.com/user-attachments/assets/2e3b1e2b-e726-468e-8b03-6f97a21bca60" />
+
 The app uses a hybrid architecture:
 
 - **MVP (Model-View-Presenter)** for the authentication layer, keeping Firebase logic separated from the UI.
